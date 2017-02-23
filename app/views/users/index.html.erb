@@ -1,0 +1,18 @@
+<section>
+  <div id="users-index">
+    <div class="container-fluid">
+      <br><br><br><br><br>
+      <div class="col-sm-5">
+        <h1 class="display-3">Users</h1>
+        <%= link_to "New User", new_user_path %>
+        <hr>
+          <% @users.each do |u| %>
+          <div class="row index-list">
+            <%= link_to u.first + " " + u.last + " " + u.enrollment.to_s, edit_user_path(u.id.to_s) %>
+            </div>
+          <% end %>
+        </hr>
+      </div>
+    </div>
+  </div>
+</section>
