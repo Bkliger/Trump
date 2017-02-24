@@ -5,10 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Message.destroy_all
 Org.destroy_all
 User.destroy_all
 
-Org.create(org_name: "General", org_status: "active")
+
+org1 = Org.create(org_name: "General", org_status: "active")
 d1 = DateTime.new(2017, 2, 26)
 
 User.create(first: "john", last: "james", enrollment: d1)
+Message.create(title: "first message", message_text: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ", create_date: DateTime.new(2017, 2, 26), org_id: org1.id)
