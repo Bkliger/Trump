@@ -1,0 +1,18 @@
+<section>
+  <div id="messages-index">
+    <div class="container-fluid">
+      <br><br><br><br><br>
+      <div class="col-sm-5">
+        <h1 class="display-3">Users</h1>
+        <%= link_to "New Message", new_message_path %>
+        <hr>
+          <% @messages.each do |m| %>
+          <div class="row index-list">
+            <%= link_to m.title + " " + m.create_date.to_s, edit_message_path(m.id.to_s) %>
+            </div>
+          <% end %>
+        </hr>
+      </div>
+    </div>
+  </div>
+</section>
