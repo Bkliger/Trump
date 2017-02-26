@@ -1,0 +1,18 @@
+<section>
+  <div id="targets-index">
+    <div class="container-fluid">
+      <br><br><br><br><br>
+      <div class="col-sm-5">
+        <h1 class="display-3">Targets</h1>
+        <%= link_to "New target", "targets/" + @user.id.to_s + "/new" %>        
+        <hr>
+          <% @targets.each do |t| %>
+          <div class="row index-list">
+            <%= link_to t.first + " " + t.last, edit_target_path(t.id.to_s) %>
+            </div>
+          <% end %>
+        </hr>
+      </div>
+    </div>
+  </div>
+</section>

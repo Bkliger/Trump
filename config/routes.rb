@@ -54,6 +54,14 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   # get "/users/:user_id", to:"users#show", as: "user"
+
+  get "targets", to: "targets#index", as: "targets"
+  get "/targets/:user_id/new", to: "targets#new", as: "new_target"
+  get "/targets/:target_id/edit", to:"targets#edit", as: "edit_target"
+  post "/targets", to: "targets#create"
+  patch "/targets/:target_id", to:"targets#update"
+
+
   get "messages", to: "messages#index", as: "messages"
   get "/messages/new", to: "messages#new", as: "new_message"
   get "/messages/:message_id/edit", to:"messages#edit", as: "edit_message"

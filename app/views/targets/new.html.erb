@@ -1,0 +1,38 @@
+<h1>New target</h1>
+
+<%= form_for @target do |f| %>
+<div>
+  <%= f.text_field :first, placeholder: "First Name" %>
+</div>
+<div>
+  <%= f.text_field :last, placeholder: "Last Name" %>
+</div>
+<div>
+  <%= f.text_field :zip, placeholder: "Zip Code" %>
+</div>
+<div>
+  <%= f.text_field :plus4, placeholder: "Zip Plus 4" %>
+</div>
+<div>
+  <%= f.text_field :salutation, placeholder: "Salutation" %>
+</div>
+<div>
+  <%= f.text_field :email, placeholder: "email" %>
+</div>
+<div>
+  <%= f.check_box :rec_email, placeholder: "email" %>
+</div>
+<div>
+  <%= f.check_box :rec_text, placeholder: "text" %>
+</div>
+<div>
+  <%= f.text_field :phone, placeholder: "Cell Phone" %>
+</div>
+<!-- To be hidden in actual form -->
+<div>
+  <%= f.text_field :user_id, value: params[:user_id], placeholder: "user id" %>
+</div>
+
+
+<%= f.submit "Add target" %>
+<% end %>
