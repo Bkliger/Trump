@@ -24,6 +24,12 @@ class MessagesController < ApplicationController
     redirect_to messages_path
   end
 
+  def send
+    @message = Message.find params[:message_id]
+    Target.find_each do |target|
+      
+    end
+  end
   private
 
   def message_params
