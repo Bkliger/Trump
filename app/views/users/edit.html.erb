@@ -9,13 +9,10 @@
           <%= form_for(@user, :url => {:action => 'update', :id => @user.id}) do |f| %>
 
             <div class = "row">
-              <%= f.text_field :first, placeholder: "First Name", class: "form-control" %>
+              <%= f.text_field :first_name, placeholder: "First Name", class: "form-control" %>
             </div>
             <div class = "row">
-              <%= f.text_field :last, placeholder: "Last Name", class: "form-control top-spacer" %>
-            </div>
-            <div class = "row">
-              <%= f.text_field :email, placeholder: "Email", class: "form-control top-spacer" %>
+              <%= f.text_field :last_name, placeholder: "Last Name", class: "form-control top-spacer" %>
             </div>
             <div>
               <%= f.submit "Edit Profile", class: "btn btn-primary btn-lg top-spacer" %>

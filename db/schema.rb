@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227191856) do
+ActiveRecord::Schema.define(version: 20170227212131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,9 +87,8 @@ ActiveRecord::Schema.define(version: 20170227191856) do
   add_index "user_orgs", ["user_id"], name: "index_user_orgs_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "first"
-    t.string   "last"
-    t.string   "email"
+    t.string   "first_name"
+    t.string   "last_name"
     t.date     "enrollment"
     t.date     "inactivation"
     t.datetime "created_at",   null: false
@@ -99,8 +98,5 @@ ActiveRecord::Schema.define(version: 20170227191856) do
   add_foreign_key "messages", "orgs"
   add_foreign_key "messhistories", "messages"
   add_foreign_key "messhistories", "orgs"
-  add_foreign_key "targetmessages", "users"
-  add_foreign_key "targets", "users"
   add_foreign_key "user_orgs", "orgs"
-  add_foreign_key "user_orgs", "users"
 end

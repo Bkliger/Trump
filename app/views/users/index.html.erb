@@ -8,7 +8,7 @@
         <hr>
           <% @users.each do |u| %>
           <div class="row index-list">
-            <%= link_to u.first + " " + u.last + " " + u.enrollment.to_s, edit_user_path(u.id.to_s) %>
+            <%= link_to u.first_name + " " + u.last_name + " " + u.enrollment.to_s, edit_user_path(u.id.to_s) %>
             </div>
           <% end %>
         </hr>
