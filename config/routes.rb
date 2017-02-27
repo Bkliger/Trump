@@ -61,7 +61,7 @@ Rails.application.routes.draw do
   post "/targets", to: "targets#create"
   patch "/targets/:target_id", to:"targets#update"
 
-
+  get "/messages/:message_id/send", to:"messages#send_message", as: "send_message"
   get "messages", to: "messages#index", as: "messages"
   get "/messages/new", to: "messages#new", as: "new_message"
   get "/messages/:message_id/edit", to:"messages#edit", as: "edit_message"

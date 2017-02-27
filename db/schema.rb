@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224200714) do
+ActiveRecord::Schema.define(version: 20170227191856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,12 +27,35 @@ ActiveRecord::Schema.define(version: 20170224200714) do
 
   add_index "messages", ["org_id"], name: "index_messages_on_org_id", using: :btree
 
+  create_table "messhistories", force: :cascade do |t|
+    t.date     "sent_date"
+    t.integer  "message_id"
+    t.integer  "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "messhistories", ["message_id"], name: "index_messhistories_on_message_id", using: :btree
+  add_index "messhistories", ["org_id"], name: "index_messhistories_on_org_id", using: :btree
+
   create_table "orgs", force: :cascade do |t|
     t.string   "org_name"
     t.string   "org_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "targetmessages", force: :cascade do |t|
+    t.date     "sent_date"
+    t.text     "message_text"
+    t.integer  "user_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "target_id"
+  end
+
+  add_index "targetmessages", ["target_id"], name: "index_targetmessages_on_target_id", using: :btree
+  add_index "targetmessages", ["user_id"], name: "index_targetmessages_on_user_id", using: :btree
 
   create_table "targets", force: :cascade do |t|
     t.string   "first"
@@ -53,6 +76,16 @@ ActiveRecord::Schema.define(version: 20170224200714) do
 
   add_index "targets", ["user_id"], name: "index_targets_on_user_id", using: :btree
 
+  create_table "user_orgs", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "user_orgs", ["org_id"], name: "index_user_orgs_on_org_id", using: :btree
+  add_index "user_orgs", ["user_id"], name: "index_user_orgs_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "first"
     t.string   "last"
@@ -64,5 +97,10 @@ ActiveRecord::Schema.define(version: 20170224200714) do
   end
 
   add_foreign_key "messages", "orgs"
+  add_foreign_key "messhistories", "messages"
+  add_foreign_key "messhistories", "orgs"
+  add_foreign_key "targetmessages", "users"
   add_foreign_key "targets", "users"
+  add_foreign_key "user_orgs", "orgs"
+  add_foreign_key "user_orgs", "users"
 end
