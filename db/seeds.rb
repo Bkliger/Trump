@@ -15,8 +15,8 @@ User.destroy_all
 
 
 org1 = Org.create(org_name: "General", org_status: "active")
-u1 = User.create(first_name: "john", last_name: "james", enrollment: DateTime.new(2017, 2, 26))
-u2 = User.create(first_name: "Bob", last_name: "Kiger", enrollment: DateTime.new(2017, 3, 26))
+u1 = User.create(first_name: "john", last_name: "james", enrollment: DateTime.new(2017, 2, 26), email: "john@gmail.com", password: "topsecret", password_confirmation: "topsecret")
+u2 = User.create(first_name: "Bob", last_name: "Kiger", enrollment: DateTime.new(2017, 3, 26), email: "bob@gmail.com", password: "topsecret", password_confirmation: "topsecret")
 UserOrg.create(user_id: u1.id, org_id: org1.id)
 UserOrg.create(user_id: u2.id, org_id: org1.id)
 Message.create(title: "first message", message_text: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ", create_date: DateTime.new(2017, 2, 26), org_id: org1.id)

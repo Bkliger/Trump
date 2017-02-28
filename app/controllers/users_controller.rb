@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:user_id])
+      # @user = User.find(current_user)
     render :edit
   end
 
