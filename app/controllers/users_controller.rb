@@ -5,8 +5,8 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:user_id])
-  end
-  render :edit
+      # @user = User.find(current_user)
+    render :edit
   end
 
   def new
@@ -15,7 +15,6 @@ class UsersController < ApplicationController
   end
 
   def create
-    user_params = params.require(:user).permit(:first,:last)
     @user = User.create(user_params)
     redirect_to users_path
   end
@@ -29,7 +28,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first, :last)
+    params.require(:user).permit(:first_name, :last_name)
   end
 
 
