@@ -4,7 +4,7 @@
       <br><br><br><br><br>
       <div class="col-sm-5">
         <h1 class="display-3">Targets</h1>
-        <%= link_to "New target", "targets/" + @user.id.to_s + "/new" %>        
+        <%= link_to "New target", "targets/" + current_user.id.to_s + "/new", class: "btn btn-success" %>
         <hr>
           <% @targets.each do |t| %>
           <div class="row index-list">
