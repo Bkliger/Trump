@@ -1,8 +1,8 @@
 class TargetsController < ApplicationController
 
   def index
-    @user = User.first
-    @targets = Target.where("user_id = ?",@user)
+    @user = current_user
+    @targets = Target.where("user_id = ?",current_user)
   end
 
   def edit

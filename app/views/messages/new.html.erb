@@ -2,10 +2,11 @@
 
 <%= form_for @message do |f| %>
 <div>
+  <%= f.label :message_Title %>
   <%= f.text_field :title, placeholder: "Message Title" %>
 </div>
-<div>
-  <%= f.text_field :message_text, placeholder: "Message Text" %>
+<div><%= f.label :message_Text %>
+  <%= f.text_area :message_text, placeholder: "Message Text" %>
 </div>
 
 <%= f.submit "Add Message" %>

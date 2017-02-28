@@ -2,35 +2,44 @@
 
 <%= form_for @target do |f| %>
 <div>
+  <%= f.label :first_name %>
   <%= f.text_field :first, placeholder: "First Name" %>
 </div>
 <div>
+    <%= f.label :last_name %>
   <%= f.text_field :last, placeholder: "Last Name" %>
 </div>
 <div>
+    <%= f.label :zip_code %>
   <%= f.text_field :zip, placeholder: "Zip Code" %>
 </div>
 <div>
+  <%= f.label :zip_code_plus_4 %>
   <%= f.text_field :plus4, placeholder: "Zip Plus 4" %>
 </div>
 <div>
+  <%= f.label :salutation %>
   <%= f.text_field :salutation, placeholder: "Salutation" %>
 </div>
 <div>
+    <%= f.label :email %>
   <%= f.text_field :email, placeholder: "email" %>
 </div>
 <div>
+    <%= f.label :receive_email? %>
   <%= f.check_box :rec_email, placeholder: "email" %>
 </div>
 <div>
+  <%= f.label :receive_text? %>
   <%= f.check_box :rec_text, placeholder: "text" %>
 </div>
 <div>
+      <%= f.label :cell_phone %>
   <%= f.text_field :phone, placeholder: "Cell Phone" %>
 </div>
 <!-- To be hidden in actual form -->
-<div>
-  <%= f.text_field :user_id, value: params[:user_id], placeholder: "user id" %>
+<div class=hidden>
+  <%= f.text_field :user_id, value: current_user.id, placeholder: "user id" %>
 </div>
 
 
