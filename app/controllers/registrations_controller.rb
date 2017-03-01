@@ -1,4 +1,8 @@
 class RegistrationsController < Devise::RegistrationsController
+  # this controller is a sub-class of the Devise Registrations controller is is used to
+  # allow additional fields on the devise sign_up page.  see
+  # http://jacopretorius.net/2014/03/adding-custom-fields-to-your-devise-user-model-in-rails-4.html
+
   private
 
   def sign_up_params

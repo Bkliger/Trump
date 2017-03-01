@@ -26,11 +26,14 @@ class MessagesController < ApplicationController
 
   def send_message
     @message = Message.find params[:message_id]
+    # this is a solution for a single org. this can be expanded when other organizations can create messages
     main_org = Org.find_by org_name: "General"
-
+    # get all users
     UserOrg.where(org_id: main_org.id).find_each do |user|
+      # for each user, get all of their targets
+      # I use a join here to get user data and target data. The user data can be used to create the message to the user - functionality to be added
       targ = Target.select("users.*, targets.*").joins(:user).where(targets: {user_id: user.user_id}).find_each do |target|
-
+        # create a target message for each message sent to a target
         targmess = Targetmessage.new do |m|
           m.sent_date = Date.today
           m.message_text = @message.message_text
@@ -40,6 +43,7 @@ class MessagesController < ApplicationController
       targmess.save
       end
     end
+    # create 1 record that the message was sent. This is part of the message history
     mess = Messhistory.new do |m|
       m.sent_date = Date.today
       m.message_id = @message.id
