@@ -39,7 +39,7 @@ Rails.application.routes.draw do
  #                          PATCH  /users/:user_id(.:format)            users#update
 
 
-  root to: "targets#index"
+  root 'site#splash', as: :splash
   get "targets", to: "targets#index", as: "targets"
   get "/targets/:user_id/new", to: "targets#new", as: "new_target"
   get "/targets/:target_id/edit", to:"targets#edit", as: "edit_target"
