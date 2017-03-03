@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   post "/messages", to: "messages#create"
   post "/messages/:message_id/copy", to: "messages#copy", as: "copy_message"
   patch "/messages/:message_id", to:"messages#update"
+  delete "/messages/:message_id", to:"messages#destroy", as: "delete"
 
 
   get "/users", to: "users#index", as: "users"

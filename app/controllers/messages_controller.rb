@@ -34,7 +34,7 @@ class MessagesController < ApplicationController
     @message = Message.create(message_params)
     redirect_to messages_path
   end
-Messhistory.where(message_id: "8")
+
   def update
     message_sent = Messhistory.where(message_id: params[:message_id]).exists?
     if message_sent
@@ -42,7 +42,7 @@ Messhistory.where(message_id: "8")
     else
       @message = Message.find params[:message_id]
       @message.update(message_params)
-      flash[:notice] = "Messages updated"
+      flash[:notice] = "Message updated"
     end
     redirect_to messages_path
   end
@@ -74,6 +74,19 @@ Messhistory.where(message_id: "8")
     end
     mess.save
     redirect_to messages_path
+  end
+
+  def destroy
+    @message = Message.find params[:message_id]
+    message_sent = Messhistory.where(message_id: params[:message_id]).exists?
+    if message_sent
+        flash[:notice] = "Messages cannot be changed if they have been sent"
+    else
+      @message.delete
+        flash[:notice] = "Message deleted"
+    end
+    redirect_to messages_path
+
   end
 
   private
