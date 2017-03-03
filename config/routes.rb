@@ -51,6 +51,7 @@ Rails.application.routes.draw do
   get "/messages/new", to: "messages#new", as: "new_message"
   get "/messages/:message_id/edit", to:"messages#edit", as: "edit_message"
   post "/messages", to: "messages#create"
+  post "/messages/:message_id/copy", to: "messages#copy", as: "copy_message"
   patch "/messages/:message_id", to:"messages#update"
 
 
