@@ -8,6 +8,13 @@
 <div><%= f.label :message_Text %>
   <%= f.text_area :message_text, placeholder: "Message Text" %>
 </div>
+<div class="hidden"><%= f.label :org_id %>
+  <%= f.text_field :org_id, value: @org.id %>
+</div>
+<div class="hidden"><%= f.label :create_date %>
+  <%= f.text_field :create_date, value: Date.today%>
+</div>
+
 
 <%= f.submit "Add Message" %>
 <% end %>
