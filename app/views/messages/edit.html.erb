@@ -22,11 +22,18 @@
 
           <% end %>
         </div>
+
+
       <div>
         <%= link_to "Send Message", send_message_path(@message), class: "btn btn-success"%>
       </div>
       <div>
         <%= link_to "Copy Message", copy_message_path(@message), method: :post, class: "btn btn-success"%>
+      </div>
+      <div>
+        <br>
+          <br>
+        <%= render "history" %>
       </div>
   </div>
 </div>
