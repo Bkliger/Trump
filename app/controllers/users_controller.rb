@@ -24,6 +24,13 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def destroy
+    @user = User.find params[:user_id]
+    @user.destroy
+    flash[:notice] = "You have successfully left Stop Trump and all of your Friends and Family have been removed."
+    redirect_to splash_path
+  end
+
   private
 
   def user_params

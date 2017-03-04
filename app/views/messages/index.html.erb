@@ -9,7 +9,8 @@
           <% @messages.each do |m| %>
           <div class="row index-list">
             <%= link_to m.title + " " + m.create_date.to_s, edit_message_path(m.id.to_s) %>
-            <%= link_to "", delete_message_path(m), method: :delete, class: "glyphicon glyphicon-trash" %>
+            <%= link_to "", delete_message_path(m), method: :delete, data: {confirm: 'Are you sure you want to delete this message?'}, class: "glyphicon glyphicon-trash" %>
+
             </div>
           <% end %>
         </hr>

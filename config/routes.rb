@@ -62,5 +62,6 @@ Rails.application.routes.draw do
   get "/users/:user_id/edit", to:"users#edit", as: "edit_user"
   post "/users", to: "users#create"
   patch "/users/:user_id", to:"users#update"
+  delete "/users/:user_id", to:"users#destroy", as: "delete_user"
 
 end
