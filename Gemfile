@@ -36,7 +36,8 @@ gem 'devise'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
+gem 'bootstrap-modal-rails'
+gem 'glyphicons-rails', '~> 0.1.2'
 gem "bootstrap-sass"
 
 group :development, :test do

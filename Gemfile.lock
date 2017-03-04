@@ -40,6 +40,8 @@ GEM
     bcrypt (3.1.11)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-modal-rails (2.2.5)
+      railties (>= 3.1)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
     builder (3.2.3)
@@ -63,6 +65,9 @@ GEM
     execjs (2.7.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    glyphicons-rails (0.1.2)
+      sass (~> 3.3)
+      sass-rails
     haml (4.0.7)
       tilt
     i18n (0.8.0)
@@ -166,10 +171,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-modal-rails
   bootstrap-sass
   byebug
   coffee-rails (~> 4.1.0)
   devise
+  glyphicons-rails (~> 0.1.2)
   haml
   jbuilder (~> 2.0)
   jquery-rails
