@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   get "/targets/:target_id/edit", to:"targets#edit", as: "edit_target"
   post "/targets", to: "targets#create"
   patch "/targets/:target_id", to:"targets#update"
+  delete "/targets/:target_id", to:"targets#destroy", as: "delete_target"
 
   get "/messages/:message_id/send", to:"messages#send_message", as: "send_message"
   get "messages", to: "messages#index", as: "messages"
@@ -53,7 +54,7 @@ Rails.application.routes.draw do
   post "/messages", to: "messages#create"
   post "/messages/:message_id/copy", to: "messages#copy", as: "copy_message"
   patch "/messages/:message_id", to:"messages#update"
-  delete "/messages/:message_id", to:"messages#destroy", as: "delete"
+  delete "/messages/:message_id", to:"messages#destroy", as: "delete_message"
 
 
   get "/users", to: "users#index", as: "users"

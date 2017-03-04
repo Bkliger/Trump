@@ -5,12 +5,14 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Targetmessage.destroy_all
 Messhistory.destroy_all
 UserOrg.destroy_all
 Message.destroy_all
 Org.destroy_all
 Target.destroy_all
 User.destroy_all
+
 
 
 

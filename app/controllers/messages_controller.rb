@@ -82,7 +82,7 @@ class MessagesController < ApplicationController
     if message_sent
         flash[:notice] = "Messages cannot be changed if they have been sent"
     else
-      @message.delete
+      @message.destroy
         flash[:notice] = "Message deleted"
     end
     redirect_to messages_path

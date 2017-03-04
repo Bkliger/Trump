@@ -26,6 +26,13 @@ class TargetsController < ApplicationController
     redirect_to targets_path
   end
 
+  def destroy
+    @target = Target.find params[:target_id]
+    @target.destroy
+    flash[:notice] = "Target deleted"
+    redirect_to targets_path
+  end
+
   private
 
   def target_params

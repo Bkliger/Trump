@@ -9,6 +9,7 @@
           <% @targets.each do |t| %>
           <div class="row index-list">
             <%= link_to t.first + " " + t.last, edit_target_path(t.id.to_s) %>
+            <%= link_to "", delete_target_path(t), method: :delete, class: "glyphicon glyphicon-trash" %>
             </div>
           <% end %>
         </hr>
