@@ -1,0 +1,24 @@
+<% provide(:title, "Trump Admin")  %>
+<div class="user-edit">
+  <div class = "col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+    <div>
+      <h2>Administrator Signin</h2>
+    </div>
+
+
+    <div class = "row top-spacer">
+      <%= form_for @adminuser do |f| %>
+      <div>
+        <%= f.label :email %>
+        <%= f.text_field :email, placeholder: "Email" %>
+      </div>
+
+
+
+      <%= f.submit "Sign_in" %>
+      <% end %>
+
+    </div>
+
+  </div>
+</div>

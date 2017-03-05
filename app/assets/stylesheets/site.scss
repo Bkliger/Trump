@@ -3,9 +3,35 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .test {
-  font-size: 40px
+  font-size: 40px;
+  color: red
 }
 
-#splash {
-  color: red
+
+#nav_bar{
+  a {
+      color: white;
+      font-weight: 450;
+      font-size: 14px;
+    }
+}
+
+body {
+  padding-top: 60px;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+}
+
+.center h1 {
+  margin-bottom: 10px;
 }

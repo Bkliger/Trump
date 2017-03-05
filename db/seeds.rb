@@ -5,6 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Adminuser.destroy_all
 Targetmessage.destroy_all
 Messhistory.destroy_all
 UserOrg.destroy_all
@@ -17,6 +18,7 @@ User.destroy_all
 
 
 org1 = Org.create(org_name: "General", org_status: "active")
+Adminuser.create(first_name: "Admin", last_name: "User", email: "test@test", org_id: org1.id)
 u1 = User.create(first_name: "john", last_name: "james", enrollment: DateTime.new(2017, 2, 26), email: "john@gmail.com", password: "topsecret", password_confirmation: "topsecret")
 u2 = User.create(first_name: "Bob", last_name: "Kiger", enrollment: DateTime.new(2017, 3, 26), email: "bob@gmail.com", password: "topsecret", password_confirmation: "topsecret")
 UserOrg.create(user_id: u1.id, org_id: org1.id)

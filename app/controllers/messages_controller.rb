@@ -25,7 +25,6 @@ class MessagesController < ApplicationController
   def new
     @message = Message.new
     @org = Org.first
-    puts "this is the org" + @org.id.to_s
     render :new
   end
 

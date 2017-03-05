@@ -6,6 +6,7 @@
       <div class="col-sm-5">
         <h1 class="display-3">Messages</h1>
         <%= link_to "New Message", new_message_path, class: "btn btn-success" %>
+          <%= link_to "Maintain Users", users_path, class: "btn btn-success" %>
         <hr>
           <% @messages.each do |m| %>
           <div class="row index-list">
