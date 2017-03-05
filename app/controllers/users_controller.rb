@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
   def index
+    session[:return_to] ||= request.referer
     @users = User.all
   end
 
   def edit
+    session[:return_to] ||= request.referer
     @user = User.find(params[:user_id])
     render :edit
   end
@@ -18,16 +20,30 @@ class UsersController < ApplicationController
   end
 
   def update
+
     @user = User.find params[:user_id]
     @user.update(user_params)
     redirect_to users_path
   end
 
   def destroy
+    puts request.referrer
+    puts #{session[:return_to]}
+    # session[:return_to] ||= request.referer
+    puts "test"
     @user = User.find params[:user_id]
     @user.destroy
-    flash[:notice] = "You have successfully left Stop Trump and all of your Friends and Family have been removed."
-    redirect_to splash_path
+
+    if request.referrer.last(5) == "users"
+      flash[:notice] = "User deleted"
+        redirect_to users_path
+    else
+      flash[:notice] = "You have successfully left Stop Trump and all of your Friends and Family have been removed."
+      redirect_to splash_path
+    end
+
+
+    # redirect_to session.delete(:return_to)
   end
 
   private
