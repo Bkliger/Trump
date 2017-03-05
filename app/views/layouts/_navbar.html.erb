@@ -15,6 +15,7 @@
           <% if user_signed_in? %>
             <!-- Render notifications dropdown partial -->
             <li><%= link_to "Add Friends and Family", targets_path%></li>
+            <li><%= link_to "Edit Profile/Quit The Application", edit_user_path(current_user)%></li>
           <% end %>
           <!-- links before dropdown go here in li tags -->
           <li class="dropdown">

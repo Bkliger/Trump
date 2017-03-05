@@ -17,7 +17,14 @@ class TargetsController < ApplicationController
 
   def create
     @target = Target.create(target_params)
-    redirect_to targets_path
+    puts target_params
+    if @target.valid?
+      redirect_to targets_path
+    else
+      flash[:notice] = @target.errors.messages
+      # redirect_to "/targets/:" + @target.user_id.to_s + "/new"
+      redirect_to new_target_path(@target.user_id.to_s)
+    end
   end
 
   def update

@@ -3,11 +3,18 @@
 <%= form_for @user do |f| %>
 <div>
   <%= f.text_field :first_name, placeholder: "First Name" %>
+    <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
   <%= f.text_field :last_name, placeholder: "Last Name" %>
+    <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 
 
 <%= f.submit "Add User" %>
 <% end %>
+
+<br>
+<br>
+  <span class="glyphicon glyphicon-star asterisk"></span>
+    <span class="asterisk">= Required</span>

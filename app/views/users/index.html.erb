@@ -10,6 +10,7 @@
           <% @users.each do |u| %>
           <div class="row index-list">
             <%= link_to u.first_name + " " + u.last_name + " " + u.enrollment.to_s, edit_user_path(u.id.to_s) %>
+            <%= link_to "", delete_user_path(u), method: :delete, class: "glyphicon glyphicon-trash", data: {confirm: 'Are you sure you want to delete this user?'}  %>
             </div>
           <% end %>
         </hr>

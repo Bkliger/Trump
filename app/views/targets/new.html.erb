@@ -4,14 +4,17 @@
 <div>
   <%= f.label :first_name %>
   <%= f.text_field :first, placeholder: "First Name" %>
+  <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
     <%= f.label :last_name %>
   <%= f.text_field :last, placeholder: "Last Name" %>
+    <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
     <%= f.label :zip_code %>
   <%= f.text_field :zip, placeholder: "Zip Code" %>
+    <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
   <%= f.label :zip_code_plus_4 %>
@@ -20,10 +23,12 @@
 <div>
   <%= f.label :salutation %>
   <%= f.text_field :salutation, placeholder: "Salutation" %>
+    <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
     <%= f.label :email %>
   <%= f.text_field :email, placeholder: "email" %>
+    <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
     <%= f.label :receive_email? %>
@@ -45,3 +50,8 @@
 
 <%= f.submit "Add target" %>
 <% end %>
+
+<br>
+<br>
+  <span class="glyphicon glyphicon-star asterisk"></span>
+    <span class="asterisk">= Required</span>
