@@ -47,6 +47,11 @@ class MessagesController < ApplicationController
   end
 
   def send_message
+    TargetMailer.welcome_email.deliver_now
+
+        # format.html { redirect_to(@user, notice: 'User was successfully created.') }
+        # format.json { render json: @user, status: :created, location: @user }
+
     @message = Message.find params[:message_id]
     # this is a solution for a single org. this can be expanded when other organizations can create messages
     main_org = Org.find_by org_name: "General"
