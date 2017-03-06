@@ -27,10 +27,6 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    puts request.referrer
-    puts #{session[:return_to]}
-    # session[:return_to] ||= request.referer
-    puts "test"
     @user = User.find params[:user_id]
     @user.destroy
 
