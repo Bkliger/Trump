@@ -6,12 +6,27 @@
   <body>
   <h1><%= @salutation %></h1>
     <h2> <%= @message_text %></h2>
-    <h3> <% @reps.each do |r| %>
-          <%if r.emails.nil?  %>
-            <%= r.name + " " + r.phones[0]%>
-          <%else %>
-            <%= r.name + " " + r.phones[0] + " " + r.email[0]%>
-          <% end  %>
+    <h2> Contact Your Congressional Representatives!</h2>
+
+    <h3>
+      <% if @sunlight_reps.nil?  %>
+
+        <% @civic_reps.each do |r| %>
+              <% if r.party == "Republican"  %>
+                <%if r.emails.nil?  %>
+                  <%= r.name + " " + r.phones[0]%>
+                <%else %>
+                  <%= r.name + " " + r.phones[0] + " " + r.email[0]%>
+                <% end  %>
+            <% end  %>
         <% end  %>
+      <% else %>
+          <%@sunlight_reps.results.each do |r|  %>
+            <% if r.party == "R"  %>
+              <%= r.first_name + " " + r.last_name + " " + r.phone%>
+            <% end  %>
+          <% end  %>
+      <% end  %>
+    </h3>
   </body>
 </html>

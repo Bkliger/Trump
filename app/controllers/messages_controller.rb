@@ -68,16 +68,22 @@ class MessagesController < ApplicationController
       # I use a join here to get user data and target data. The user data can be used to create the message to the user - functionality to be added
       Target.select("users.*, targets.*").joins(:user).where(targets: {user_id: user.user_id}).find_each do |target|
         if target.address.blank? or target.city.blank?
+          puts "in civic loop"
           address = target.state
-          @reps = civic_api(address).officials[2,2]
+          @civic_reps = civic_api(address).officials[2,2]
+          @sunlight_reps = "xxx"
+
         else
-          address = target.address + " " + target.city + " " + target.state
-          @reps = civic_api(address).officials[2,3]
+          zip = target.zip
+          puts "in sunlight loop"
+          @sunlight_reps = sunlight_api(zip)
+          @civic_reps = "xxx"
+
 
 
         end
         # send an email to each target
-        TargetMailer.target_email(target.email,target.salutation,@message.title,@message.message_text,@reps).deliver_now
+        TargetMailer.target_email(target.email,target.salutation,@message.title,@message.message_text,@civic_reps,@sunlight_reps).deliver_now
 
 
         # create a target message for each message sent to a target
@@ -99,6 +105,7 @@ class MessagesController < ApplicationController
     end
     mess.save
     redirect_to messages_path
+    end
   end
 
   def destroy
@@ -114,14 +121,25 @@ class MessagesController < ApplicationController
 
   end
 
+  def sunlight_api(zip)
+    # construct the url
+    url = "https://congress.api.sunlightfoundation.com/legislators/locate?zip=" + zip.to_s
+    # call the url using the net/http structure
+    uri = URI(url)
+    response = Net::HTTP.get(uri)
+    # get a response and convert the hash (JSON) into an object
+    res = JSON.parse(response, object_class: OpenStruct)
+  end
+
+
   def civic_api(address)
     # construct the url
     url = "https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyBH9gjtOwvfkbDqxLoFdbfcR2tB978ETew&address=" + address
     # call the url using the net/http structure
     uri = URI(url)
-    puts response = Net::HTTP.get(uri)
+    response = Net::HTTP.get(uri)
     # get a response and convert the hash (JSON) into an object
-    res =  JSON.parse(response, object_class: OpenStruct)
+    res = JSON.parse(response, object_class: OpenStruct)
   end
 
   private
@@ -130,4 +148,4 @@ class MessagesController < ApplicationController
     params.require(:message).permit(:title, :message_text, :create_date, :org_id)
   end
 
-end
+# end
