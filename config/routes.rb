@@ -41,7 +41,7 @@ Rails.application.routes.draw do
 
   root 'site#splash', as: :splash
   get "targets", to: "targets#index", as: "targets"
-  get "/targets/:user_id/new", to: "targets#new", as: "new_target"
+  get "/targets/new", to: "targets#new", as: "new_target"
   get "/targets/:target_id/edit", to:"targets#edit", as: "edit_target"
   post "/targets", to: "targets#create"
   patch "/targets/:target_id", to:"targets#update"

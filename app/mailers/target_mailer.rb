@@ -13,5 +13,3 @@ class TargetMailer < ApplicationMailer
     mail(to: email, subject: title)
   end
 end
-
-# target.email,target.salutation,@message.title,@message.message_text

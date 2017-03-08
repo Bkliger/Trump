@@ -1,5 +1,5 @@
+<p class="step_1">1. Add Information<span class="step_2">>>>2. Check Representatives</span></p>
 <h1>New target</h1>
-
 <%= form_for @target do |f| %>
 <div>
   <%= f.label :first_name %>
@@ -12,13 +12,21 @@
     <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
-    <%= f.label :zip_code %>
-  <%= f.text_field :zip, placeholder: "Zip Code" %>
+    <%= f.label :address %>
+  <%= f.text_field :address, placeholder: "Address" %>
+</div>
+<div>
+    <%= f.label :city %>
+  <%= f.text_field :city, placeholder: "City" %>
+</div>
+<div>
+    <%= f.label :state %>
+  <%= f.text_field :state, placeholder: "State" %>
     <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
-  <%= f.label :zip_code_plus_4 %>
-  <%= f.text_field :plus4, placeholder: "Zip Plus 4" %>
+    <%= f.label :zip_code %>
+  <%= f.text_field :zip, placeholder: "Zip Code" %>
 </div>
 <div>
   <%= f.label :salutation %>
@@ -47,8 +55,8 @@
   <%= f.text_field :user_id, value: current_user.id, placeholder: "user id" %>
 </div>
 
-
-<%= f.submit "Add target" %>
+<%= link_to "Cancel", targets_path, class: "btn btn-success" %>
+<%= f.submit "Next", class: "btn btn-success" %>
 <% end %>
 
 <br>
