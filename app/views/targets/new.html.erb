@@ -1,5 +1,5 @@
-<p class="step_1">1. Add Information<span class="step_2">>>>2. Check Representatives</span></p>
-<h1>New target</h1>
+<p class="current_step">1. Add/Change Information<span class="not_current_step">>>>2. Check Representatives</span></p>
+<h1>Add/Change Target</h1>
 <%= form_for @target do |f| %>
 <div>
   <%= f.label :first_name %>
@@ -22,7 +22,7 @@
 <div>
     <%= f.label :state %>
   <%= f.text_field :state, placeholder: "State" %>
-    <span class="glyphicon glyphicon-star asterisk"></span>
+      <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
     <%= f.label :zip_code %>
@@ -32,6 +32,7 @@
   <%= f.label :salutation %>
   <%= f.text_field :salutation, placeholder: "Salutation" %>
     <span class="glyphicon glyphicon-star asterisk"></span>
+    <span>For example - Hi Mom</span>
 </div>
 <div>
     <%= f.label :email %>

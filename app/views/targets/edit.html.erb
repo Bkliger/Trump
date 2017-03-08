@@ -1,59 +1,69 @@
-<div class="target-edit">
-  <div class = "col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
+<p class="current_step">1. Add/Change Information<span class="not_current_step">>>>2. Check Representatives</span></p>
+<h1>Add/Change Target</h1>
+
+
+  <%= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
+
     <div>
-      <h2>Edit target</h2>
+      <%= f.label :first_name %>
+      <%= f.text_field :first, placeholder: "First Name"%>
+        <span class="glyphicon glyphicon-star asterisk"></span>
     </div>
+    <div>
+        <%= f.label :last_name %>
+      <%= f.text_field :last, placeholder: "Last Name"%>
+          <span class="glyphicon glyphicon-star asterisk"></span>
+    </div>
+    <div>
+        <%= f.label :address %>
+      <%= f.text_field :address, placeholder: "Address" %>
+    </div>
+    <div>
+        <%= f.label :city %>
+      <%= f.text_field :city, placeholder: "City" %>
+    </div>
+    <div>
+        <%= f.label :state %>
+      <%= f.text_field :state, placeholder: "State" %>
+      <span class="glyphicon glyphicon-star asterisk"></span>
+    </div>
+    <div>
+        <%= f.label :zip_code %>
+      <%= f.text_field :zip, placeholder: "Zip Code" %>
+    </div>
+    <div>
+        <%= f.label :salutation %>
+      <%= f.text_field :salutation, placeholder: "Salutation" %>
+          <span class="glyphicon glyphicon-star asterisk"></span>
+          <span>For example - Hi Mom</span>
+    </div>
+    <div>
+      <%= f.label :email %>
+      <%= f.text_field :email, placeholder: "email" %>
+      <span class="glyphicon glyphicon-star asterisk"></span>
+    </div>
+    <div>
+      <%= f.label :receive_email? %>
+      <%= f.check_box :rec_email, placeholder: "email" %>
+    </div>
+    <div>
+      <%= f.label :receive_text? %>
+      <%= f.check_box :rec_text, placeholder: "text" %>
+    </div>
+    <div>
+        <%= f.label :cell_phone %>
+      <%= f.text_field :phone, placeholder: "Cell Phone" %>
+    </div>
+    <!-- To be hidden in actual form -->
+    <div class=hidden>
+      <%= f.text_field :user_id, placeholder: "user id" %>
+    </div>
+    <%= link_to "Cancel", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
+    <%= f.submit "Next", class: "btn btn-success" %>
 
+  <% end %>
 
-    <div class = "row top-spacer">
-          <%= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
-
-            <div class = "row">
-              <%= f.label :first_name %>
-              <%= f.text_field :first, placeholder: "First Name", class: "form-control" %>
-            </div>
-            <div class = "row">
-                <%= f.label :last_name %>
-              <%= f.text_field :last, placeholder: "Last Name", class: "form-control top-spacer" %>
-            </div>
-            <div>
-                <%= f.label :zip_code %>
-              <%= f.text_field :zip, placeholder: "Zip Code" %>
-            </div>
-            <div>
-              <%= f.label :zip_code_plus_4 %>
-              <%= f.text_field :plus4, placeholder: "Zip Plus 4" %>
-            </div>
-            <div>
-                <%= f.label :salutation %>
-              <%= f.text_field :salutation, placeholder: "Salutation" %>
-            </div>
-            <div>
-              <%= f.label :email %>
-              <%= f.text_field :email, placeholder: "email" %>
-            </div>
-            <div>
-              <%= f.label :receive_email? %>
-              <%= f.check_box :rec_email, placeholder: "email" %>
-            </div>
-            <div>
-              <%= f.label :receive_text? %>
-              <%= f.check_box :rec_text, placeholder: "text" %>
-            </div>
-            <div>
-                <%= f.label :cell_phone %>
-              <%= f.text_field :phone, placeholder: "Cell Phone" %>
-            </div>
-            <!-- To be hidden in actual form -->
-            <div class=hidden>
-              <%= f.text_field :user_id, placeholder: "user id" %>
-            </div>
-            <div>
-              <%= f.submit "Edit target", class: "btn btn-primary btn-lg top-spacer" %>
-            </div>
-
-          <% end %>
-        </div>
-
-  </div>
-</div>
+  <br>
+  <br>
+    <span class="glyphicon glyphicon-star asterisk"></span>
+      <span class="asterisk">= Required</span>
