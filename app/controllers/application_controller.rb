@@ -33,6 +33,5 @@ def civic_api(address)
   # call the url using the net/http structure
   uri = URI(url)
   response = Net::HTTP.get(uri)
-  # get a response and convert the hash (JSON) into an object
   res = JSON.parse(response, object_class: OpenStruct)
 end

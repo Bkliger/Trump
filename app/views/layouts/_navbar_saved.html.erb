@@ -1,0 +1,38 @@
+<div id="nav_bar">
+  <header class="navbar navbar-fixed-top navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#hamburger" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="hamburger">
+        <ul class="nav navbar-nav navbar-right">
+          <% if user_signed_in? %>
+            <!-- Render notifications dropdown partial -->
+            <li><%= link_to "Add Friends and Family", targets_path%></li>
+            <li><%= link_to "Edit Profile/Quit The Application", edit_user_path(current_user)%></li>
+          <% end %>
+          <!-- links before dropdown go here in li tags -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog icon-white" aria-hidden="true"></i>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-item">
+              <%if user_signed_in? %>
+                <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+              <%else%>
+                <li><%= link_to "Log In", new_user_session_path, class: "nav_text" %></li>
+              <% end %>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+
+  </header>
+</div>
