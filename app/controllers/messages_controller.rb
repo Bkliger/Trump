@@ -48,17 +48,6 @@ class MessagesController < ApplicationController
 
   def send_message
 
-    require "net/http"
-    # library to handle JSON
-    require "json"
-    # used to create an object from a hash
-    require 'ostruct'
-
-
-    # res.officials[0..8].each do |n|
-    #   puts n.name
-    # end
-
     @message = Message.find params[:message_id]
     # this is a solution for a single org. this can be expanded when other organizations can create messages
     main_org = Org.find_by org_name: "General"
@@ -68,17 +57,13 @@ class MessagesController < ApplicationController
       # I use a join here to get user data and target data. The user data can be used to create the message to the user - functionality to be added
       Target.select("users.*, targets.*").joins(:user).where(targets: {user_id: user.user_id}).find_each do |target|
         if target.address.blank? or target.city.blank?
-          puts "in civic loop"
           address = target.state
-          @civic_reps = civic_api(address).officials[2,2]
-          @sunlight_reps = "xxx"
+          @civic_reps = civic_api(address).officials[2,2] #function in application_controller
+          @sunlight_reps = "xxx" #this forces the decision to use civic_reps in TargetMailer
 
         else
           zip = target.zip
-          puts "in sunlight loop"
-          @sunlight_reps = sunlight_api(zip)
-          @civic_reps = "xxx"
-
+          @sunlight_reps = sunlight_api(zip) #function in application_controller
 
 
         end
@@ -121,26 +106,6 @@ class MessagesController < ApplicationController
 
   end
 
-  def sunlight_api(zip)
-    # construct the url
-    url = "https://congress.api.sunlightfoundation.com/legislators/locate?zip=" + zip.to_s
-    # call the url using the net/http structure
-    uri = URI(url)
-    response = Net::HTTP.get(uri)
-    # get a response and convert the hash (JSON) into an object
-    res = JSON.parse(response, object_class: OpenStruct)
-  end
-
-
-  def civic_api(address)
-    # construct the url
-    url = "https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyBH9gjtOwvfkbDqxLoFdbfcR2tB978ETew&address=" + address
-    # call the url using the net/http structure
-    uri = URI(url)
-    response = Net::HTTP.get(uri)
-    # get a response and convert the hash (JSON) into an object
-    res = JSON.parse(response, object_class: OpenStruct)
-  end
 
   private
 

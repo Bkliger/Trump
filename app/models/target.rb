@@ -4,7 +4,7 @@ class Target < ActiveRecord::Base
 
   validates :first, presence: true
   validates :last, presence: true
-  validates :zip, presence: true
+  validates :state, presence: true
   validates :salutation, presence: true
   validates :email, presence: true
 end
