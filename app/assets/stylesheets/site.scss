@@ -16,12 +16,24 @@
   color: black
 }
 
+#office {
+    background: url("Clouds.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height:100vh;
+  padding-top: -10px;
+  }
 
 #nav_bar{
   a {
       color: white;
-      font-weight: 450;
       font-size: 14px;
+      text-align: right;
     }
 }
 
@@ -35,6 +47,18 @@ section {
 
 textarea {
   resize: vertical;
+}
+
+#splash_heading{
+  text-align: center;
+  color: red;
+  font-size: 48px;
+}
+
+#splash_subheading{
+  text-align: center;
+  color: red;
+  font-size: 32px;
 }
 
 .center {

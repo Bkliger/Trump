@@ -2,4 +2,4 @@
 <h1><%= @target_message %></h1>
 <%= link_to "Back", edit_target_path(@target.id), class: "btn btn-success" %>
 <%= link_to "Cancel", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
-<%= link_to "Finish", targets_path, class: "btn btn-success" %>
+<%= link_to "Finish", finish_target_path(@target.id), class: "btn btn-success" %>

@@ -35,3 +35,27 @@ def civic_api(address)
   response = Net::HTTP.get(uri)
   res = JSON.parse(response, object_class: OpenStruct)
 end
+
+def create_single_message(user,target,message)
+    if (target.address.blank? or target.city.blank?) and !target.state.blank?
+      address = target.state
+      @civic_reps = civic_api(address).officials[2,2] #function in application_controller
+      @sunlight_reps = "xxx" #this forces the decision to use civic_reps in TargetMailer
+    else
+      zip = target.zip
+      @sunlight_reps = sunlight_api(zip) #function in application_controller
+    end
+    # send an email to each target
+    TargetMailer.target_email(target.email,target.salutation,message.title,message.message_text,@civic_reps,@sunlight_reps).deliver_now
+# create a target message for each message sent to a target
+    targmess = Targetmessage.new do |m|
+      m.sent_date = Date.today
+      m.message_text = message.message_text
+      m.user_id = target.user_id
+      m.target_id = target.id
+    end
+    targmess.save
+    #send email to the user
+    UserMailer.user_email(user.email,user.first_name,targmess.message_text).deliver_now
+
+end

@@ -3,12 +3,12 @@
 <%= form_for @target do |f| %>
 <div>
   <%= f.label :first_name %>
-  <%= f.text_field :first, placeholder: "First Name" %>
+  <%= f.text_field :first_name, placeholder: "First Name" %>
   <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
     <%= f.label :last_name %>
-  <%= f.text_field :last, placeholder: "Last Name" %>
+  <%= f.text_field :last_name, placeholder: "Last Name" %>
     <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
@@ -55,9 +55,10 @@
 <div class=hidden>
   <%= f.text_field :user_id, value: current_user.id, placeholder: "user id" %>
 </div>
-
+<div>
 <%= link_to "Cancel", targets_path, class: "btn btn-success" %>
 <%= f.submit "Next", class: "btn btn-success" %>
+</div
 <% end %>
 
 <br>

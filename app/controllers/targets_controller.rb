@@ -19,7 +19,7 @@ class TargetsController < ApplicationController
     @target = Target.create(target_params)
     if @target.valid?
     else
-      flash[:notice] = @target.errors.messages
+      flash[:notice] = @target.errors.full_messages.to_sentence
       @target = Target.new(target_params)
       render :new
       return
@@ -33,7 +33,7 @@ class TargetsController < ApplicationController
     @target.update(target_params)
     if @target.valid?
     else
-      flash[:notice] = @target.errors.messages
+      flash[:notice] = @target.errors.full_messages.to_sentence
       redirect_to edit_target_path(@target)
       return
     end
@@ -44,6 +44,19 @@ class TargetsController < ApplicationController
     @target = Target.find params[:target_id]
     @target.destroy
     flash[:notice] = "Target deleted"
+    redirect_to targets_path
+  end
+
+  def finish
+    #get most recent message
+    message_history = Messhistory.last
+    message = Message.find(message_history.message_id)
+    #get target
+    target = Target.find params[:target_id]
+
+    create_single_message(current_user,target,message)
+
+
     redirect_to targets_path
   end
 
@@ -164,7 +177,7 @@ class TargetsController < ApplicationController
 
 
   def target_params
-    params.require(:target).permit(:first, :last, :address, :city, :state, :zip, :salutation, :email, :rec_email, :rec_text, :phone, :user_id)
+    params.require(:target).permit(:first_name, :last_name, :address, :city, :state, :zip, :salutation, :email, :rec_email, :rec_text, :phone, :user_id)
   end
 
 

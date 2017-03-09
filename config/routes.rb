@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   get "targets", to: "targets#index", as: "targets"
   get "/targets/new", to: "targets#new", as: "new_target"
   get "/targets/:target_id/edit", to:"targets#edit", as: "edit_target"
+  get "/targets/:target_id/finish", to:"targets#finish", as: "finish_target"
   post "/targets", to: "targets#create"
   patch "/targets/:target_id", to:"targets#update"
   delete "/targets/:target_id", to:"targets#destroy", as: "delete_target"

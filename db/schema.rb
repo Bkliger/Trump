@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170306210510) do
+ActiveRecord::Schema.define(version: 20170309062546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,8 +69,8 @@ ActiveRecord::Schema.define(version: 20170306210510) do
   add_index "targetmessages", ["user_id"], name: "index_targetmessages_on_user_id", using: :btree
 
   create_table "targets", force: :cascade do |t|
-    t.string   "first"
-    t.string   "last"
+    t.string   "first_name"
+    t.string   "last_name"
     t.integer  "zip"
     t.integer  "plus4"
     t.string   "salutation"

@@ -1,6 +1,8 @@
-<div class= "center jumbotron">
-  <h1 class = "test">Making a Difference!!!</h1>
+<div id="office" class="jumbotron">
+  <h1 id="splash_heading">Making a Difference!!</h1>
+
+  <h3 id="splash_subheading">  <%= Targetmessage.count.to_s %> action requests have been sent to <%= Target.count.to_s %> friends and family by <%= User.count.to_s %> members.</h3>
+  <h3 id="splash_subheading">Sign up to help stop Donald Trump</h3>
+  <h3 id="splash_subheading"><%= link_to "Sign Up", new_user_session_path, class: "btn btn-success"%></li></h3>
+
 </div>
-  <h2>
-    <%= Targetmessage.count.to_s %> action requests have been sent to <%= Target.count.to_s %> friends and family by <%= User.count.to_s %> members.
-  </h2>

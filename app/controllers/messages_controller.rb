@@ -56,30 +56,7 @@ class MessagesController < ApplicationController
       # for each user, get all of their targets
       # I use a join here to get user data and target data. The user data can be used to create the message to the user - functionality to be added
       Target.select("users.*, targets.*").joins(:user).where(targets: {user_id: user.user_id}).find_each do |target|
-        if target.address.blank? or target.city.blank?
-          address = target.state
-          @civic_reps = civic_api(address).officials[2,2] #function in application_controller
-          @sunlight_reps = "xxx" #this forces the decision to use civic_reps in TargetMailer
-
-        else
-          zip = target.zip
-          @sunlight_reps = sunlight_api(zip) #function in application_controller
-
-
-        end
-        # send an email to each target
-        TargetMailer.target_email(target.email,target.salutation,@message.title,@message.message_text,@civic_reps,@sunlight_reps).deliver_now
-
-
-        # create a target message for each message sent to a target
-        targmess = Targetmessage.new do |m|
-          m.sent_date = Date.today
-          m.message_text = @message.message_text
-          m.user_id = target.user_id
-          m.target_id = target.id
-        end
-
-        targmess.save
+            create_single_message(user,target,@message)
       end
     end
     # create 1 record that the message was sent. This is part of the message history
@@ -105,6 +82,8 @@ class MessagesController < ApplicationController
     redirect_to messages_path
 
   end
+
+
 
 
   private
