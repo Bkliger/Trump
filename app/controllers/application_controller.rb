@@ -56,6 +56,6 @@ def create_single_message(user,target,message)
     end
     targmess.save
     #send email to the user
-    # UserMailer.user_email(user.email,user.first_name,targmess.message_text).deliver_now
+    UserMailer.user_email(user.email,user.first_name,targmess.message_text).deliver_now
 
 end
