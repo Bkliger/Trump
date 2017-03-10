@@ -24,7 +24,8 @@ class TargetsController < ApplicationController
       render :new
       return
     end
-    lookup_reps
+    request_origin = "create"
+    lookup_reps(@target,request_origin)
 
   end
 
@@ -37,7 +38,8 @@ class TargetsController < ApplicationController
       redirect_to edit_target_path(@target)
       return
     end
-    lookup_reps
+    request_origin = "update"
+    lookup_reps(@target,request_origin)
   end
 
   def destroy
@@ -53,14 +55,12 @@ class TargetsController < ApplicationController
     message = Message.find(message_history.message_id)
     #get target
     target = Target.find params[:target_id]
+    request_origin = "finish"
+    create_single_message(current_user,target,message,request_origin)
 
-    create_single_message(current_user,target,message)
-
-
-    redirect_to targets_path
   end
 
-  
+
 
 
   private
