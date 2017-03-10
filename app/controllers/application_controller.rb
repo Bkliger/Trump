@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
       end
       targmess.save
       # send email to the user
-      UserMailer.user_email(user.email, user.first_name, targmess.message_text).deliver_now
+      UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array).deliver_now
   end
 
   def lookup_reps(target,request_origin)
@@ -91,19 +91,19 @@ class ApplicationController < ActionController::Base
                     end
                 # if you only have the state
                 elsif (target.address.blank? || target.city.blank?) && !target.state.blank?
-                    address = @target.state
+                    address = target.state
                     @civic_reps = civic_api(address).officials[2, 2]
                     @civic_reps.each do |r|
                         republican_count += 1 if r.party == 'Republican'
                         build_action_array_civic(r)
                     end
                     if republican_count > 0
-                        @target_message = 'More than 1 representative found. Click the back button and enter the full address'
+                        @target_message = 'More than 1 representative found. We will target Senators unless you add the full address.'
                     else
-                        @target_message = 'There are no Republican Senators or Representatives for this person.'
+                        @target_message = 'There are no Republican Senators for this person. We can check for representatives if you enter the full address.'
                     end
                 else
-                    @target_message = 'More than 1 representative found. Click the back button and enter the full address'
+                    @target_message = 'More than 1 representative found. Click the back button and enter the state at a minimum.'
                 end
 
             else

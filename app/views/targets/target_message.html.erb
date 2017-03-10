@@ -1,5 +1,5 @@
 <p class="not_current_step">1. Add Information<span class="current_step">>>>2. Check Representatives</span></p>
 <h1><%= @target_message %></h1>
-<%= link_to "Back", edit_target_path(params[:target_id]), class: "btn btn-success" %>
-<%= link_to "Cancel", delete_target_path(params[:target_id]), method: "delete", class: "btn btn-success" %>
-<%= link_to "Finish", finish_target_path(params[:target_id]), class: "btn btn-success" %>
+<%= link_to "Back", edit_target_path(@target.id), class: "btn btn-success" %>
+<%= link_to "Cancel", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
+<%= link_to "Finish", finish_target_path(@target.id), class: "btn btn-success" %>

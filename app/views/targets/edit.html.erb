@@ -24,7 +24,7 @@
     </div>
     <div>
         <%= f.label :state %>
-      <%= f.text_field :state, placeholder: "State" %>
+      <%= f.select(:state, options_for_select(us_states,@target.state)) %>
       <span class="glyphicon glyphicon-star asterisk"></span>
     </div>
     <div>

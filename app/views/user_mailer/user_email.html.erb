@@ -9,6 +9,14 @@
 
     <h3> <%= @message_text %>
 
+      <h2> Contact Your Congressional Representatives!</h2>
+
+      <h3>
+        <% @action_array.each do |r| %>
+          <%= r[:rep_name] + ' ' + r[:rep_phone] %>
+        <% end %>
+      </h3>
+
     </h3>
   </body>
 </html>

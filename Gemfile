@@ -41,6 +41,7 @@ gem 'devise'
 gem 'bootstrap-modal-rails'
 gem 'glyphicons-rails', '~> 0.1.2'
 gem "bootstrap-sass"
+gem "twilio-ruby"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
