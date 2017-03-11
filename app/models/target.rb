@@ -10,6 +10,9 @@ class Target < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :salutation, presence: true
-  validates :email, presence: true, if: "!rec_email.blank?"
-  validates :phone, presence: true, if: "!rec_text.blank?"
+  validates :state, presence: true
+  validates :rec_email, presence: true, unless: :rec_text
+  validates :rec_text, presence: true, unless: :rec_email
+  validates_format_of :email,:with => Devise::email_regexp, allow_blank: true
+
 end

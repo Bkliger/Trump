@@ -42,30 +42,36 @@
   def create_single_message(user, target, message,request_origin)
       lookup_reps(target,request_origin)
       get_url
-      # send an email to each target
-      TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url).deliver_now
+      if target.status == "Active"
+        # send an email to each target
+        TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url).deliver_now
+
+
       #test twilio
 
 
-      # create a target message for each message sent to a target
-      targmess = Targetmessage.new do |m|
-          m.sent_date = Date.today
-          m.message_text = message.message_text
-          m.user_id = target.user_id
-          m.target_id = target.id
+        # create a target message for each message sent to a target
+        targmess = Targetmessage.new do |m|
+            m.sent_date = Date.today
+            m.message_text = message.message_text
+            m.user_id = target.user_id
+            m.target_id = target.id
+        end
+        targmess.save
+        # send email to the user
+        UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array).deliver_now
       end
-      targmess.save
-      # send email to the user
-      UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array).deliver_now
   end
 
   def lookup_reps(target,request_origin)
     @action_array = [] #builds the action block for the email
     case
-    # zip is blank and state is blank
-    when (target.zip.blank? && target.state.blank?)
-        @target_message = 'State is required'
-
+    # email is blank and text is blank
+  when (target.rec_email.blank? && target.rec_text.blank?)
+        @target_message = 'Either Recieve Email or Receive Text Must Be Selected'
+        status = 'Incomplete'
+    # when (target.zip.blank? && target.state.blank?)
+    #     @target_message = 'State is required'
     # zip is not blank
     when (!target.zip.blank?)
         republican_count = 0
@@ -103,7 +109,7 @@
                           build_action_array_civic(r)
                       end
                       if republican_count > 0
-                          @target_message = 'Congresspeople found.'
+                          @target_message = 'Congresspeople found. Ready to send messages.'
                           status = "Active"
                       else
                           @target_message = 'There are no Republican Senators or Representatives for this person.'
@@ -131,7 +137,7 @@
                 end
 
             else
-                @target_message = 'Congresspeople found'
+                @target_message = 'Congresspeople found. Ready to send messages.'
                 status = "Active"
             end
         end
@@ -171,7 +177,7 @@
                 build_action_array_civic(r)
             end
             if republican_count > 0
-                @target_message = 'Congresspeople found.'
+                @target_message = 'Congresspeople found. Ready to send messages.'
                 status = "Active"
 
             else

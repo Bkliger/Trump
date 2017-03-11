@@ -45,7 +45,7 @@ class TargetsController < ApplicationController
   def destroy
     @target = Target.find params[:target_id]
     @target.destroy
-    flash[:notice] = "Target deleted"
+    flash[:notice] = "Friends and Family Deleted"
     redirect_to targets_path
   end
 
@@ -68,6 +68,11 @@ class TargetsController < ApplicationController
     render :unsubscribe
   end
 
+  def inactivate
+    @target = Target.find (params[:target_id])
+    @target.update(status: "Inactive")
+    redirect_to targets_path
+  end
 
 
 
