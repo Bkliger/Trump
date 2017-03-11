@@ -41,8 +41,9 @@
 
   def create_single_message(user, target, message,request_origin)
       lookup_reps(target,request_origin)
+      get_url
       # send an email to each target
-      TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array).deliver_now
+      TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url).deliver_now
       #test twilio
 
 
@@ -85,12 +86,12 @@
                 @target_message = 'There are no Republican Senators or Representatives for this person.'
                 status = "No Republicans"
             elsif representative_count > 3
-              puts "more than three"
+
                 @action_array = [] #reinitialize the array that builds the action block for the email
                 # if you have the full address
                 if !target.address.blank? && !target.city.blank? && !target.state.blank?
                     address = target.address + ' ' + target.city + ' ' + target.state
-                    puts "with full address"
+
                     republican_count = 0
                     @civic_reps = civic_api(address).officials[2, 3]
                     if @civic_reps == []
@@ -207,8 +208,8 @@
     else
       action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_email: r.email[0] }
     end
-    puts "array"
-    puts @action_array << action_item
+
+    @action_array << action_item
 
   end
 
@@ -220,7 +221,7 @@
       else
           action_item = { rep_name: full_name, rep_phone: r.phone, rep_email: r.oc_email }
       end
-      puts @action_array << action_item
+      @action_array << action_item
   end
 
   # def test_twilio
@@ -236,6 +237,18 @@
   #     )
   #     puts message.to
   # end
+
+  def get_url
+    require 'uri'
+    uri = request.original_url
+    uri = URI.parse(request.original_url)
+    if uri.port.blank?
+      @base_url = uri.scheme.to_s + "://" + uri.host.to_s
+    else
+      @base_url = uri.scheme.to_s + "://" + uri.host.to_s + ":" + uri.port.to_s
+    end
+  end
+
 
   private
 

@@ -10,5 +10,6 @@ class Target < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :salutation, presence: true
-  validates :email, presence: true
+  validates :email, presence: true, if: "!rec_email.blank?"
+  validates :phone, presence: true, if: "!rec_text.blank?"
 end

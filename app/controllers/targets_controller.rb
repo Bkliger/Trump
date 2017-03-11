@@ -62,6 +62,12 @@ class TargetsController < ApplicationController
     redirect_to targets_path
   end
 
+  def unsubscribe
+    @target = Target.find (params[:target_id])
+    @target.update(status: "Unsubscribed")
+    render :unsubscribe
+  end
+
 
 
 

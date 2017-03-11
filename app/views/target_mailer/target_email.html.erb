@@ -11,8 +11,13 @@
     <h3>
       <% @action_array.each do |r| %>
       <%= r[:rep_name] + ' ' + r[:rep_phone] %>
-      <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a">Click to Send a Message</a>
+      <%=link_to "Click to Send a Message", "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a" %>
       <% end %>
+    </h3>
+    <br>
+    <br>
+    <h3>
+      <%=link_to "Unsubscribe", @base_url.to_s + "/targets/" + @target_id.to_s + "/unsubscribe" %>
     </h3>
   </body>
 </html>
