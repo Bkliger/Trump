@@ -56,8 +56,10 @@ class TargetsController < ApplicationController
     #get target
     target = Target.find params[:target_id]
     request_origin = "finish"
-    create_single_message(current_user,target,message,request_origin)
 
+
+    create_single_message(current_user,target,message,request_origin)
+    redirect_to targets_path
   end
 
 

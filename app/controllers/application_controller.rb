@@ -1,4 +1,5 @@
-class ApplicationController < ActionController::Base
+
+  class ApplicationController < ActionController::Base
     # Prevent CSRF attacks by raising an exception.
     # For APIs, you may want to use :null_session instead.
     protect_from_forgery with: :exception
@@ -14,6 +15,10 @@ class ApplicationController < ActionController::Base
   require 'json'
   # used to create an object from a hash
   require 'ostruct'
+
+
+
+
 
   def sunlight_api(zip)
       # construct the url
@@ -38,6 +43,9 @@ class ApplicationController < ActionController::Base
       lookup_reps(target,request_origin)
       # send an email to each target
       TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array).deliver_now
+      #test twilio
+
+
       # create a target message for each message sent to a target
       targmess = Targetmessage.new do |m|
           m.sent_date = Date.today
@@ -56,6 +64,7 @@ class ApplicationController < ActionController::Base
     # zip is blank and state is blank
     when (target.zip.blank? && target.state.blank?)
         @target_message = 'State is required'
+
     # zip is not blank
     when (!target.zip.blank?)
         republican_count = 0
@@ -64,6 +73,7 @@ class ApplicationController < ActionController::Base
         if @sunlight_reps.results == []
 
             @target_message = 'Invalid Zip Code'
+            status = "Incomplete"
         else
             @sunlight_reps.results.each do |r|
                 representative_count += 1
@@ -73,21 +83,31 @@ class ApplicationController < ActionController::Base
             end
             if republican_count == 0
                 @target_message = 'There are no Republican Senators or Representatives for this person.'
+                status = "No Republicans"
             elsif representative_count > 3
+              puts "more than three"
                 @action_array = [] #reinitialize the array that builds the action block for the email
                 # if you have the full address
                 if !target.address.blank? && !target.city.blank? && !target.state.blank?
                     address = target.address + ' ' + target.city + ' ' + target.state
+                    puts "with full address"
                     republican_count = 0
-                    @civic_reps = civic_api(address).officials[2, 2]
-                    @civic_reps.each do |r|
-                        republican_count += 1 if r.party == 'Republican'
-                        build_action_array_civic(r)
-                    end
-                    if republican_count > 0
-                        @target_message = 'Congresspeople found.'
+                    @civic_reps = civic_api(address).officials[2, 3]
+                    if @civic_reps == []
+                      @target_message = 'No Information for this address'
+                      status = "Incomplete"
                     else
-                        @target_message = 'There are no Republican Senators or Representatives for this person.'
+                      @civic_reps.each do |r|
+                          republican_count += 1 if r.party == 'Republican'
+                          build_action_array_civic(r)
+                      end
+                      if republican_count > 0
+                          @target_message = 'Congresspeople found.'
+                          status = "Active"
+                      else
+                          @target_message = 'There are no Republican Senators or Representatives for this person.'
+                          status = "No Republicans"
+                      end
                     end
                 # if you only have the state
                 elsif (target.address.blank? || target.city.blank?) && !target.state.blank?
@@ -99,15 +119,19 @@ class ApplicationController < ActionController::Base
                     end
                     if republican_count > 0
                         @target_message = 'More than 1 representative found. We will target Senators unless you add the full address.'
+                        status = "Incomplete"
                     else
                         @target_message = 'There are no Republican Senators for this person. We can check for representatives if you enter the full address.'
+                        status = "Incomplete"
                     end
                 else
                     @target_message = 'More than 1 representative found. Click the back button and enter the state at a minimum.'
+                    status = "Incomplete"
                 end
 
             else
                 @target_message = 'Congresspeople found'
+                status = "Active"
             end
         end
     # no zip and only state
@@ -117,6 +141,7 @@ class ApplicationController < ActionController::Base
         civic_response = civic_api(address)
         if !civic_response.error.nil?
             @target_message = 'No Information for this address'
+            status = "Incomplete"
         else
             @civic_reps = civic_response.officials[2, 2]
             @civic_reps.each do |r|
@@ -124,8 +149,10 @@ class ApplicationController < ActionController::Base
             end
             if republican_count > 0
                 @target_message = 'Republican Senators found. If you know the address, we can check for representatives.'
+                status = "Active"
             else
                 @target_message = 'There are no Republican Senators. If you know the address, we can check for representatives.'
+                status = "No Republicans"
             end
         end
     # no zip and full address
@@ -134,16 +161,22 @@ class ApplicationController < ActionController::Base
         republican_count = 0
         if !civic_api(address).error.nil?
             @target_message = 'No Information for this address'
+            status = "Incomplete"
+
         else
-            @civic_reps = civic_api(address).officials[2, 2]
+            @civic_reps = civic_api(address).officials[2, 3]
             @civic_reps.each do |r|
                 republican_count += 1 if r.party == 'Republican'
                 build_action_array_civic(r)
             end
             if republican_count > 0
                 @target_message = 'Congresspeople found.'
+                status = "Active"
+
             else
                 @target_message = 'There are no Republican Senators or Representatives for this person.'
+                status = "No Republicans"
+
             end
         end
 
@@ -155,9 +188,14 @@ class ApplicationController < ActionController::Base
     end
 
     if request_origin == "finish"
-      redirect_to targets_path
+      return
+
+    elsif request_origin == "bulk send"
+      return
     else
+      @target.update(status: status)
       render 'target_message'
+
     end
 
   end
@@ -184,4 +222,23 @@ class ApplicationController < ActionController::Base
       end
       puts @action_array << action_item
   end
+
+  # def test_twilio
+  #   @twilio_number = ENV['TWILIO_NUMBER']
+  #     @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
+  #     # time_str = ((self.time).localtime).strftime("%I:%M%p on %b. %d, %Y")
+  #     reminder = "Hi Joe. Just a reminder that you have an appointment coming up at."
+  #     message = @client.account.messages.create(
+  #       :from => @twilio_number,
+  #       :to => 9252867453,
+  #       # :to => self.phone_number,
+  #       :body => reminder,
+  #     )
+  #     puts message.to
+  # end
+
+  private
+
+
+
 end

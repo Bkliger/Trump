@@ -55,8 +55,11 @@ class MessagesController < ApplicationController
     UserOrg.where(org_id: main_org.id).find_each do |user|
       # for each user, get all of their targets
       # I use a join here to get user data and target data. The user data can be used to create the message to the user - functionality to be added
+      request_origin = "bulk send"
       Target.select("users.*, targets.*").joins(:user).where(targets: {user_id: user.user_id}).find_each do |target|
-            create_single_message(current_user,target,@message)
+        if target.status == "Active"
+            create_single_message(current_user,target,@message,request_origin)
+        end
       end
     end
     # create 1 record that the message was sent. This is part of the message history
