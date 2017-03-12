@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 
     def sunlight_api(zip)
         # construct the url
-        url = 'https://congress.api.sunlightfoundation.com/legislators/locate?zip=' + zip.to_s
+        url = 'https://congress.api.sunlightfoundation.com/legislators/locate?zip=' + zip
         # call the url using the net/http structure
         uri = URI(url)
         response = Net::HTTP.get(uri)
@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     end
 
     def create_single_message(user, target, message, request_origin)
-
+        # test_twilio
         get_url
         if target.status == 'Active'
             lookup_reps(target, request_origin)
@@ -60,10 +60,6 @@ class ApplicationController < ActionController::Base
     def lookup_reps(target, request_origin)
         @action_array = [] # builds the action block for the email
         case
-        # rec_email is blank and rec_text is blank (this may be unneccessary duplication of model validation)
-        # when (target.rec_email.blank? && target.rec_text.blank?)
-        #     @target_message = 'Either Recieve Email or Receive Text Must Be Selected'
-        #     status = 'Incomplete'
         # zip entered
         when (!target.zip.blank?)
             @action_array = [] # builds the action block for the email
@@ -79,22 +75,30 @@ class ApplicationController < ActionController::Base
                     next unless r.party == 'R'
                     republican_count += 1
                     build_action_array_sunlight(r)
+                    @last_state = r.state
                 end
                 if republican_count == 0
                     @target_message = 'There are no Republican Senators or Representatives for this person.'
                     @status = 'No Republicans'
                 elsif representative_count > 3
-                    @action_array = [] # reinitialize the array that builds the action block for the email
-                    # if you have the full address
-                    if !target.address.blank? && !target.city.blank?
-                        full_address_processing(target)
-                    # if you only have the state
-                    elsif (target.address.blank? || target.city.blank?)
-                        state_processing(target)
+                    if @last_state != target.state
+                      @target_message = 'More than 1 representative found for this zip code and the state entered does not match the zip code. Click the back button to enter the correct state and/or full address.'
+                      @status = 'Incomplete'
                     else
-                        @target_message = 'More than 1 representative found for this zip code. Click the back button and enter a full address if you know it.'
-                        @status = 'Incomplete'
+                      @action_array = [] # reinitialize the array that builds the action block for the email
+                      # if you have the full address
+                      if !target.address.blank? && !target.city.blank?
+                          full_address_processing(target)
+                      # if you only have the state
+                      elsif (target.address.blank? || target.city.blank?)
+                          state_processing(target)
+                      else
+                          @target_message = 'More than 1 representative found for this zip code. Click the back button and enter a full address if you know it.'
+                          @status = 'Incomplete'
+                      end
+
                     end
+
                 else
                     @target_message = 'Congresspeople found. Ready to send messages.'
                     @status = 'Active'
@@ -181,19 +185,28 @@ class ApplicationController < ActionController::Base
         @action_array << action_item
     end
 
-    # def test_twilio
-    #   @twilio_number = ENV['TWILIO_NUMBER']
-    #     @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
-    #     # time_str = ((self.time).localtime).strftime("%I:%M%p on %b. %d, %Y")
-    #     reminder = "Hi Joe. Just a reminder that you have an appointment coming up at."
-    #     message = @client.account.messages.create(
-    #       :from => @twilio_number,
-    #       :to => 9252867453,
-    #       # :to => self.phone_number,
-    #       :body => reminder,
-    #     )
-    #     puts message.to
-    # end
+    def test_twilio
+
+      require 'rubygems' # not necessary with ruby 1.9 but included for completeness
+      require 'twilio-ruby'
+
+      # put your own credentials here
+      account_sid = 'PNb3e1112f8373f91b960fef215275499b'
+      auth_token = 'a826bdde35e448025ce9c10f0f72ce23'
+
+      # set up a client to talk to the Twilio REST API
+      @client = Twilio::REST::Client.new(account_sid, auth_token)
+
+      @message = @client.account.messages.create(
+        from: '+19253284055',
+        to: '+19252867453',
+        body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+        media_url: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg'
+      )
+
+      puts @message.subresource_uris
+    end
+
 
     def get_url
         require 'uri'
