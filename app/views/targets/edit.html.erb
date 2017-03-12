@@ -37,20 +37,22 @@
           <span class="glyphicon glyphicon-star asterisk"></span>
           <span>For example - Hi Mom</span>
     </div>
+      <br>
     <div>
-      <%= f.label :email %>
-      <%= f.text_field :email, placeholder: "email" %>
-    </div>
-    <div>
-      <%= f.label :receive_email? %>
+        <%= f.label :receive_email? %>
       <%= f.check_box :rec_email, placeholder: "email" %>
     </div>
+    <div>
+        <%= f.label :email %>
+      <%= f.text_field :email, placeholder: "email" %>
+    </div>
+    <br>
     <div>
       <%= f.label :receive_text? %>
       <%= f.check_box :rec_text, placeholder: "text" %>
     </div>
     <div>
-        <%= f.label :cell_phone %>
+      <%= f.label :cell_phone %>
       <%= f.text_field :phone, placeholder: "Cell Phone" %>
     </div>
     <!-- To be hidden in actual form -->
