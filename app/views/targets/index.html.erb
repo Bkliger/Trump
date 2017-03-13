@@ -3,9 +3,9 @@
     <div class="container-fluid">
       <br><br><br><br><br>
       <div class="col-sm-5">
-        <h1 class="display-3">Targets</h1>
-        <%= link_to "New target", new_target_path, class: "btn btn-success" %>
-  <%= link_to "Edit User Profile" , edit_user_path(current_user.id.to_s), class: "btn btn-success" %>
+        <h1 class="display-3">Friends and Family</h1>
+        <%= link_to "New Friends and Family", new_target_path, class: "btn btn-success" %>
+  <%= link_to "Edit Your Profile" , edit_user_path(current_user.id.to_s), class: "btn btn-success" %>
         <hr>
 
           <% @targets.each do |t| %>
