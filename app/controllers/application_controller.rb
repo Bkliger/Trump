@@ -14,21 +14,25 @@ class ApplicationController < ActionController::Base
     require 'json'
     # used to create an object from a hash
     require 'ostruct'
-
-    require "rexml/document"
-
+    # used to process the xml from the usps api
+    require 'rexml/document'
 
     def usps_lookup(target)
-      url = format_USPS(target.address,target.city,target.state)
-      uri = URI(url)
-      response = Net::HTTP.get(uri)
-      if !response.include? "Error"
-        response.slice! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        document = REXML::Document.new(response)
-        @zip4 = REXML::XPath.first(document, "/ZipCodeLookupResponse/Address/Zip4/text()").to_s
-      else
-        @zip4 = "Error"
-      end
+        url = format_USPS(target.address, target.city, target.state)
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        if !response.include? 'Error'
+
+            # get rid of the front part of the response
+            response.slice! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            document = REXML::Document.new(response)
+            @zip4 = REXML::XPath.first(document, '/ZipCodeLookupResponse/Address/Zip4/text()').to_s
+            @zip5 = REXML::XPath.first(document, '/ZipCodeLookupResponse/Address/Zip5/text()').to_s
+
+        else
+            @bad_address = true
+            @zip4 = 'Error'
+        end
     end
 
     def sunlight_api(zip)
@@ -56,7 +60,7 @@ class ApplicationController < ActionController::Base
         if target.status == 'Active'
             lookup_reps(target, request_origin)
             # send an email to each target
-            TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip,@zip4).deliver_now
+            TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4).deliver_now
 
             # test twilio
 
@@ -74,61 +78,42 @@ class ApplicationController < ActionController::Base
     end
 
     def lookup_reps(target, request_origin)
-      usps_lookup(target)
+        # binding.pry
         @action_array = [] # builds the action block for the email
         case
         # zip entered
         when (!target.zip.blank?)
             @action_array = [] # builds the action block for the email
-            republican_count = 0
-            representative_count = 0
             @sunlight_reps = sunlight_api(target.zip)
             if @sunlight_reps.results == []
                 @target_message = 'Invalid Zip Code'
                 @status = 'Incomplete'
             else
-                @sunlight_reps.results.each do |r|
-                    representative_count += 1
-                    next unless r.party == 'R'
-                    republican_count += 1
-                    build_action_array_sunlight(r)
-                    @last_state = r.state
-                end
-                if republican_count == 0
-                    @target_message = 'There are no Republican Senators or Representatives for this person.'
-                    @status = 'No Republicans'
-                elsif representative_count > 3
-                    if @last_state != target.state
-                      @target_message = 'More than 1 representative found for this zip code and the state entered does not match the zip code. Click the back button to enter the correct state and/or full address.'
-                      @status = 'Incomplete'
+                # if you have the full address
+                if !target.address.blank? && !target.city.blank?
+                    usps_lookup(target)
+                    case
+                    when @bad_address == true
+                        @target_message = 'Address not found. If you just enter the state, we can do a limited search'
+                        @status = 'Incomplete'
+                    when @zip5 != target.zip
+                        @target_message = 'Incorrect Zip Code For This Address'
+                        @status = 'Incomplete'
                     else
-                      @action_array = [] # reinitialize the array that builds the action block for the email
-                      # if you have the full address
-                      if !target.address.blank? && !target.city.blank?
-                          full_address_processing(target)
-                      # if you only have the state
-                      elsif (target.address.blank? || target.city.blank?)
-                          state_processing(target)
-                      else
-                          @target_message = 'More than 1 representative found for this zip code. Click the back button and enter a full address if you know it.'
-                          @status = 'Incomplete'
-                      end
+                        main_zip_processing(target)
                     end
-
                 else
-                    @target_message = 'Congresspeople found. Ready to send messages.'
-                    @status = 'Active'
-                    # @zip4 =
+                    main_zip_processing(target)
                 end
             end
         # no zip and only state
         when (target.zip.blank? && (target.address.blank? || target.city.blank?))
-          state_processing(target)
+            state_processing(target)
         # no zip and full address
         when (target.zip.blank? && !target.address.blank? && !target.city.blank?)
             full_address_processing(target)
         end
-#decide what page to display based on the process that requested this method
+        # decide what page to display based on the process that requested this method
         if request_origin == 'finish'
             return
         elsif request_origin == 'bulk send'
@@ -139,46 +124,88 @@ class ApplicationController < ActionController::Base
         end
     end
 
+    def main_zip_processing(target)
+        republican_count = 0
+        representative_count = 0
+        @sunlight_reps.results.each do |r|
+            representative_count += 1
+            next unless r.party == 'R'
+            republican_count += 1
+            build_action_array_sunlight(r)
+            @last_state = r.state
+        end
+        if republican_count == 0
+            @target_message = 'There are no Republican Senators or Representatives for this person.'
+            @status = 'No Republicans'
+        elsif representative_count > 3
+            if @last_state != target.state
+                @target_message = 'More than 1 representative found for this zip code and the state entered does not match the zip code. Click the back button to enter the correct state and/or full address.'
+                @status = 'Incomplete'
+            else
+                @action_array = [] # reinitialize the array that builds the action block for the email
+                # if you have the full address
+                if !target.address.blank? && !target.city.blank?
+                    full_address_processing(target)
+                # if you only have the state
+                elsif target.address.blank? || target.city.blank?
+                    state_processing(target)
+                else
+                    @target_message = 'More than 1 representative found for this zip code. Click the back button and enter a full address if you know it.'
+                    @status = 'Incomplete'
+                end
+            end
+        else
+            @target_message = 'Congresspeople found. Ready to send messages.'
+            @status = 'Active'
+        end
+    end
+
     def full_address_processing(target)
-      address = target.address + ' ' + target.city + ' ' + target.state
-      republican_count = 0
-      civic_response = civic_api(address)
-      if !civic_api(address).error.nil?
-          @target_message = 'No Information for this address'
-          @status = 'Incomplete'
-      else
-          @civic_reps = civic_api(address).officials[2, 3]
-          @civic_reps.each do |r|
-              republican_count += 1 if r.party == 'Republican'
-              build_action_array_civic(r)
-          end
-          if republican_count > 0
-              @target_message = 'Congresspeople found. Ready to send messages.'
-              @status = 'Active'
-              # @zip4 =
-          else
-              @target_message = 'There are no Republican Senators or Representatives for this person.'
-              @status = 'No Republicans'
-          end
-      end
+        usps_lookup(target)
+        if @bad_address == true
+            @target_message = 'Address not found. If you just enter the state, we can do a limited search'
+            @status = 'Incomplete'
+        else
+            address = target.address + ' ' + target.city + ' ' + target.state
+            republican_count = 0
+            civic_response = civic_api(address)
+            if !civic_response.error.nil?
+                @target_message = 'No Information for this address'
+                @status = 'Incomplete'
+            else
+                @civic_reps = civic_api(address).officials[2, 3]
+                @civic_reps.each do |r|
+                    republican_count += 1 if r.party == 'Republican'
+                    build_action_array_civic(r)
+                end
+                if republican_count > 0
+                    @target_message = 'Congresspeople found. Ready to send messages.'
+                    @status = 'Active'
+                    # @zip4 =
+                else
+                    @target_message = 'There are no Republican Senators or Representatives for this person.'
+                    @status = 'No Republicans'
+                end
+            end
+        end
     end
 
     def state_processing(target)
-      address = target.state
-      republican_count = 0
-      civic_response = civic_api(address)
-      @civic_reps = civic_response.officials[2, 2]
-      @civic_reps.each do |r|
-          republican_count += 1 if r.party == 'Republican'
-          build_action_array_civic(r)
-      end
-      if republican_count > 0
-          @target_message = 'Republican Senators found. If you know the full address, we can check for representatives.'
-          @status = 'Active'
-      else
-          @target_message = 'There are no Republican Senators. If you know the address, we can check for representatives.'
-          @status = 'No Republicans'
-      end
+        address = target.state
+        republican_count = 0
+        civic_response = civic_api(address)
+        @civic_reps = civic_response.officials[2, 2]
+        @civic_reps.each do |r|
+            republican_count += 1 if r.party == 'Republican'
+            build_action_array_civic(r)
+        end
+        if republican_count > 0
+            @target_message = 'Republican Senators found. If you know the full address, we can check for representatives.'
+            @status = 'Active'
+        else
+            @target_message = 'There are no Republican Senators. If you know the address, we can check for representatives.'
+            @status = 'No Republicans'
+        end
     end
 
     def build_action_array_civic(r)
@@ -204,35 +231,34 @@ class ApplicationController < ActionController::Base
     end
 
     def test_twilio
+        require 'rubygems' # not necessary with ruby 1.9 but included for completeness
+        require 'twilio-ruby'
 
-      require 'rubygems' # not necessary with ruby 1.9 but included for completeness
-      require 'twilio-ruby'
+        # put your own credentials here
+        account_sid = 'AC0ab0239d385f156c88112555be5c69c5'
+        auth_token = 'ada5d72c16ee2a0ec406de3d45070da3'
 
-      # put your own credentials here
-      account_sid = 'AC0ab0239d385f156c88112555be5c69c5'
-      auth_token = 'ada5d72c16ee2a0ec406de3d45070da3'
+        # set up a client to talk to the Twilio REST API
+        @client = Twilio::REST::Client.new(account_sid, auth_token)
 
-      # set up a client to talk to the Twilio REST API
-      @client = Twilio::REST::Client.new(account_sid, auth_token)
+        @message = @client.account.messages.create(
+            from: '9253784055',
+            to: '9252867453',
+            body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+            media_url: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg'
+        )
 
-      @message = @client.account.messages.create(
-        from: '9253784055',
-        to: '9252867453',
-        body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-        media_url: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg'
-      )
-
-      puts @message.subresource_uris
+        puts @message.subresource_uris
     end
 
-    def format_USPS(address,city,state)
-      base_USPS_url = "http://production.shippingapis.com/ShippingAPI.dll?API=ZipCodeLookup&XML=<ZipCodeLookupRequest%20USERID="
-      user_id = ENV['USPS_USER']
-      xml_1 = "<Address> <Address1></Address1> <Address2>"
-      xml_2 = "</Address2><City>"
-      xml_3 = "</City><State>"
-      xml_4 = "</State></Address></ZipCodeLookupRequest>"
-      xml_string = base_USPS_url + "\"" + user_id + "\">" + xml_1 + address + xml_2 + city + xml_3 + state + xml_4
+    def format_USPS(address, city, state)
+        base_USPS_url = 'http://production.shippingapis.com/ShippingAPI.dll?API=ZipCodeLookup&XML=<ZipCodeLookupRequest%20USERID='
+        user_id = ENV['USPS_USER']
+        xml_1 = '<Address> <Address1></Address1> <Address2>'
+        xml_2 = '</Address2><City>'
+        xml_3 = '</City><State>'
+        xml_4 = '</State></Address></ZipCodeLookupRequest>'
+        xml_string = base_USPS_url + "\"" + user_id + "\">" + xml_1 + address + xml_2 + city + xml_3 + state + xml_4
     end
 
     def get_url

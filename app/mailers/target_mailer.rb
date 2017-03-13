@@ -8,10 +8,11 @@ class TargetMailer < ApplicationMailer
     @action_array = action_array
     @target_id = target_id
     @base_url = base_url
-    if !zip.blank?
-      @zipPlus4 = zip + "-" + zip4
+
+    if zip4 == "Error" || zip.blank?
+      @zipPlus4 = "Error"
     else
-      @zipPlus4 = zip4
+      @zipPlus4 = zip + "-" + zip4
     end
     mail(to: email, subject: title)
   end
