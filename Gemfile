@@ -31,6 +31,8 @@ gem "figaro"
 
 gem "twilio-ruby"
 
+gem "active_shipping"
+
 gem 'devise'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -43,11 +45,11 @@ gem 'devise'
 gem 'bootstrap-modal-rails'
 gem 'glyphicons-rails', '~> 0.1.2'
 gem "bootstrap-sass"
-
+gem 'pry-byebug'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  # gem 'byebug'
 
 end
 

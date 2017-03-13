@@ -15,6 +15,22 @@ class ApplicationController < ActionController::Base
     # used to create an object from a hash
     require 'ostruct'
 
+    require "rexml/document"
+
+
+    def usps_lookup(target)
+      url = format_USPS(target.address,target.city,target.state)
+      uri = URI(url)
+      response = Net::HTTP.get(uri)
+      if !response.include? "Error"
+        response.slice! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        document = REXML::Document.new(response)
+        @zip4 = REXML::XPath.first(document, "/ZipCodeLookupResponse/Address/Zip4/text()").to_s
+      else
+        @zip4 = "Error"
+      end
+    end
+
     def sunlight_api(zip)
         # construct the url
         url = 'https://congress.api.sunlightfoundation.com/legislators/locate?zip=' + zip
@@ -40,7 +56,7 @@ class ApplicationController < ActionController::Base
         if target.status == 'Active'
             lookup_reps(target, request_origin)
             # send an email to each target
-            TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url).deliver_now
+            TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip,@zip4).deliver_now
 
             # test twilio
 
@@ -58,6 +74,7 @@ class ApplicationController < ActionController::Base
     end
 
     def lookup_reps(target, request_origin)
+      usps_lookup(target)
         @action_array = [] # builds the action block for the email
         case
         # zip entered
@@ -96,12 +113,12 @@ class ApplicationController < ActionController::Base
                           @target_message = 'More than 1 representative found for this zip code. Click the back button and enter a full address if you know it.'
                           @status = 'Incomplete'
                       end
-
                     end
 
                 else
                     @target_message = 'Congresspeople found. Ready to send messages.'
                     @status = 'Active'
+                    # @zip4 =
                 end
             end
         # no zip and only state
@@ -138,6 +155,7 @@ class ApplicationController < ActionController::Base
           if republican_count > 0
               @target_message = 'Congresspeople found. Ready to send messages.'
               @status = 'Active'
+              # @zip4 =
           else
               @target_message = 'There are no Republican Senators or Representatives for this person.'
               @status = 'No Republicans'
@@ -191,15 +209,15 @@ class ApplicationController < ActionController::Base
       require 'twilio-ruby'
 
       # put your own credentials here
-      account_sid = 'PNb3e1112f8373f91b960fef215275499b'
-      auth_token = 'a826bdde35e448025ce9c10f0f72ce23'
+      account_sid = 'AC0ab0239d385f156c88112555be5c69c5'
+      auth_token = 'ada5d72c16ee2a0ec406de3d45070da3'
 
       # set up a client to talk to the Twilio REST API
       @client = Twilio::REST::Client.new(account_sid, auth_token)
 
       @message = @client.account.messages.create(
-        from: '+19253284055',
-        to: '+19252867453',
+        from: '9253784055',
+        to: '9252867453',
         body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
         media_url: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg'
       )
@@ -207,6 +225,15 @@ class ApplicationController < ActionController::Base
       puts @message.subresource_uris
     end
 
+    def format_USPS(address,city,state)
+      base_USPS_url = "http://production.shippingapis.com/ShippingAPI.dll?API=ZipCodeLookup&XML=<ZipCodeLookupRequest%20USERID="
+      user_id = ENV['USPS_USER']
+      xml_1 = "<Address> <Address1></Address1> <Address2>"
+      xml_2 = "</Address2><City>"
+      xml_3 = "</City><State>"
+      xml_4 = "</State></Address></ZipCodeLookupRequest>"
+      xml_string = base_USPS_url + "\"" + user_id + "\">" + xml_1 + address + xml_2 + city + xml_3 + state + xml_4
+    end
 
     def get_url
         require 'uri'

@@ -30,6 +30,7 @@ class TargetsController < ApplicationController
   end
 
   def update
+    # test_twilio
     @target = Target.find params[:target_id]
     @target.update(target_params)
     if @target.valid?
