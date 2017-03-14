@@ -10,7 +10,7 @@
 
           <% @targets.each do |t| %>
           <div class="row index-list">
-            <%= link_to t.first_name + " " + t.last_name + " " + t.status, edit_target_path(t.id.to_s) %>
+            <%= link_to t.first_name + " " + t.last_name + " " + t.status, edit_target_path(t.slug) %>
             <%= link_to "", delete_target_path(t), method: :delete, class: "glyphicon glyphicon-trash", data: {confirm: 'Are you sure you want to delete this target?'}  %>
             </div>
           <% end %>

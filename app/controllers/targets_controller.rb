@@ -1,18 +1,31 @@
 class TargetsController < ApplicationController
 
   def index
-    @user = current_user
-    @targets = Target.where("user_id = ?",current_user)
+    if current_user
+      @user = current_user
+      @targets = Target.where("user_id = ?",current_user)
+    else
+      redirect_to splash_path
+    end
   end
 
   def edit
-    @target = Target.find(params[:target_id])
-  render :edit
+    if current_user
+      # @target = Target.find(params[:target_id])
+      @target = Target.friendly.find(params[:target_id])
+      render :edit
+    else
+      redirect_to splash_path
+    end
   end
 
   def new
-    @target = Target.new
-    render :new
+    if current_user
+      @target = Target.new
+      render :new
+    else
+      redirect_to splash_path
+    end
   end
 
   def create
@@ -31,7 +44,7 @@ class TargetsController < ApplicationController
 
   def update
     # test_twilio
-    @target = Target.find params[:target_id]
+    @target = Target.friendly.find(params[:target_id])
     @target.update(target_params)
     if @target.valid?
     else
@@ -55,7 +68,7 @@ class TargetsController < ApplicationController
     message_history = Messhistory.last
     message = Message.find(message_history.message_id)
     #get target
-    target = Target.find params[:target_id]
+    target = Target.friendly.find(params[:target_id])
     request_origin = "finish"
 
 

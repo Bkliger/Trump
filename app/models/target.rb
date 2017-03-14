@@ -17,4 +17,16 @@ class Target < ActiveRecord::Base
   validates :rec_text, presence: true, unless: :rec_email
   validates_format_of :email,:with => Devise::email_regexp, allow_blank: true
 
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :slugged
+
+  def slug_candidates
+  [
+    [:first_name, :last_name],
+    [:first_name, :last_name, :user_id]
+  ]
+  end
+
 end
+
+Target.find_each(&:save)

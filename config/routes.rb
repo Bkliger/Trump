@@ -40,14 +40,14 @@ Rails.application.routes.draw do
 
 
   root 'site#splash', as: :splash
-  get "targets", to: "targets#index", as: "targets"
-  get "/targets/new", to: "targets#new", as: "new_target"
-  get "/targets/:target_id/edit", to:"targets#edit", as: "edit_target"
-  get "/targets/:target_id/finish", to:"targets#finish", as: "finish_target"
+  get "targets", to: "targets#index", as: "targets", path: "friends"
+  get "/friends/new", to: "targets#new", as: "new_target"
+  get "/friends/:target_id/edit", to:"targets#edit", as: "edit_target"
+  get "/friends/:target_id/finish", to:"targets#finish", as: "finish_target"
   get "/targets/:target_id/unsubscribe", to:"targets#unsubscribe", as: "unsubscribe_target"
   get "/targets/:target_id/inactivate", to:"targets#inactivate", as: "inactivate_target"
-  post "/targets", to: "targets#create"
-  patch "/targets/:target_id", to:"targets#update"
+  post "/friends", to: "targets#create"
+  patch "/friends/:target_id", to:"targets#update"
   delete "/targets/:target_id", to:"targets#destroy", as: "delete_target"
 
   get "admin", to: "adminusers#new_signin", as: "adminusers"
@@ -69,5 +69,8 @@ Rails.application.routes.draw do
   post "/users", to: "users#create"
   patch "/users/:user_id", to:"users#update"
   delete "/users/:user_id", to:"users#destroy", as: "delete_user"
+
+  #-------------catch all--------------------------------------------------------------#
+  get "*any", to: redirect('/404'), via: :all
 
 end
