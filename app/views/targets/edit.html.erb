@@ -1,9 +1,6 @@
-<p class="current_step">1. Add/Change Information<span class="not_current_step">>>>2. Check Representatives</span></p>
-<h1>Add/Change Target</h1>
-
-
+<p class="current_step">Step 1. Add/Change Information<span class="not_current_step">>>>Step 2. Check Representatives</span></p>
+<h1>Add/Change Friends and Family</h1>
   <%= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
-
     <div>
       <%= f.label :first_name %>
       <%= f.text_field :first_name, placeholder: "First Name"%>
@@ -59,7 +56,7 @@
     <div class=hidden>
       <%= f.text_field :user_id, placeholder: "user id" %>
     </div>
-    <%= link_to "Cancel", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
+    <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
     <%= link_to "Inactivate", inactivate_target_path(@target.id), class: "btn btn-success" %>
     <%= f.submit "Next", class: "btn btn-success" %>
 

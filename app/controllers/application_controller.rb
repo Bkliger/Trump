@@ -78,7 +78,6 @@ class ApplicationController < ActionController::Base
     end
 
     def lookup_reps(target, request_origin)
-        # binding.pry
         @action_array = [] # builds the action block for the email
         case
         # zip entered
