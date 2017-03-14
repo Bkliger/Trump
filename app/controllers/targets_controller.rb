@@ -57,7 +57,7 @@ class TargetsController < ApplicationController
   end
 
   def destroy
-    @target = Target.find params[:target_id]
+    @target = Target.friendly.find(params[:target_id])
     @target.destroy
     flash[:notice] = "Friends and Family Deleted"
     redirect_to targets_path
@@ -70,20 +70,18 @@ class TargetsController < ApplicationController
     #get target
     target = Target.friendly.find(params[:target_id])
     request_origin = "finish"
-
-
     create_single_message(current_user,target,message,request_origin)
     redirect_to targets_path
   end
 
   def unsubscribe
-    @target = Target.find (params[:target_id])
+    @target = Target.friendly.find(params[:target_id])
     @target.update(status: "Unsubscribed")
     render :unsubscribe
   end
 
   def inactivate
-    @target = Target.find (params[:target_id])
+    @target = Target.friendly.find(params[:target_id])
     @target.update(status: "Inactive")
     redirect_to targets_path
   end
