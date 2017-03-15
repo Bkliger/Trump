@@ -4,6 +4,7 @@ class MessagesController < ApplicationController
   end
 
   def edit
+
     @message = Message.find(params[:message_id])
   render :edit
   end
@@ -52,13 +53,15 @@ class MessagesController < ApplicationController
     # this is a solution for a single org. this can be expanded when other organizations can create messages
     main_org = Org.find_by org_name: "General"
     # get all users
+
     UserOrg.where(org_id: main_org.id).find_each do |user|
+      sponsoring_user = User.find user.user_id
       # for each user, get all of their targets
       # I use a join here to get user data and target data. The user data can be used to create the message to the user - functionality to be added
       request_origin = "bulk send"
       Target.select("users.*, targets.*").joins(:user).where(targets: {user_id: user.user_id}).find_each do |target|
         if target.status == "Active"
-            create_single_message(current_user,target,@message,request_origin)
+            create_single_message(sponsoring_user,target,@message,request_origin)
         end
       end
     end
