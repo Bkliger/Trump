@@ -1,12 +1,19 @@
 class MessagesController < ApplicationController
   def index
-    @messages = Message.all.order("create_date DESC")
+    if current_user
+      @messages = Message.all.order("create_date DESC")
+    else
+      redirect_to splash_path
+    end
   end
 
   def edit
-
-    @message = Message.find(params[:message_id])
-  render :edit
+    if current_user
+      @message = Message.find(params[:message_id])
+      render :edit
+    else
+      redirect_to splash_path
+    end
   end
 
   def copy
@@ -24,9 +31,13 @@ class MessagesController < ApplicationController
   end
 
   def new
-    @message = Message.new
-    @org = Org.first
-    render :new
+    if current_user
+      @message = Message.new
+      @org = Org.first
+      render :new
+    else
+      redirect_to splash_path
+    end
   end
 
   def create

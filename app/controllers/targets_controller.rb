@@ -11,7 +11,6 @@ class TargetsController < ApplicationController
 
   def edit
     if current_user
-      # @target = Target.find(params[:target_id])
       @target = Target.friendly.find(params[:target_id])
       render :edit
     else
