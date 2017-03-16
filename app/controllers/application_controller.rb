@@ -79,9 +79,8 @@ class ApplicationController < ActionController::Base
 
     def lookup_reps(target, request_origin)
         @action_array = [] # builds the action block for the email
-        case
+        if !target.zip.blank?
         # zip entered
-        when (!target.zip.blank?)
             @action_array = [] # builds the action block for the email
             @sunlight_reps = sunlight_api(target.zip)
             if @sunlight_reps.results == []
@@ -90,26 +89,16 @@ class ApplicationController < ActionController::Base
             else
                 # if you have the full address
                 if !target.address.blank? && !target.city.blank?
-                    usps_lookup(target)
-                    case
-                    when @bad_address == true
-                        @target_message = 'Address not found. If you just enter the state, we can do a limited search'
-                        @status = 'Incomplete'
-                    when @zip5 != target.zip
-                        @target_message = 'Incorrect Zip Code For This Address'
-                        @status = 'Incomplete'
-                    else
-                        main_zip_processing(target,request_origin)
-                    end
+                    full_address_processing(target,request_origin)
                 else
                     main_zip_processing(target,request_origin)
                 end
             end
         # no zip and only state
-        when (target.zip.blank? && (target.address.blank? || target.city.blank?))
+        elsif (target.zip.blank? && (target.address.blank? || target.city.blank?))
             state_processing(target,request_origin)
         # no zip and full address
-        when (target.zip.blank? && !target.address.blank? && !target.city.blank?)
+        elsif (target.zip.blank? && !target.address.blank? && !target.city.blank?)
             full_address_processing(target,request_origin)
         end
         # decide what page to display based on the process that requested this method
@@ -136,6 +125,7 @@ class ApplicationController < ActionController::Base
         if republican_count == 0
             @target_message = 'There are no Republican Senators or Representatives for this person.'
             @status = 'No Republicans'
+            binding.pry
         elsif representative_count > 3
             if @last_state != target.state
                 @target_message = 'More than 1 representative found for this zip code and the state entered does not match the zip code. Click the back button to enter the correct state and/or full address.'

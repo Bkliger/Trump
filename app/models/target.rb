@@ -16,6 +16,7 @@ class Target < ActiveRecord::Base
   validates :rec_email, presence: true, unless: :rec_text
   validates :rec_text, presence: true, unless: :rec_email
   validates_format_of :email,:with => Devise::email_regexp, allow_blank: true
+  validates :zip, length: { is: 5 }
 
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
