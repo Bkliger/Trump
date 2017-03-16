@@ -1,0 +1,23 @@
+string = "Murray Abraham"
+i = -1
+spaces = []
+while i = string.index(' ',i+1)
+  spaces << i
+end
+puts string[spaces.last+1, (string.length - spaces.last - 1)]
+
+
+
+
+def up
+    add_index(:events,[:schedule_id, :day , :start_time],name: "event_schedule_by_day_and_time_index")
+end
+
+
+
+def up
+    add_index(:reps,[:first_three, :last_name],name: "unique_rep_index")
+end
+
+
+rails g model rep first_name first_three last_name url

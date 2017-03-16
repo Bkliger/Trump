@@ -99,18 +99,18 @@ class ApplicationController < ActionController::Base
                         @target_message = 'Incorrect Zip Code For This Address'
                         @status = 'Incomplete'
                     else
-                        main_zip_processing(target)
+                        main_zip_processing(target,request_origin)
                     end
                 else
-                    main_zip_processing(target)
+                    main_zip_processing(target,request_origin)
                 end
             end
         # no zip and only state
         when (target.zip.blank? && (target.address.blank? || target.city.blank?))
-            state_processing(target)
+            state_processing(target,request_origin)
         # no zip and full address
         when (target.zip.blank? && !target.address.blank? && !target.city.blank?)
-            full_address_processing(target)
+            full_address_processing(target,request_origin)
         end
         # decide what page to display based on the process that requested this method
         if request_origin == 'finish'
@@ -123,14 +123,14 @@ class ApplicationController < ActionController::Base
         end
     end
 
-    def main_zip_processing(target)
+    def main_zip_processing(target,request_origin)
         republican_count = 0
         representative_count = 0
         @sunlight_reps.results.each do |r|
             representative_count += 1
             next unless r.party == 'R'
             republican_count += 1
-            build_action_array_sunlight(r)
+            build_action_array_sunlight(r,request_origin)
             @last_state = r.state
         end
         if republican_count == 0
@@ -144,10 +144,10 @@ class ApplicationController < ActionController::Base
                 @action_array = [] # reinitialize the array that builds the action block for the email
                 # if you have the full address
                 if !target.address.blank? && !target.city.blank?
-                    full_address_processing(target)
+                    full_address_processing(target,request_origin)
                 # if you only have the state
                 elsif target.address.blank? || target.city.blank?
-                    state_processing(target)
+                    state_processing(target,request_origin)
                 else
                     @target_message = 'More than 1 representative found for this zip code. Click the back button and enter a full address if you know it.'
                     @status = 'Incomplete'
@@ -159,7 +159,7 @@ class ApplicationController < ActionController::Base
         end
     end
 
-    def full_address_processing(target)
+    def full_address_processing(target,request_origin)
         usps_lookup(target)
         if @bad_address == true
             @target_message = 'Address not found. If you just enter the state, we can do a limited search'
@@ -175,7 +175,7 @@ class ApplicationController < ActionController::Base
                 @civic_reps = civic_api(address).officials[2, 3]
                 @civic_reps.each do |r|
                     republican_count += 1 if r.party == 'Republican'
-                    build_action_array_civic(r)
+                      build_action_array_civic(r,request_origin)
                 end
                 if republican_count > 0
                     @target_message = 'Congresspeople found. Ready to send messages.'
@@ -189,14 +189,14 @@ class ApplicationController < ActionController::Base
         end
     end
 
-    def state_processing(target)
+    def state_processing(target,request_origin)
         address = target.state
         republican_count = 0
         civic_response = civic_api(address)
         @civic_reps = civic_response.officials[2, 2]
         @civic_reps.each do |r|
             republican_count += 1 if r.party == 'Republican'
-            build_action_array_civic(r)
+            build_action_array_civic(r,request_origin)
         end
         if republican_count > 0
             @target_message = 'Republican Senators found. If you know the full address, we can check for representatives.'
@@ -207,26 +207,37 @@ class ApplicationController < ActionController::Base
         end
     end
 
-    def build_action_array_civic(r)
-        action_item = {}
-        if r.emails.nil?
-            action_item = { rep_name: r.name, rep_phone: r.phones[0] }
-        else
-            action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_email: r.email[0] }
-        end
+    def build_action_array_civic(r,request_origin)
+      if request_origin == "finish" || request_origin == "bulk send"
+          last_name = parse_rep_name_civic(r.name)
+          rep = Rep.where(first_three: r.name.slice(0,3), last_name: last_name)
+          action_item = {}
+          if rep[0].url.nil?
+              action_item = { rep_name: r.name, rep_phone: r.phones[0] }
+          else
+              action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_email: rep[0].url }
+          end
 
-        @action_array << action_item
+          @action_array << action_item
+      else
+          @action_array = []
+      end
     end
 
-    def build_action_array_sunlight(r)
-        full_name = r.first_name + ' ' + r.last_name
-        action_item = {}
-        if r.oc_email.nil?
-            action_item = { rep_name: full_name, rep_phone: r.phone }
+    def build_action_array_sunlight(r,request_origin)
+        if request_origin == "finish" || request_origin == "bulk send"
+            rep = Rep.where(first_three: r.first_name.slice(0,3), last_name: r.last_name)
+            full_name = r.first_name + ' ' + r.last_name
+            action_item = {}
+            if rep[0].url.nil?
+                action_item = { rep_name: full_name, rep_phone: r.phone }
+            else
+                action_item = { rep_name: full_name, rep_phone: r.phone, rep_email: rep[0].url }
+            end
+            @action_array << action_item
         else
-            action_item = { rep_name: full_name, rep_phone: r.phone, rep_email: r.oc_email }
+            @action_array = []
         end
-        @action_array << action_item
     end
 
     def test_twilio
@@ -269,6 +280,16 @@ class ApplicationController < ActionController::Base
         else
             @base_url = uri.scheme.to_s + '://' + uri.host.to_s + ':' + uri.port.to_s
         end
+    end
+
+    def parse_rep_name_civic(name)
+      i = -1
+      spaces = []
+      while i = name.index(' ',i+1)
+        spaces << i
+      end
+      last_name = name[spaces.last+1, (name.length - spaces.last - 1)]
+
     end
 
     private

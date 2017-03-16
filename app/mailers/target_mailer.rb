@@ -8,7 +8,7 @@ class TargetMailer < ApplicationMailer
     @action_array = action_array
     @target_id = target_id
     @base_url = base_url
-    if zip4 == "Error" || zip.blank?
+    if zip4 == "Error" || zip.blank? ||zip4.nil?
       @zipPlus4 = "Error"
     else
       @zipPlus4 = zip + "-" + zip4

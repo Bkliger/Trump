@@ -70,6 +70,13 @@ Rails.application.routes.draw do
   patch "/users/:user_id", to:"users#update"
   delete "/users/:user_id", to:"users#destroy", as: "delete_user"
 
+  get "/reps", to: "reps#index", as: "reps"
+  get "/reps/new", to: "reps#new", as: "new_rep"
+  get "/reps/:rep_id/edit", to:"reps#edit", as: "edit_rep"
+  post "/reps", to: "reps#create"
+  patch "/reps/:rep_id", to:"reps#update"
+  delete "/reps/:rep_id", to:"reps#destroy", as: "delete_rep"
+
   #-------------catch all--------------------------------------------------------------#
   get "*any", to: redirect('/404'), via: :all
 

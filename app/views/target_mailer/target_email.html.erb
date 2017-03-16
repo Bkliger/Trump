@@ -15,11 +15,15 @@
       <th>Email Link</th>
       </tr>
       <% @action_array.each do |r| %>
-        <tr>
-        <td><%= r[:rep_name] %></td>
-        <td><%= r[:rep_phone] %></td>
-        <td><%= link_to "Click to Send a Message", "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a" %></td>
-        </tr>
+          <tr>
+          <td><%= r[:rep_name] %></td>
+          <td><%= r[:rep_phone] %></td>
+          <% if r[:rep_email].nil? %>
+              <td>Email Not Available</td>
+          <% else %>
+              <td><%= link_to "Click to Send an Email Message", r[:rep_email] %></td>
+          <% end  %>
+          </tr>
       <% end %>
       </table>
     </h3>

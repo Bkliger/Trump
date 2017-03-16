@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315033156) do
+ActiveRecord::Schema.define(version: 20170316042233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,17 @@ ActiveRecord::Schema.define(version: 20170315033156) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "reps", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "first_three"
+    t.string   "last_name"
+    t.string   "url"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "reps", ["first_three", "last_name"], name: "unique_rep_index", unique: true, using: :btree
 
   create_table "targetmessages", force: :cascade do |t|
     t.date     "sent_date"
