@@ -1,7 +1,9 @@
 class RepsController < ApplicationController
     def index
         if current_user
-          @reps = Rep.all
+          @reps = Rep.paginate(:page => params[:page], :per_page => 50)
+
+
         else
           redirect_to splash_path
         end

@@ -23,6 +23,8 @@ config.action_mailer.raise_delivery_errors = true
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
+  require 'will_paginate'
+
 
   # Devise
   # Ensure you have defined default url options in your environments files. Here

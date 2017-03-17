@@ -152,7 +152,7 @@ class ApplicationController < ActionController::Base
     def full_address_processing(target,request_origin)
         usps_lookup(target)
         if @bad_address == true
-            @target_message = 'Address not found. If you just enter the state, we can do a limited search'
+            @target_message = 'Address not found. If you enter just the state alone, we can do a limited search'
             @status = 'Incomplete'
         else
             address = target.address + ' ' + target.city + ' ' + target.state
