@@ -18,7 +18,16 @@ class TargetsController < ApplicationController
     end
   end
 
-  def step_three
+  def step_two_edit
+    if current_user
+      @target = Target.friendly.find(params[:target_id])
+      render :step_two
+    else
+      redirect_to splash_path
+    end
+  end
+
+  def step_two_edit
     if current_user
       @target = Target.friendly.find(params[:target_id])
       render :step_three
@@ -26,6 +35,27 @@ class TargetsController < ApplicationController
       redirect_to splash_path
     end
   end
+
+  def step_three_update
+    # test_twilio
+    @target = Target.friendly.find(params[:target_id])
+    @target.update(target_params)
+    if @target.valid?
+    else
+      flash[:notice] = @target.errors.full_messages.to_sentence
+      redirect_to edit_target_path(@target)
+      return
+    end
+    #get most recent message
+    message_history = Messhistory.last
+    message = Message.find(message_history.message_id)
+    #get target
+    target = Target.friendly.find(params[:target_id])
+    request_origin = "finish"
+    create_single_message(current_user,target,message,request_origin)
+    redirect_to targets_path
+  end
+
 
 
   def new
@@ -49,6 +79,20 @@ class TargetsController < ApplicationController
     request_origin = "create"
     lookup_reps(@target,request_origin)
 
+  end
+
+  def step_two_update
+    # test_twilio
+    @target = Target.friendly.find(params[:target_id])
+    @target.update(target_params)
+    if @target.valid?
+    else
+      flash[:notice] = @target.errors.full_messages.to_sentence
+      redirect_to edit_target_path(@target)
+      return
+    end
+    request_origin = "step_two"
+    lookup_reps(@target,request_origin)
   end
 
   def update

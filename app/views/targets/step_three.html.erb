@@ -1,12 +1,13 @@
 <p class="not_current_step">Step 1. Add Information<span class="not_current_step">>>>Step 2. Check Representatives</span><span class="current_step">>>>Step 3. How to Contact</span></p>
 <h1>Add/Change Friends and Family</h1>
-  <%= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
+  <%= form_for(@target, :url => step_three_edit_target_path(@target)) do |f| %>
 
     <div>
       <p>Message Greeting</p>
       <p>How would you start a message to this person? (for example: Hi Mom)</p>
         <%#= f.label :salutation %>
-      <%= f.text_field :salutation, placeholder: "Salutation" %>
+      <%= f.text_field :salutation, placeholder: "Greeting" %>
+      <span class="glyphicon glyphicon-star asterisk"></span>
     </div>
       <br>
     <div>
@@ -30,10 +31,9 @@
     <div class=hidden>
       <%= f.text_field :user_id, placeholder: "user id" %>
     </div>
-  <%= link_to "Finish", finish_target_path(@target.slug), class: "btn btn-success" %>
-    <%#= link_to "Inactivate", inactivate_target_path(@target.id), class: "btn btn-success" %>
-    <%#= f.submit "Next", class: "btn btn-success" %>
-    <%#= link_to "Back to Friend & Family List", targets_path, class: "btn btn-success" %>
+
+    <%= f.submit "Finish", class: "btn btn-success" %>
+
 
   <% end %>
 

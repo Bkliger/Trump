@@ -106,23 +106,25 @@ class ApplicationController < ActionController::Base
             return
         elsif request_origin == 'bulk send'
             return
+        elsif request_origin == 'step_two'
+          render :step_three
         else
             target.update(status: @status)
-            render 'step_two'
+            render :step_two
         end
     end
 
     def main_zip_processing(target,request_origin)
-        republican_count = 0
+        @republican_count = 0
         representative_count = 0
         @sunlight_reps.results.each do |r|
             representative_count += 1
             next unless r.party == 'R'
-            republican_count += 1
+            @republican_count += 1
             build_action_array_sunlight(r,request_origin)
             @last_state = r.state
         end
-        if republican_count == 0
+        if @republican_count == 0
             @target_message = 'There are no Republican Senators or Representatives for this person.'
             @more_info_needed = 0
             @status = 'No Republicans'
@@ -161,36 +163,22 @@ class ApplicationController < ActionController::Base
             @status = 'Incomplete'
         else
             address = target.address + ' ' + target.city + ' ' + target.state
-            republican_count = 0
+            @republican_count = 0
             civic_response = civic_api(address)
             if !civic_response.error.nil?
                 @target_message = 'No Information for this address'
                 @more_info_needed = 0
                 @status = 'Incomplete'
             else
-                result_count = 1
                 @senator_count = 0
                 @rep_count = 0
                 @civic_reps = civic_api(address).officials[2, 3]
-                @civic_reps.each do |r|
-                    if (result_count < 3)
-                      rep_type = "S"
-                    else
-                      rep_type = "R"
-                    end
-                    result_count += 1
-                    republican_count += 1 if r.party == 'Republican'
-                    if rep_type == "S"
-                        @senator_count += 1
-                    else
-                        @rep_count += 1
-                    end
-                      build_action_array_civic(r,request_origin,rep_type)
-                end
-                if republican_count > 0
+                determine_rep_stats(@civic_reps)
+
+                if @republican_count > 0
                     congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
                     @action_array.unshift(congressional_stats)
-                    @target_message = 'Congresspeople found. Ready to send messages.'
+                    # @target_message = 'Congresspeople found. Ready to send messages.'
                     @more_info_needed = 0
                     @status = 'Active'
                     # @zip4 =
@@ -205,25 +193,26 @@ class ApplicationController < ActionController::Base
 
     def state_processing(target,request_origin)
         address = target.state
-        republican_count = 0
+        @republican_count = 0
         civic_response = civic_api(address)
+        @senator_count = 0
+        @rep_count = 0
         @civic_reps = civic_response.officials[2, 2]
-        @civic_reps.each do |r|
-            republican_count += 1 if r.party == 'Republican'
-            build_action_array_civic(r,request_origin)
-        end
-        if republican_count > 0
-            @target_message = 'Republican Senators found. If you enter the full address, we can check for representatives.'
+        determine_rep_stats(@civic_reps)
+        if @republican_count > 0
+          congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
+          @action_array.unshift(congressional_stats)
+            @target_message = 'Add an address for this person to see if they also have a Republican Congressperson.'
             @more_info_needed = 1
             @status = 'Active'
         else
-            @target_message = 'There are no Republican Senators. If you enter the address, we can check for representatives.'
+            @target_message = 'Add an address for this person to see if they also have a Republican Congressperson.'
             @more_info_needed = 1
             @status = 'No Republicans'
         end
     end
 
-    def build_action_array_civic(r,request_origin,rep_type)
+    def build_action_array_civic(r,rep_type)
         last_name = parse_rep_name_civic(r.name)
         rep = Rep.where(first_three: r.name.slice(0,3), last_name: last_name)
         action_item = {}
@@ -302,6 +291,25 @@ class ApplicationController < ActionController::Base
       end
       last_name = name[spaces.last+1, (name.length - spaces.last - 1)]
 
+    end
+
+    def determine_rep_stats(civic_reps)
+      result_count = 1
+      civic_reps.each do |r|
+          if (result_count < 3)
+            rep_type = "S"
+          else
+            rep_type = "R"
+          end
+          result_count += 1
+          @republican_count += 1 if r.party == 'Republican'
+          if rep_type == "S"
+              @senator_count += 1
+          else
+              @rep_count += 1
+          end
+          build_action_array_civic(r,rep_type)
+      end
     end
 
     private

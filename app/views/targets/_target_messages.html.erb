@@ -1,8 +1,7 @@
 
-<h2><%= @target_message %></h2>
 <br>
 <h3>
-  <%= @target.first_name %> <%= @target.last_name %> has  <%= pluralize(@action_array[0][:senator_count], 'senator') %>
+  <%= @target.first_name %> <%= @target.last_name %> has  <%= pluralize(@action_array[0][:senator_count], 'Republican Senator') %>
 </h3>
 <h3>
   <% @action_array[1,@action_array.length].each do |r| %>
@@ -12,3 +11,19 @@
       <% end %>
   <% end %>
 </h3>
+<%if @more_info_needed != 1 %>
+
+    <h3> and </h3>
+    <h3>
+    <%=  pluralize(@action_array[0][:rep_count], 'Republican Representative') %>
+    </h3>
+    <h3>
+      <% @action_array[1,@action_array.length-1].each do |r| %>
+
+          <%if r[:rep_type] == "R" %>
+            <h3>  <%= r[:rep_name]%> </h3>
+          <% end %>
+      <% end %>
+    </h3>
+<% end %>
+<h2><%= @target_message %></h2>
