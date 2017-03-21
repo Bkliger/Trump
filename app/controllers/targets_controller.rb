@@ -18,6 +18,16 @@ class TargetsController < ApplicationController
     end
   end
 
+  def step_three
+    if current_user
+      @target = Target.friendly.find(params[:target_id])
+      render :step_three
+    else
+      redirect_to splash_path
+    end
+  end
+
+
   def new
     if current_user
       @target = Target.new
@@ -91,7 +101,7 @@ class TargetsController < ApplicationController
 
 
   def target_params
-    params.require(:target).permit(:first_name, :last_name, :address, :city, :state, :zip, :salutation, :email, :rec_email, :rec_text, :phone, :user_id)
+    params.require(:target).permit(:first_name, :last_name, :address, :city, :state, :zip, :salutation, :email, :contact_method, :phone, :user_id)
   end
 
 

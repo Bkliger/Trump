@@ -1,0 +1,43 @@
+<p class="not_current_step">Step 1. Add Information<span class="not_current_step">>>>Step 2. Check Representatives</span><span class="current_step">>>>Step 3. How to Contact</span></p>
+<h1>Add/Change Friends and Family</h1>
+  <%= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
+
+    <div>
+      <p>Message Greeting</p>
+      <p>How would you start a message to this person? (for example: Hi Mom)</p>
+        <%#= f.label :salutation %>
+      <%= f.text_field :salutation, placeholder: "Salutation" %>
+    </div>
+      <br>
+    <div>
+      <p>Contact this person by:</p>
+      <%= radio_button_tag(:contact_method, 1, id: "email") %>
+      <%= label_tag(:contact_method, "Email") %>
+      <%= radio_button_tag(:contact_method, 2, false, id: "text") %>
+      <%= label_tag(:contact_method, "Text") %>
+
+    </div>
+    <div id="email_input" >
+        <%= f.label :email %>
+      <%= f.text_field :email, placeholder: "email"%>
+    </div>
+
+    <div id = "text_input" class = "hidden">
+      <%= f.label :cell_phone %>
+      <%= f.text_field :phone, placeholder: "Cell Phone"%>
+    </div>
+    <!-- To be hidden in actual form -->
+    <div class=hidden>
+      <%= f.text_field :user_id, placeholder: "user id" %>
+    </div>
+  <%= link_to "Finish", finish_target_path(@target.slug), class: "btn btn-success" %>
+    <%#= link_to "Inactivate", inactivate_target_path(@target.id), class: "btn btn-success" %>
+    <%#= f.submit "Next", class: "btn btn-success" %>
+    <%#= link_to "Back to Friend & Family List", targets_path, class: "btn btn-success" %>
+
+  <% end %>
+
+  <br>
+  <br>
+    <span class="glyphicon glyphicon-star asterisk"></span>
+      <span class="asterisk">= Required</span>

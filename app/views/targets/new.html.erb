@@ -12,6 +12,11 @@
     <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
+    <%= f.label :state %>
+  <%= f.select(:state, options_for_select(us_states), {:include_blank => 'Select State'}) %>
+      <span class="glyphicon glyphicon-star asterisk"></span>
+</div>
+<div>
     <%= f.label :address %>
   <%= f.text_field :address, placeholder: "Address" %>
 </div>
@@ -20,38 +25,10 @@
   <%= f.text_field :city, placeholder: "City" %>
 </div>
 <div>
-    <%= f.label :state %>
-  <%= f.select(:state, options_for_select(us_states), {:include_blank => 'Select State'}) %>
-      <span class="glyphicon glyphicon-star asterisk"></span>
-</div>
-<div>
     <%= f.label :zip_code %>
   <%= f.text_field :zip, placeholder: "Zip Code" %>
 </div>
-<div>
-  <%= f.label :salutation %>
-  <%= f.text_field :salutation, placeholder: "Salutation" %>
-    <span class="glyphicon glyphicon-star asterisk"></span>
-    <span>For example - Hi Mom</span>
-</div>
-<br>
-<div>
-    <%= f.label :receive_email? %>
-  <%= f.check_box :rec_email, placeholder: "email" %>
-</div>
-<div>
-    <%= f.label :email %>
-  <%= f.text_field :email, placeholder: "email" %>
-</div>
-<br>
-<div>
-  <%= f.label :receive_text? %>
-  <%= f.check_box :rec_text, placeholder: "text" %>
-</div>
-<div>
-  <%= f.label :cell_phone %>
-  <%= f.text_field :phone, placeholder: "Cell Phone" %>
-</div>
+
 
 <!-- To be hidden in actual form -->
 <div class=hidden>

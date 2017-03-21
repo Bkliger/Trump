@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   get "targets", to: "targets#index", as: "targets", path: "friends"
   get "/friends/new", to: "targets#new", as: "new_target"
   get "/friends/:target_id/edit", to:"targets#edit", as: "edit_target"
+  get "/friends/:target_id/finish", to:"targets#step_three", as: "step_three_target"
   get "/friends/:target_id/finish", to:"targets#finish", as: "finish_target"
   get "/targets/:target_id/unsubscribe", to:"targets#unsubscribe", as: "unsubscribe_target"
   get "/targets/:target_id/inactivate", to:"targets#inactivate", as: "inactivate_target"

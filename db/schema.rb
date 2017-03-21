@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170316042233) do
+ActiveRecord::Schema.define(version: 20170320193239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,8 +99,6 @@ ActiveRecord::Schema.define(version: 20170316042233) do
     t.string   "plus4"
     t.string   "salutation"
     t.string   "email"
-    t.boolean  "rec_email"
-    t.boolean  "rec_text"
     t.string   "phone"
     t.boolean  "unsubscribed"
     t.date     "unsubscribed_date"
@@ -112,6 +110,7 @@ ActiveRecord::Schema.define(version: 20170316042233) do
     t.string   "state"
     t.string   "status"
     t.string   "slug"
+    t.integer  "contact_method"
   end
 
   add_index "targets", ["slug"], name: "index_targets_on_slug", unique: true, using: :btree

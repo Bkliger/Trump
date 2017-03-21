@@ -108,7 +108,7 @@ class ApplicationController < ActionController::Base
             return
         else
             target.update(status: @status)
-            render 'target_message'
+            render 'step_two'
         end
     end
 
@@ -124,11 +124,13 @@ class ApplicationController < ActionController::Base
         end
         if republican_count == 0
             @target_message = 'There are no Republican Senators or Representatives for this person.'
+            @more_info_needed = 0
             @status = 'No Republicans'
-            binding.pry
+
         elsif representative_count > 3
             if @last_state != target.state
                 @target_message = 'More than 1 representative found for this zip code and the state entered does not match the zip code. Click the back button to enter the correct state and/or full address.'
+                @more_info_needed = 0
                 @status = 'Incomplete'
             else
                 @action_array = [] # reinitialize the array that builds the action block for the email
@@ -139,12 +141,14 @@ class ApplicationController < ActionController::Base
                 elsif target.address.blank? || target.city.blank?
                     state_processing(target,request_origin)
                 else
-                    @target_message = 'More than 1 representative found for this zip code. Click the back button and enter a full address if you know it.'
+                    @target_message = 'More than 1 representative found for this zip code. Add an address for this person or we will just use the state to find the Senators.'
+                    @more_info_needed = 1
                     @status = 'Incomplete'
                 end
             end
         else
             @target_message = 'Congresspeople found. Ready to send messages.'
+            @more_info_needed = 0
             @status = 'Active'
         end
     end
@@ -153,6 +157,7 @@ class ApplicationController < ActionController::Base
         usps_lookup(target)
         if @bad_address == true
             @target_message = 'Address not found. If you enter just the state alone, we can do a limited search'
+            @more_info_needed = 0
             @status = 'Incomplete'
         else
             address = target.address + ' ' + target.city + ' ' + target.state
@@ -160,19 +165,38 @@ class ApplicationController < ActionController::Base
             civic_response = civic_api(address)
             if !civic_response.error.nil?
                 @target_message = 'No Information for this address'
+                @more_info_needed = 0
                 @status = 'Incomplete'
             else
+                result_count = 1
+                @senator_count = 0
+                @rep_count = 0
                 @civic_reps = civic_api(address).officials[2, 3]
                 @civic_reps.each do |r|
+                    if (result_count < 3)
+                      rep_type = "S"
+                    else
+                      rep_type = "R"
+                    end
+                    result_count += 1
                     republican_count += 1 if r.party == 'Republican'
-                      build_action_array_civic(r,request_origin)
+                    if rep_type == "S"
+                        @senator_count += 1
+                    else
+                        @rep_count += 1
+                    end
+                      build_action_array_civic(r,request_origin,rep_type)
                 end
                 if republican_count > 0
+                    congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
+                    @action_array.unshift(congressional_stats)
                     @target_message = 'Congresspeople found. Ready to send messages.'
+                    @more_info_needed = 0
                     @status = 'Active'
                     # @zip4 =
                 else
                     @target_message = 'There are no Republican Senators or Representatives for this person.'
+                    @more_info_needed = 0
                     @status = 'No Republicans'
                 end
             end
@@ -189,29 +213,27 @@ class ApplicationController < ActionController::Base
             build_action_array_civic(r,request_origin)
         end
         if republican_count > 0
-            @target_message = 'Republican Senators found. If you know the full address, we can check for representatives.'
+            @target_message = 'Republican Senators found. If you enter the full address, we can check for representatives.'
+            @more_info_needed = 1
             @status = 'Active'
         else
-            @target_message = 'There are no Republican Senators. If you know the address, we can check for representatives.'
+            @target_message = 'There are no Republican Senators. If you enter the address, we can check for representatives.'
+            @more_info_needed = 1
             @status = 'No Republicans'
         end
     end
 
-    def build_action_array_civic(r,request_origin)
-      if request_origin == "finish" || request_origin == "bulk send"
-          last_name = parse_rep_name_civic(r.name)
-          rep = Rep.where(first_three: r.name.slice(0,3), last_name: last_name)
-          action_item = {}
-          if rep[0].url.nil?
-              action_item = { rep_name: r.name, rep_phone: r.phones[0] }
-          else
-              action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_email: rep[0].url }
-          end
+    def build_action_array_civic(r,request_origin,rep_type)
+        last_name = parse_rep_name_civic(r.name)
+        rep = Rep.where(first_three: r.name.slice(0,3), last_name: last_name)
+        action_item = {}
+        if rep[0].url.nil?
+            action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type:rep_type }
+        else
+            action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type:rep_type, rep_email: rep[0].url }
+        end
+        @action_array << action_item
 
-          @action_array << action_item
-      else
-          @action_array = []
-      end
     end
 
     def build_action_array_sunlight(r,request_origin)
