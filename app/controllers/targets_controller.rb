@@ -1,177 +1,195 @@
 class TargetsController < ApplicationController
-
-  def index
-    if current_user
-      @user = current_user
-      @targets = Target.where("user_id = ?",current_user)
-    else
-      redirect_to splash_path
-    end
-  end
-
-  def edit
-    if current_user
-      @target = Target.friendly.find(params[:target_id])
-      render :edit
-    else
-      redirect_to splash_path
-    end
-  end
-
-  def step_two_edit
-    if current_user
-      @target = Target.friendly.find(params[:target_id])
-      render :step_two
-    else
-      redirect_to splash_path
-    end
-  end
-
-  def step_three_edit
-    if current_user
-      @target = Target.friendly.find(params[:target_id])
-      render :step_three
-    else
-      redirect_to splash_path
-    end
-  end
-
-  def step_three_update
-    # test_twilio
-    @target = Target.friendly.find(params[:target_id])
-    @target.update(target_params)
-    if @target.valid?
-    else
-      flash[:notice] = @target.errors.full_messages.to_sentence
-      redirect_to edit_target_path(@target)
-      return
-    end
-    #get most recent message
-    message_history = Messhistory.last
-    message = Message.find(message_history.message_id)
-    #get target
-    target = Target.friendly.find(params[:target_id])
-    request_origin = "finish"
-    create_single_message(current_user,target,message,request_origin)
-    redirect_to targets_path
-  end
-
-
-
-  def new
-    if current_user
-      @target = Target.new
-      render :new
-    else
-      redirect_to splash_path
-    end
-  end
-
-  def create
-    if !target_params[:zip].blank?
-        @sunlight_reps = sunlight_api(target_params[:zip])
-        if @sunlight_reps.results == []
-            flash[:notice] = 'Invalid Zip Code'
-            @target = Target.new(target_params)
-            render :new
-            return
+    def index
+        if current_user
+            @user = current_user
+            @targets = Target.where('user_id = ?', current_user)
+        else
+            redirect_to splash_path
         end
     end
-    @target = Target.create(target_params)
-    if @target.valid?
-    else
-      flash[:notice] = @target.errors.full_messages.to_sentence
-      @target = Target.new(target_params)
-      render :new
-      return
+
+    def new
+        if current_user
+            @target = Target.new
+            render :new
+        else
+            redirect_to splash_path
+        end
     end
-    request_origin = "create"
-    lookup_reps(@target,request_origin)
 
-
-  end
-
-  def step_two_update
-    if !target_params[:zip].blank?
-        @sunlight_reps = sunlight_api(target_params[:zip])
-        if @sunlight_reps.results == []
-            flash[:notice] = 'Invalid Zip Code'
-            if current_user
-              @target = Target.friendly.find(params[:target_id])
-              @more_info_needed = 1
-              @skip_message = "yes"
-              render :step_two
-              return
-            else
-              redirect_to splash_path
+    def create
+        unless target_params[:zip].blank?
+            @sunlight_reps = sunlight_api(target_params[:zip])
+            if @sunlight_reps.results == []
+                flash[:notice] = 'Invalid Zip Code'
+                @target = Target.new(target_params)
+                render :new
+                return
             end
         end
+        @target = Target.create(target_params)
+        if @target.valid?
+        else
+          flash[:notice] = @target.errors.full_messages.to_sentence
+          @target = Target.new(target_params)
+          render :new
+          return
+        end
+        request_origin = 'create'
+        lookup_reps(@target, request_origin)
     end
-    # test_twilio
-    @target = Target.friendly.find(params[:target_id])
-    @target.update(target_params)
-    if @target.valid?
-    else
-      flash[:notice] = @target.errors.full_messages.to_sentence
-      redirect_to edit_target_path(@target)
-      return
+
+    def edit
+        if current_user
+            @target = Target.friendly.find(params[:target_id])
+            render :edit
+        else
+            redirect_to splash_path
+        end
     end
-    request_origin = "step_two"
-    lookup_reps(@target,request_origin)
-  end
 
-  def update
-    # test_twilio
-    @target = Target.friendly.find(params[:target_id])
-    @target.update(target_params)
-    if @target.valid?
-    else
-      flash[:notice] = @target.errors.full_messages.to_sentence
-      redirect_to edit_target_path(@target)
-      return
+    def update
+        # test_twilio
+        @target = Target.friendly.find(params[:target_id])
+        @target.update(target_params)
+        if @target.valid?
+        else
+          flash[:notice] = @target.errors.full_messages.to_sentence
+          redirect_to edit_target_path(@target)
+          return
+        end
+        request_origin = 'update'
+        lookup_reps(@target, request_origin)
     end
-    request_origin = "update"
-    lookup_reps(@target,request_origin)
-  end
 
-  def destroy
-    @target = Target.friendly.find(params[:target_id])
-    @target.destroy
-    flash[:notice] = "Friends and Family Deleted"
-    redirect_to targets_path
-  end
+    def step_two_edit
+        if current_user
+            @target = Target.friendly.find(params[:target_id])
+            render :step_two
+        else
+            redirect_to splash_path
+        end
+    end
 
-  def finish
-    #get most recent message
-    message_history = Messhistory.last
-    message = Message.find(message_history.message_id)
-    #get target
-    target = Target.friendly.find(params[:target_id])
-    request_origin = "finish"
-    create_single_message(current_user,target,message,request_origin)
-    redirect_to targets_path
-  end
+    def step_two_update
+        error_array = []
+        if !target_params[:zip].blank?
+            @sunlight_reps = sunlight_api(target_params[:zip])
+            if @sunlight_reps.results == []
+                error_array << 'Invalid Zip Code'
+            end
+        end
+        if !target_params[:address].blank? && !target_params[:city].blank?
+            usps_lookup(target_params[:address],target_params[:city],target_params[:state])
+            if @bad_address == true
+                error_array << 'Invalid Address'
+            end
+        end
+        flash[:notice] = error_array.to_sentence unless error_array.empty?
+        unless flash.empty?
+            if current_user
+                @target = Target.friendly.find(params[:target_id])
+                @more_info_needed = 1
+                @skip_message = 'yes'
+                render :step_two
+                return
+            else
+                redirect_to splash_path
+            end
+        end
+        @target = Target.friendly.find(params[:target_id])
+        if (@target.address != target_params[:address]) || (@target.city != target_params[:city]) ||  (@target.state != target_params[:state]) || (@target.zip != target_params[:zip])
+          request_origin = 'update'
+        else
+          request_origin = 'step_two'
+        end
+        @target.update(target_params)
+        if @target.valid?
+            lookup_reps(@target, request_origin)
+        end
+    end
 
-  def unsubscribe
-    @target = Target.friendly.find(params[:target_id])
-    @target.update(status: "Unsubscribed")
-    render :unsubscribe
-  end
+    def step_three_edit
+        if current_user
+            @target = Target.friendly.find(params[:target_id])
+            render :step_three
+        else
+            redirect_to splash_path
+        end
+    end
 
-  def inactivate
-    @target = Target.friendly.find(params[:target_id])
-    @target.update(status: "Inactive")
-    redirect_to targets_path
-  end
+    def step_three_update
+        error_array = []
+        if target_params[:salutation].blank?
+            error_array << 'Greeting is required'
+        end
+        if target_params[:contact_method] == 'email_val' && target_params[:email].blank?
+            error_array << 'If Email is checked, you must enter an Email Address'
+        end
+        if target_params[:contact_method] == 'text_val' && target_params[:text].blank?
+            error_array << 'If Text is checked, you must enter a phone number.'
+        end
+        flash[:notice] = error_array.join(', ') unless error_array.empty?
+        unless flash.empty?
+            if current_user
+                @target = Target.friendly.find(params[:target_id])
+                render :step_three
+                return
+            else
+                redirect_to splash_path
+            end
+        end
+        @target = Target.friendly.find(params[:target_id])
+        @target.update(target_params)
+        if @target.valid?
+        else
+          flash[:notice] = @target.errors.full_messages.to_sentence
+          redirect_to edit_target_path(@target)
+          return
+        end
+        # get most recent message
+        message_history = Messhistory.last
+        message = Message.find(message_history.message_id)
+        # get target
+        target = Target.friendly.find(params[:target_id])
+        request_origin = 'finish'
+        create_single_message(current_user, target, message, request_origin)
+        redirect_to targets_path
+    end
 
+    def destroy
+        @target = Target.friendly.find(params[:target_id])
+        @target.destroy
+        flash[:notice] = 'Friends and Family Deleted'
+        redirect_to targets_path
+    end
 
+    def finish
+        # get most recent message
+        message_history = Messhistory.last
+        message = Message.find(message_history.message_id)
+        # get target
+        target = Target.friendly.find(params[:target_id])
+        request_origin = 'finish'
+        create_single_message(current_user, target, message, request_origin)
+        redirect_to targets_path
+    end
 
-  private
+    def unsubscribe
+        @target = Target.friendly.find(params[:target_id])
+        @target.update(status: 'Unsubscribed')
+        render :unsubscribe
+    end
 
+    def inactivate
+        @target = Target.friendly.find(params[:target_id])
+        @target.update(status: 'Inactive')
+        redirect_to targets_path
+    end
 
-  def target_params
-    params.require(:target).permit(:first_name, :last_name, :address, :city, :state, :zip, :salutation, :email, :contact_method, :phone, :user_id)
-  end
+    private
 
-
+    def target_params
+        params.require(:target).permit(:first_name, :last_name, :address, :city, :state, :zip, :salutation, :email, :contact_method, :phone, :user_id)
+    end
 end

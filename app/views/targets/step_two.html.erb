@@ -5,35 +5,35 @@
     <%= render 'targets/target_messages' %>
 <% end %>
 <br>
+
 <%= form_for(@target, :url => step_two_edit_target_path(@target)) do |f| %>
     <%if @more_info_needed == 1 || @more_info_needed == 2%>
         <div>
-            <%= f.label :address %>
-            <%= f.text_field :address, placeholder: "Address" %>
-        </div>
-        <div>
-            <%= f.label :city %>
-            <%= f.text_field :city, placeholder: "City" %>
-        </div>
-
-        <div>
-            <%= f.label :zip_code %>
-            <%= f.text_field :zip, placeholder: "Zip Code" %>
-        </div>
-    <%end %>
-
-    <%if @more_info_needed == 2 %>
-    <div>
-        <%= f.label :state %>
-        <%= f.select(:state, options_for_select(us_states,@target.state)) %>
-        <span class="glyphicon glyphicon-star asterisk"></span>
-    </div>
-    <%end %>
-
-    <br>
-    <!-- To be hidden in actual form -->
-    <div class=hidden>
-        <%= f.text_field :user_id, placeholder: "user id" %>
+    <% else %>
+        <div class = "hidden">
+    <% end%>
+          <div>
+              <%= f.label :address %>
+              <%= f.text_field :address, placeholder: "Address" %>
+          </div>
+          <div>
+              <%= f.label :city %>
+              <%= f.text_field :city, placeholder: "City" %>
+          </div>
+          <div>
+              <%= f.label :state %>
+              <%= f.select(:state, options_for_select(us_states,@target.state)) %>
+                  <span class="glyphicon glyphicon-star asterisk"></span>
+          </div>
+          <div>
+              <%= f.label :zip_code %>
+              <%= f.text_field :zip, placeholder: "Zip Code" %>
+          </div>
+          <br>
+          <!-- To be hidden in actual form -->
+          <div class= "hidden">
+              <%= f.text_field :user_id, placeholder: "user id" %>
+          </div>
     </div>
 
     <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>

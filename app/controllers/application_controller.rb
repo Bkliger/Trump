@@ -17,8 +17,8 @@ class ApplicationController < ActionController::Base
     # used to process the xml from the usps api
     require 'rexml/document'
 
-    def usps_lookup(target)
-        url = format_USPS(target.address, target.city, target.state)
+    def usps_lookup(address,city,state)
+        url = format_USPS(address, city, state)
         uri = URI(url)
         response = Net::HTTP.get(uri)
         if !response.include? 'Error'
@@ -82,7 +82,6 @@ class ApplicationController < ActionController::Base
         if !target.zip.blank?
         # zip entered
             main_zip_processing(target,request_origin)
-            # if you have the full address as well
         # no zip and only state
         elsif (target.zip.blank? && (target.address.blank? || target.city.blank?))
             state_processing(target,request_origin)
@@ -107,14 +106,17 @@ class ApplicationController < ActionController::Base
         @sunlight_reps = sunlight_api(target.zip)
         determine_rep_stats_sunlight(@sunlight_reps.results)
         if @republican_count == 0
-            @target_message = 'There are no Republican Senators or Representatives for this person.'
+            congressional_stats = {senator_count: 0, rep_count: 0}
+            @action_array.unshift(congressional_stats)
+            @target_message = %q[You can add this person even though they won't receive messages at this time.]
             @more_info_needed = 0
             @status = 'No Republicans'
-        elsif @last_state != target.state
-            @target_message = 'The state entered does not match the zip code.'
-            @more_info_needed = 2
-            @status = 'Incomplete'
-        elsif @total_representative_count > 3
+        # elsif @last_state != target.state
+        #     @target_message = 'The state entered does not match the zip code.'
+        #     @more_info_needed = 2
+        #     @status = 'Incomplete'
+
+        elsif @total_representative_count > 1
             @action_array = [] # reinitialize the array that builds the action block for the email
             # if you have the full address
             if !target.address.blank? && !target.city.blank?
@@ -124,17 +126,15 @@ class ApplicationController < ActionController::Base
                 state_processing(target,request_origin)
             end
         else
-            if @republican_count > 0
-                congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
-                @action_array.unshift(congressional_stats)
-                @more_info_needed = 0
-                @status = 'Active'
-            end
+            congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
+            @action_array.unshift(congressional_stats)
+            @more_info_needed = 0
+            @status = 'Active'
         end
     end
 
     def full_address_processing(target,request_origin)
-        usps_lookup(target)
+        usps_lookup(target.address,target.city,target.state)
         if @bad_address == true
             @target_message = 'Address not found. If you enter just the state alone, we can do a limited search'
             @more_info_needed = 0
@@ -159,6 +159,8 @@ class ApplicationController < ActionController::Base
                     @more_info_needed = 0
                     @status = 'Active'
                 else
+                    congressional_stats = {senator_count: 0, rep_count: 0}
+                    @action_array.unshift(congressional_stats)
                     @target_message = 'There are no Republican Senators or Representatives for this person.'
                     @more_info_needed = 0
                     @status = 'No Republicans'
@@ -218,15 +220,15 @@ class ApplicationController < ActionController::Base
         require 'twilio-ruby'
 
         # put your own credentials here
-        account_sid = 'AC0ab0239d385f156c88112555be5c69c5'
-        auth_token = 'ada5d72c16ee2a0ec406de3d45070da3'
+        account_sid = 'AC095ddadf8e89976c17e4e8bf8da14543'
+        auth_token = 'a826bdde35e448025ce9c10f0f72ce23'
 
         # set up a client to talk to the Twilio REST API
         @client = Twilio::REST::Client.new(account_sid, auth_token)
 
         @message = @client.account.messages.create(
-            from: '9253784055',
-            to: '9252867453',
+            from: '+19253784055',
+            to: '+19252867453',
             body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
             media_url: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg'
         )

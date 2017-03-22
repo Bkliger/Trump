@@ -12,10 +12,13 @@
       <br>
     <div>
       <p>Contact this person by:</p>
-      <%= radio_button_tag(:contact_method, 1, id: "email") %>
-      <%= label_tag(:contact_method, "Email") %>
-      <%= radio_button_tag(:contact_method, 2, false, id: "text") %>
-      <%= label_tag(:contact_method, "Text") %>
+      <%= f.label :contact_method, "Email" %>
+      <!-- :email is 0 value -->
+      <%= f.radio_button :contact_method, :email_val, id: "email", checked: true %>
+      <%= f.label :contact_method, "Text" %>
+            <!-- :text is value of 1 -->
+      <%= f.radio_button :contact_method, :text_val, id: "text", checked: false %>
+
 
     </div>
     <div id="email_input" >
