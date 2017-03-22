@@ -27,7 +27,7 @@ class TargetsController < ApplicationController
     end
   end
 
-  def step_two_edit
+  def step_three_edit
     if current_user
       @target = Target.friendly.find(params[:target_id])
       render :step_three
@@ -68,6 +68,15 @@ class TargetsController < ApplicationController
   end
 
   def create
+    if !target_params[:zip].blank?
+        @sunlight_reps = sunlight_api(target_params[:zip])
+        if @sunlight_reps.results == []
+            flash[:notice] = 'Invalid Zip Code'
+            @target = Target.new(target_params)
+            render :new
+            return
+        end
+    end
     @target = Target.create(target_params)
     if @target.valid?
     else
@@ -79,9 +88,25 @@ class TargetsController < ApplicationController
     request_origin = "create"
     lookup_reps(@target,request_origin)
 
+
   end
 
   def step_two_update
+    if !target_params[:zip].blank?
+        @sunlight_reps = sunlight_api(target_params[:zip])
+        if @sunlight_reps.results == []
+            flash[:notice] = 'Invalid Zip Code'
+            if current_user
+              @target = Target.friendly.find(params[:target_id])
+              @more_info_needed = 1
+              @skip_message = "yes"
+              render :step_two
+              return
+            else
+              redirect_to splash_path
+            end
+        end
+    end
     # test_twilio
     @target = Target.friendly.find(params[:target_id])
     @target.update(target_params)

@@ -1,34 +1,42 @@
-<p class="not_current_step">Step 1. Add Information<span class="current_step">>>>Step 2. Check Representatives</span><span class="not_current_step">>>>Step 3. How to Contact</span></p>
-<%= render 'targets/target_messages' %>
+<p class="not_current_step">Step 1. Add Information<span class="current_step">>>>Step 2. Check Representatives</span>
+    <span class="not_current_step">>>>Step 3. How to Contact</span>
+</p>
+<% if @skip_message != "yes" %>
+    <%= render 'targets/target_messages' %>
+<% end %>
 <br>
-<%#= form_for(@target, :url => {:action => 'update', :id => @target.slug}) do |f| %>
-
 <%= form_for(@target, :url => step_two_edit_target_path(@target)) do |f| %>
-    <%if @more_info_needed == 1%>
+    <%if @more_info_needed == 1 || @more_info_needed == 2%>
         <div>
             <%= f.label :address %>
-          <%= f.text_field :address, placeholder: "Address" %>
+            <%= f.text_field :address, placeholder: "Address" %>
         </div>
         <div>
             <%= f.label :city %>
-          <%= f.text_field :city, placeholder: "City" %>
+            <%= f.text_field :city, placeholder: "City" %>
         </div>
 
         <div>
             <%= f.label :zip_code %>
-          <%= f.text_field :zip, placeholder: "Zip Code" %>
+            <%= f.text_field :zip, placeholder: "Zip Code" %>
         </div>
     <%end %>
 
-      <br>
+    <%if @more_info_needed == 2 %>
+    <div>
+        <%= f.label :state %>
+        <%= f.select(:state, options_for_select(us_states,@target.state)) %>
+        <span class="glyphicon glyphicon-star asterisk"></span>
+    </div>
+    <%end %>
+
+    <br>
     <!-- To be hidden in actual form -->
     <div class=hidden>
-      <%= f.text_field :user_id, placeholder: "user id" %>
+        <%= f.text_field :user_id, placeholder: "user id" %>
     </div>
 
     <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
     <%= f.submit "Next", class: "btn btn-success" %>
-
-
 
 <% end %>

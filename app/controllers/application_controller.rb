@@ -81,19 +81,8 @@ class ApplicationController < ActionController::Base
         @action_array = [] # builds the action block for the email
         if !target.zip.blank?
         # zip entered
-            @action_array = [] # builds the action block for the email
-            @sunlight_reps = sunlight_api(target.zip)
-            if @sunlight_reps.results == []
-                @target_message = 'Invalid Zip Code'
-                @status = 'Incomplete'
-            else
-                # if you have the full address
-                if !target.address.blank? && !target.city.blank?
-                    full_address_processing(target,request_origin)
-                else
-                    main_zip_processing(target,request_origin)
-                end
-            end
+            main_zip_processing(target,request_origin)
+            # if you have the full address as well
         # no zip and only state
         elsif (target.zip.blank? && (target.address.blank? || target.city.blank?))
             state_processing(target,request_origin)
@@ -115,43 +104,32 @@ class ApplicationController < ActionController::Base
     end
 
     def main_zip_processing(target,request_origin)
-        @republican_count = 0
-        representative_count = 0
-        @sunlight_reps.results.each do |r|
-            representative_count += 1
-            next unless r.party == 'R'
-            @republican_count += 1
-            build_action_array_sunlight(r,request_origin)
-            @last_state = r.state
-        end
+        @sunlight_reps = sunlight_api(target.zip)
+        determine_rep_stats_sunlight(@sunlight_reps.results)
         if @republican_count == 0
             @target_message = 'There are no Republican Senators or Representatives for this person.'
             @more_info_needed = 0
             @status = 'No Republicans'
-
-        elsif representative_count > 3
-            if @last_state != target.state
-                @target_message = 'More than 1 representative found for this zip code and the state entered does not match the zip code. Click the back button to enter the correct state and/or full address.'
-                @more_info_needed = 0
-                @status = 'Incomplete'
+        elsif @last_state != target.state
+            @target_message = 'The state entered does not match the zip code.'
+            @more_info_needed = 2
+            @status = 'Incomplete'
+        elsif @total_representative_count > 3
+            @action_array = [] # reinitialize the array that builds the action block for the email
+            # if you have the full address
+            if !target.address.blank? && !target.city.blank?
+                full_address_processing(target,request_origin)
+            # if you only have the state
             else
-                @action_array = [] # reinitialize the array that builds the action block for the email
-                # if you have the full address
-                if !target.address.blank? && !target.city.blank?
-                    full_address_processing(target,request_origin)
-                # if you only have the state
-                elsif target.address.blank? || target.city.blank?
-                    state_processing(target,request_origin)
-                else
-                    @target_message = 'More than 1 representative found for this zip code. Add an address for this person or we will just use the state to find the Senators.'
-                    @more_info_needed = 1
-                    @status = 'Incomplete'
-                end
+                state_processing(target,request_origin)
             end
         else
-            @target_message = 'Congresspeople found. Ready to send messages.'
-            @more_info_needed = 0
-            @status = 'Active'
+            if @republican_count > 0
+                congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
+                @action_array.unshift(congressional_stats)
+                @more_info_needed = 0
+                @status = 'Active'
+            end
         end
     end
 
@@ -167,21 +145,19 @@ class ApplicationController < ActionController::Base
             civic_response = civic_api(address)
             if !civic_response.error.nil?
                 @target_message = 'No Information for this address'
-                @more_info_needed = 0
+                @more_info_needed = 1
                 @status = 'Incomplete'
             else
                 @senator_count = 0
                 @rep_count = 0
                 @civic_reps = civic_api(address).officials[2, 3]
-                determine_rep_stats(@civic_reps)
+                determine_rep_stats_civic(@civic_reps)
 
                 if @republican_count > 0
                     congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
                     @action_array.unshift(congressional_stats)
-                    # @target_message = 'Congresspeople found. Ready to send messages.'
                     @more_info_needed = 0
                     @status = 'Active'
-                    # @zip4 =
                 else
                     @target_message = 'There are no Republican Senators or Representatives for this person.'
                     @more_info_needed = 0
@@ -198,7 +174,7 @@ class ApplicationController < ActionController::Base
         @senator_count = 0
         @rep_count = 0
         @civic_reps = civic_response.officials[2, 2]
-        determine_rep_stats(@civic_reps)
+        determine_rep_stats_civic(@civic_reps)
         if @republican_count > 0
           congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
           @action_array.unshift(congressional_stats)
@@ -217,28 +193,24 @@ class ApplicationController < ActionController::Base
         rep = Rep.where(first_three: r.name.slice(0,3), last_name: last_name)
         action_item = {}
         if rep[0].url.nil?
-            action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type:rep_type }
+            action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type: rep_type }
         else
             action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type:rep_type, rep_email: rep[0].url }
         end
         @action_array << action_item
-
     end
 
-    def build_action_array_sunlight(r,request_origin)
-        if request_origin == "finish" || request_origin == "bulk send"
-            rep = Rep.where(first_three: r.first_name.slice(0,3), last_name: r.last_name)
-            full_name = r.first_name + ' ' + r.last_name
-            action_item = {}
-            if rep[0].url.nil?
-                action_item = { rep_name: full_name, rep_phone: r.phone }
-            else
-                action_item = { rep_name: full_name, rep_phone: r.phone, rep_email: rep[0].url }
-            end
-            @action_array << action_item
+    def build_action_array_sunlight(r,rep_type)
+        rep = Rep.where(first_three: r.first_name.slice(0,3), last_name: r.last_name)
+        full_name = r.first_name + ' ' + r.last_name
+        action_item = {}
+        if rep[0].url.nil?
+            action_item = { rep_name: full_name, rep_phone: r.phone, rep_type: rep_type }
         else
-            @action_array = []
+            action_item = { rep_name: full_name, rep_phone: r.phone, rep_email: rep[0].url, rep_type: rep_type  }
         end
+        @action_array << action_item
+
     end
 
     def test_twilio
@@ -293,23 +265,51 @@ class ApplicationController < ActionController::Base
 
     end
 
-    def determine_rep_stats(civic_reps)
-      result_count = 1
-      civic_reps.each do |r|
-          if (result_count < 3)
-            rep_type = "S"
-          else
-            rep_type = "R"
-          end
-          result_count += 1
-          @republican_count += 1 if r.party == 'Republican'
-          if rep_type == "S"
-              @senator_count += 1
-          else
-              @rep_count += 1
-          end
-          build_action_array_civic(r,rep_type)
-      end
+    def determine_rep_stats_civic(civic_reps)
+        result_count = 1
+        civic_reps.each do |r|
+            if (result_count < 3)
+                rep_type = "S"
+            else
+                rep_type = "R"
+            end
+            result_count += 1
+            if r.party == 'Republican'
+                @republican_count += 1
+                if rep_type == "S"
+                    @senator_count += 1
+                else
+                    @rep_count += 1
+                end
+                build_action_array_civic(r,rep_type)
+            end
+        end
+    end
+
+    def determine_rep_stats_sunlight(sunlight_reps)
+        @republican_count = 0
+        @total_representative_count = 0
+        @rep_count = 0
+        @senator_count = 0
+        sunlight_reps.each do |r|
+            if r.chamber == "house"
+                rep_type = "R"
+                @total_representative_count += 1
+                if r.party == 'R'
+                    @republican_count += 1
+                    @rep_count += 1
+                    build_action_array_sunlight(r,rep_type)
+                end
+            else
+                if r.party == 'R'
+                    @republican_count += 1
+                    rep_type = "S"
+                    @senator_count += 1
+                    build_action_array_sunlight(r,rep_type)
+                end
+            end
+            @last_state = r.state
+        end
     end
 
     private
