@@ -48,7 +48,7 @@ Rails.application.routes.draw do
   get "/friends/:target_id/step_two", to:"targets#step_two_edit", as: "step_two_edit_target"
   get "/friends/:target_id/step_three", to:"targets#step_three_edit", as: "step_three_edit_target"
   get "/friends/:target_id/finish", to:"targets#step_three", as: "step_three_target"
-  get "/friends/:target_id/finish", to:"targets#finish", as: "finish_target"
+  # get "/friends/:target_id/finish", to:"targets#finish", as: "finish_target"
   get "/targets/:target_id/unsubscribe", to:"targets#unsubscribe", as: "unsubscribe_target"
   get "/targets/:target_id/inactivate", to:"targets#inactivate", as: "inactivate_target"
   post "/friends", to: "targets#create"

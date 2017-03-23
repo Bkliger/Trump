@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
 
     def create_single_message(user, target, message, request_origin)
         get_url
-        if target.status == 'Active'
+        if target.status == 'Active' && !target.email.blank?
             lookup_reps(target, request_origin)
             # send an email to each target
             TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4).deliver_now
@@ -200,7 +200,11 @@ class ApplicationController < ActionController::Base
             @more_info_needed = 1
             @status = 'No Republicans'
         end
-        @target_message = %q[We found more than one representative for this Zip Code. Enter an address if you would like us to select the representative.] if @total_representative_count > 1
+        if !@total_representative_count.nil?
+            if @total_representative_count > 1
+                @target_message = %q[We found more than one representative for this Zip Code. Enter an address if you would like us to select the representative.]
+            end
+        end
     end
 
     def build_action_array_civic(r,rep_type)

@@ -86,7 +86,6 @@ class TargetsController < ApplicationController
           redirect_to edit_target_path(@target)
           return
         end
-        binding.pry
         request_origin = 'update_step_1'
         lookup_reps(@target, request_origin)
     end
@@ -170,9 +169,10 @@ class TargetsController < ApplicationController
             end
         end
         @target = Target.friendly.find(params[:target_id])
+        target_params[:status] = @status
         @target.update(target_params)
-        @status = "Active"
-        @target.update(status: @status)
+
+        @target.update(target_params)
         if @target.valid?
         else
           flash[:notice] = @target.errors.full_messages.to_sentence
@@ -196,17 +196,6 @@ class TargetsController < ApplicationController
         redirect_to targets_path
     end
 
-    # def finish
-    #     # get most recent message
-    #     message_history = Messhistory.last
-    #     message = Message.find(message_history.message_id)
-    #     # get target
-    #     target = Target.friendly.find(params[:target_id])
-    #     request_origin = 'finish'
-    #     create_single_message(current_user, target, message, request_origin)
-    #     redirect_to targets_path
-    # end
-
     def unsubscribe
         @target = Target.friendly.find(params[:target_id])
         @target.update(status: 'Unsubscribed')
@@ -222,6 +211,6 @@ class TargetsController < ApplicationController
     private
 
     def target_params
-        params.require(:target).permit(:first_name, :last_name, :address, :city, :state, :zip, :salutation, :email, :contact_method, :phone, :user_id)
+        params.require(:target).permit(:first_name, :last_name, :address, :city, :state, :zip, :salutation, :email, :contact_method, :phone, :user_id, :status)
     end
 end
