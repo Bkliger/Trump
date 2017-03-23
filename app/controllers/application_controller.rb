@@ -57,7 +57,6 @@ class ApplicationController < ActionController::Base
     end
 
     def create_single_message(user, target, message, request_origin)
-        # test_twilio
         get_url
         if target.status == 'Active'
             lookup_reps(target, request_origin)
@@ -91,21 +90,23 @@ class ApplicationController < ActionController::Base
         elsif (target.zip.blank? && !target.address.blank? && !target.city.blank?)
             full_address_processing(target,request_origin)
         end
+
         # decide what page to display based on the process that requested this method
         if request_origin == 'finish'
+
             return
         elsif request_origin == 'bulk send'
             return
         elsif request_origin == 'update_step_1'
-            target.update(status: @status)
+
             flash[:notice] = nil
             render :step_two
         elsif request_origin == 'update_step_2'
-            target.update(status: @status)
+
             flash[:notice] = nil
             render :step_three
         else
-            target.update(status: @status)
+
             flash[:notice] = nil
             render :step_two
         end
@@ -123,10 +124,10 @@ class ApplicationController < ActionController::Base
         # elsif @last_state != target.state
         #     @target_message = 'The state entered does not match the zip code.'
         #     @more_info_needed = 2
-        #     @status = 'Incomplete'
-
+        #     @status = 'Incomplete"
         elsif @total_representative_count > 1
             @action_array = [] # reinitialize the array that builds the action block for the email
+              @target_message = %q[We found more than one representative for this Zip Code. Enter an address if you would like us to select the representative.]
             # if you have the full address
             if !target.address.blank? && !target.city.blank?
                 full_address_processing(target,request_origin)
@@ -199,6 +200,7 @@ class ApplicationController < ActionController::Base
             @more_info_needed = 1
             @status = 'No Republicans'
         end
+        @target_message = %q[We found more than one representative for this Zip Code. Enter an address if you would like us to select the representative.] if @total_representative_count > 1
     end
 
     def build_action_array_civic(r,rep_type)

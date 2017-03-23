@@ -14,7 +14,7 @@
       <th>Phone</th>
       <th>Email Link</th>
       </tr>
-      <% @action_array.each do |r| %>
+      <% @action_array[1,@action_array.length-1].each do |r| %>
           <tr>
           <td><%= r[:rep_name] %></td>
           <td><%= r[:rep_phone] %></td>
