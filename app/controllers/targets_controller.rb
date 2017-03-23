@@ -155,7 +155,7 @@ class TargetsController < ApplicationController
         if target_params[:contact_method] == 'email_val' && target_params[:email].blank?
             error_array << 'If Email is checked, you must enter an Email Address'
         end
-        if target_params[:contact_method] == 'text_val' && target_params[:text].blank?
+        if target_params[:contact_method] == 'text_val' && target_params[:phone].blank?
             error_array << 'If Text is checked, you must enter a phone number.'
         end
         flash[:notice] = error_array.join(', ') unless error_array.empty?

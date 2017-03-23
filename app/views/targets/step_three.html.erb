@@ -1,47 +1,55 @@
-<p class="not_current_step">Step 1. Add Information<span class="not_current_step">>>>Step 2. Check Representatives</span><span class="current_step">>>>Step 3. How to Contact</span></p>
-  <%= form_for(@target, :url => step_three_edit_target_path(@target)) do |f| %>
+<p class="not_current_step">Step 1. Add Information<span class="not_current_step">>>>Step 2. Check Representatives</span>
+    <span class="current_step">>>>Step 3. How to Contact</span>
+</p>
+<%= form_for(@target, :url => step_three_edit_target_path(@target)) do |f| %>
 
     <div>
-      <p>Message Greeting</p>
-      <p>How would you start a message to this person? (for example: Hi Mom)</p>
+        <p>Message Greeting</p>
+        <p>How would you start a message to this person? (for example: Hi Mom)</p>
         <%#= f.label :salutation %>
-      <%= f.text_field :salutation, placeholder: "Greeting" %>
-      <span class="glyphicon glyphicon-star asterisk"></span>
+        <%= f.text_field :salutation, placeholder: "Greeting" %>
+        <span class="glyphicon glyphicon-star asterisk"></span>
     </div>
-      <br>
+    <br>
     <div>
-      <p>Contact this person by:</p>
-      <%= f.label :contact_method, "Email" %>
-      <!-- :email is 0 value -->
-      <%= f.radio_button :contact_method, :email_val, id: "email", checked: true %>
-      <%= f.label :contact_method, "Text" %>
-            <!-- :text is value of 1 -->
-      <%= f.radio_button :contact_method, :text_val, id: "text", checked: false %>
-
+        <p>Contact this person by:</p>
+        <%= f.label :contact_method, "Email" %>
+        <!-- :email is 0 value -->
+        <%= f.radio_button :contact_method, :email_val, id: "email"%>
+        <%= f.label :contact_method, "Text" %>
+        <!-- :text is value of 1 -->
+        <%= f.radio_button :contact_method, :text_val, id: "text"%>
 
     </div>
-    <div id="email_input" >
-        <%= f.label :email %>
-      <%= f.text_field :email, placeholder: "email"%>
+    <%if @target.contact_method == "text_val" %>
+    <div id="email_input" class="hidden">
+    <%else %>
+    <div id="email_input">
+    <%end %>
+          <%= f.label :email %>
+          <%= f.text_field :email, placeholder: "email"%>
     </div>
 
-    <div id = "text_input" class = "hidden">
-      <%= f.label :cell_phone %>
-      <%= f.text_field :phone, placeholder: "Cell Phone"%>
+    <%if @target.contact_method == "text_val" %>
+    <div id="text_input">
+    <%else %>
+    <div id="text_input" class="hidden">
+            <%end %>
+          <%= f.label :cell_phone %>
+          <%= f.text_field :phone, placeholder: "Cell Phone"%>
     </div>
-    <!-- To be hidden in actual form -->
+        <!-- To be hidden in actual form -->
     <div class=hidden>
-      <%= f.text_field :user_id, placeholder: "user id" %>
+          <%= f.text_field :user_id, placeholder: "user id" %>
     </div>
     <div class=hidden>
-      <%= f.text_field :status, value: "Active" %>
+          <%= f.text_field :status, value: "Active" %>
     </div>
-    <%= f.submit "Finish", class: "btn btn-success" %>
+          <%= f.submit "Finish", class: "btn btn-success" %>
 
+    <% end %>
 
-  <% end %>
-
-  <br>
-  <br>
+    <br>
+    <br>
     <span class="glyphicon glyphicon-star asterisk"></span>
-      <span class="asterisk">= Required</span>
+    <span class="asterisk">= Required</span>

@@ -1,6 +1,7 @@
 class Target < ActiveRecord::Base
   before_create do
     self.status = "Incomplete"
+    self.contact_method = "email_val"
 
   end
 
