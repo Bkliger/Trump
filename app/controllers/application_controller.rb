@@ -19,16 +19,12 @@ class ApplicationController < ActionController::Base
     # used to process the xml from the usps api
     require 'rexml/document'
 
-
-
     def create_single_message(user, target, message, request_origin)
         get_url
         if target.status == 'Active' && target.contact_method == "email_val"
             lookup_reps(target, request_origin)
             # send an email to each target
             TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4).deliver_now
-
-            # test twilio
 
             # create a target message for each message sent to a target
             targmess = Targetmessage.new do |m|
@@ -41,6 +37,7 @@ class ApplicationController < ActionController::Base
             # send email to the user
             UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array).deliver_now
         elsif target.status == 'Active' && target.contact_method == "text_val"
+            test_twilio
         end
     end
 
@@ -204,14 +201,15 @@ class ApplicationController < ActionController::Base
         require 'twilio-ruby'
 
         # put your own credentials here
-        account_sid = 'AC095ddadf8e89976c17e4e8bf8da14543'
-        auth_token = 'a826bdde35e448025ce9c10f0f72ce23'
+        account_sid = ENV['TWILIO_ACCOUNT_SID']
+        auth_token = ENV['TWILIO_AUTH_TOKEN']
+        binding.pry
 
         # set up a client to talk to the Twilio REST API
         @client = Twilio::REST::Client.new(account_sid, auth_token)
 
         @message = @client.account.messages.create(
-            from: '+19253784055',
+            from: ENV['TWILIO_NUMBER'],
             to: '+19252867453',
             body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
             media_url: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg'
