@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
     # For APIs, you may want to use :null_session instead.
     protect_from_forgery with: :exception
 
+    before_filter :set_cache_headers
+
     # this redirects devise after sign in
     def after_sign_in_path_for(_resource)
         targets_path
@@ -94,8 +96,12 @@ class ApplicationController < ActionController::Base
             return
         elsif request_origin == 'bulk send'
             return
-        elsif request_origin == 'step_two'
-          render :step_three
+        elsif request_origin == 'update_step_1'
+            target.update(status: @status)
+            render :step_two
+        elsif request_origin == 'update_step_2'
+            target.update(status: @status)
+            render :step_three
         else
             target.update(status: @status)
             render :step_two
@@ -184,6 +190,8 @@ class ApplicationController < ActionController::Base
             @more_info_needed = 1
             @status = 'Active'
         else
+            congressional_stats = {senator_count: 0, rep_count: 0}
+            @action_array.unshift(congressional_stats)
             @target_message = 'Add an address for this person to see if they also have a Republican Congressperson.'
             @more_info_needed = 1
             @status = 'No Republicans'
@@ -315,4 +323,11 @@ class ApplicationController < ActionController::Base
     end
 
     private
+
+    def set_cache_headers
+    response.headers["Cache-Control"] = "no-cache, no-store"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+    end
+
 end

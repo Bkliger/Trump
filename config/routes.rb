@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   get "targets", to: "targets#index", as: "targets", path: "friends"
   get "/friends/new", to: "targets#new", as: "new_target"
   get "/friends/:target_id/edit", to:"targets#edit", as: "edit_target"
+  get "/friends/:target_id/step_one", to:"targets#update" #only used if someone hits the back button
+  patch "/friends/:target_id/step_one", to:"targets#update", as: "step_one_edit_target"
   get "/friends/:target_id/step_two", to:"targets#step_two_edit", as: "step_two_edit_target"
   get "/friends/:target_id/step_three", to:"targets#step_three_edit", as: "step_three_edit_target"
   get "/friends/:target_id/finish", to:"targets#step_three", as: "step_three_target"

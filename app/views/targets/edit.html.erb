@@ -1,6 +1,7 @@
 <p class="current_step">Step 1. Add/Change Information<span class="not_current_step">>>>Step 2. Check Representatives</span></p>
 <h1>Add/Change Friends and Family</h1>
-  <%= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
+  <%#= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
+    <%= form_for(@target, :url => step_one_edit_target_path(@target)) do |f| %>
       <div>
         <%= f.label :first_name %>
         <%= f.text_field :first_name, placeholder: "First Name"%>

@@ -49,8 +49,35 @@ class TargetsController < ApplicationController
     end
 
     def update
-        # test_twilio
+        error_array = []
         @target = Target.friendly.find(params[:target_id])
+        if (@target.address != target_params[:address]) || (@target.city != target_params[:city]) ||  (@target.state != target_params[:state]) || (@target.zip != target_params[:zip])
+            request_origin = 'update_step_1'
+            if !target_params[:zip].blank?
+                @sunlight_reps = sunlight_api(target_params[:zip])
+                if @sunlight_reps.results == []
+                    error_array << 'Invalid Zip Code'
+                end
+            end
+            if !target_params[:address].blank? || !target_params[:city].blank?
+                usps_lookup(target_params[:address],target_params[:city],target_params[:state])
+                if @bad_address == true
+                    error_array << target_params[:address] + " " + target_params[:city] + " " + target_params[:state] + " " + 'is not a valid address. You can leave Address and City blank and we will search based on Zip or State.'
+                end
+            end
+            flash[:notice] = error_array.to_sentence unless error_array.empty?
+            unless flash.empty?
+                if current_user
+                    @target = Target.friendly.find(params[:target_id])
+                    @more_info_needed = 1
+                    @skip_message = 'yes'
+                    render :edit
+                    return
+                else
+                    redirect_to splash_path
+                end
+            end
+        end
         @target.update(target_params)
         if @target.valid?
         else
@@ -58,7 +85,7 @@ class TargetsController < ApplicationController
           redirect_to edit_target_path(@target)
           return
         end
-        request_origin = 'update'
+        request_origin = 'update_step_1'
         lookup_reps(@target, request_origin)
     end
 
@@ -73,36 +100,35 @@ class TargetsController < ApplicationController
 
     def step_two_update
         error_array = []
-        if !target_params[:zip].blank?
-            @sunlight_reps = sunlight_api(target_params[:zip])
-            if @sunlight_reps.results == []
-                error_array << 'Invalid Zip Code'
-            end
-        end
-        if !target_params[:address].blank? && !target_params[:city].blank?
-            usps_lookup(target_params[:address],target_params[:city],target_params[:state])
-            if @bad_address == true
-                error_array << 'Invalid Address'
-            end
-        end
-        flash[:notice] = error_array.to_sentence unless error_array.empty?
-        unless flash.empty?
-            if current_user
-                @target = Target.friendly.find(params[:target_id])
-                @more_info_needed = 1
-                @skip_message = 'yes'
-                render :step_two
-                return
-            else
-                redirect_to splash_path
-            end
-        end
         @target = Target.friendly.find(params[:target_id])
         if (@target.address != target_params[:address]) || (@target.city != target_params[:city]) ||  (@target.state != target_params[:state]) || (@target.zip != target_params[:zip])
-          request_origin = 'update'
-        else
-          request_origin = 'step_two'
+            request_origin = 'update_step_2'
+            if !target_params[:zip].blank?
+                @sunlight_reps = sunlight_api(target_params[:zip])
+                if @sunlight_reps.results == []
+                    error_array << 'Invalid Zip Code'
+                end
+            end
+            if !target_params[:address].blank? || !target_params[:city].blank?
+                usps_lookup(target_params[:address],target_params[:city],target_params[:state])
+                if @bad_address == true
+                    error_array << target_params[:address] + " " + target_params[:city] + " " + target_params[:state] + " " + 'is not a valid address.'
+                end
+            end
+            flash[:notice] = error_array.to_sentence unless error_array.empty?
+            unless flash.empty?
+                if current_user
+                    @target = Target.friendly.find(params[:target_id])
+                    @more_info_needed = 1
+                    @skip_message = 'yes'
+                    render :step_two
+                    return
+                else
+                    redirect_to splash_path
+                end
+            end
         end
+        request_origin = 'update_step_2'
         @target.update(target_params)
         if @target.valid?
             lookup_reps(@target, request_origin)
