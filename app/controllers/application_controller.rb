@@ -98,12 +98,15 @@ class ApplicationController < ActionController::Base
             return
         elsif request_origin == 'update_step_1'
             target.update(status: @status)
+            flash[:notice] = nil
             render :step_two
         elsif request_origin == 'update_step_2'
             target.update(status: @status)
+            flash[:notice] = nil
             render :step_three
         else
             target.update(status: @status)
+            flash[:notice] = nil
             render :step_two
         end
     end

@@ -49,6 +49,7 @@ class TargetsController < ApplicationController
     end
 
     def update
+        flash[:notice] = nil
         error_array = []
         @target = Target.friendly.find(params[:target_id])
         if (@target.address != target_params[:address]) || (@target.city != target_params[:city]) ||  (@target.state != target_params[:state]) || (@target.zip != target_params[:zip])
@@ -66,7 +67,7 @@ class TargetsController < ApplicationController
                 end
             end
             flash[:notice] = error_array.to_sentence unless error_array.empty?
-            unless flash.empty?
+            unless flash[:notice].nil?
                 if current_user
                     @target = Target.friendly.find(params[:target_id])
                     @more_info_needed = 1
@@ -99,6 +100,7 @@ class TargetsController < ApplicationController
     end
 
     def step_two_update
+        flash[:notice] = nil
         error_array = []
         @target = Target.friendly.find(params[:target_id])
         if (@target.address != target_params[:address]) || (@target.city != target_params[:city]) ||  (@target.state != target_params[:state]) || (@target.zip != target_params[:zip])
@@ -116,7 +118,7 @@ class TargetsController < ApplicationController
                 end
             end
             flash[:notice] = error_array.to_sentence unless error_array.empty?
-            unless flash.empty?
+            unless flash[:notice].nil?
                 if current_user
                     @target = Target.friendly.find(params[:target_id])
                     @more_info_needed = 1
@@ -145,6 +147,7 @@ class TargetsController < ApplicationController
     end
 
     def step_three_update
+        flash[:notice] = nil
         error_array = []
         if target_params[:salutation].blank?
             error_array << 'Greeting is required'
@@ -156,7 +159,7 @@ class TargetsController < ApplicationController
             error_array << 'If Text is checked, you must enter a phone number.'
         end
         flash[:notice] = error_array.join(', ') unless error_array.empty?
-        unless flash.empty?
+        unless flash[:notice].nil?
             if current_user
                 @target = Target.friendly.find(params[:target_id])
                 render :step_three
