@@ -19,46 +19,11 @@ class ApplicationController < ActionController::Base
     # used to process the xml from the usps api
     require 'rexml/document'
 
-    def usps_lookup(address,city,state)
-        url = format_USPS(address, city, state)
-        uri = URI(url)
-        response = Net::HTTP.get(uri)
-        if !response.include? 'Error'
 
-            # get rid of the front part of the response
-            response.slice! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-            document = REXML::Document.new(response)
-            @zip4 = REXML::XPath.first(document, '/ZipCodeLookupResponse/Address/Zip4/text()').to_s
-            @zip5 = REXML::XPath.first(document, '/ZipCodeLookupResponse/Address/Zip5/text()').to_s
-
-        else
-            @bad_address = true
-            @zip4 = 'Error'
-        end
-    end
-
-    def sunlight_api(zip)
-        # construct the url
-        url = 'https://congress.api.sunlightfoundation.com/legislators/locate?zip=' + zip
-        # call the url using the net/http structure
-        uri = URI(url)
-        response = Net::HTTP.get(uri)
-        # get a response and convert the hash (JSON) into an object
-        res = JSON.parse(response, object_class: OpenStruct)
-    end
-
-    def civic_api(address)
-        # construct the url
-        url = 'https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyBH9gjtOwvfkbDqxLoFdbfcR2tB978ETew&address=' + address
-        # call the url using the net/http structure
-        uri = URI(url)
-        response = Net::HTTP.get(uri)
-        res = JSON.parse(response, object_class: OpenStruct)
-    end
 
     def create_single_message(user, target, message, request_origin)
         get_url
-        if target.status == 'Active' && !target.email.blank?
+        if target.status == 'Active' && target.contact_method == "email_val"
             lookup_reps(target, request_origin)
             # send an email to each target
             TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4).deliver_now
@@ -75,6 +40,7 @@ class ApplicationController < ActionController::Base
             targmess.save
             # send email to the user
             UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array).deliver_now
+        elsif target.status == 'Active' && target.contact_method == "text_val"
         end
     end
 
@@ -166,6 +132,7 @@ class ApplicationController < ActionController::Base
                 if @republican_count > 0
                     congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
                     @action_array.unshift(congressional_stats)
+                    @target_message = ""
                     @more_info_needed = 0
                     @status = 'Active'
                 else
@@ -331,6 +298,44 @@ class ApplicationController < ActionController::Base
         end
     end
 
+    def usps_lookup(address,city,state)
+        url = format_USPS(address, city, state)
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        if !response.include? 'Error'
+
+            # get rid of the front part of the response
+            response.slice! "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            document = REXML::Document.new(response)
+            @zip4 = REXML::XPath.first(document, '/ZipCodeLookupResponse/Address/Zip4/text()').to_s
+            @zip5 = REXML::XPath.first(document, '/ZipCodeLookupResponse/Address/Zip5/text()').to_s
+
+        else
+            @bad_address = true
+            @zip4 = 'Error'
+        end
+    end
+
+    #--------------------------APIs------------------------------------
+
+    def sunlight_api(zip)
+        # construct the url
+        url = 'https://congress.api.sunlightfoundation.com/legislators/locate?zip=' + zip
+        # call the url using the net/http structure
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        # get a response and convert the hash (JSON) into an object
+        res = JSON.parse(response, object_class: OpenStruct)
+    end
+
+    def civic_api(address)
+        # construct the url
+        url = 'https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyBH9gjtOwvfkbDqxLoFdbfcR2tB978ETew&address=' + address
+        # call the url using the net/http structure
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        res = JSON.parse(response, object_class: OpenStruct)
+    end
     private
 
     def set_cache_headers
