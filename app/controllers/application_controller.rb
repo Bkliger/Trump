@@ -37,7 +37,8 @@ class ApplicationController < ActionController::Base
             # send email to the user
             UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array).deliver_now
         elsif target.status == 'Active' && target.contact_method == "text_val"
-            test_twilio
+            lookup_reps(target, request_origin)
+            send_twilio(message,target)
         end
     end
 
@@ -196,26 +197,27 @@ class ApplicationController < ActionController::Base
 
     end
 
-    def test_twilio
+    def send_twilio(message,target)
         require 'rubygems' # not necessary with ruby 1.9 but included for completeness
         require 'twilio-ruby'
+        text_message = build_text_message(message)
+
+        formatted_phone_number = "+1" + target.phone.gsub!(/\D/, '')
 
         # put your own credentials here
         account_sid = ENV['TWILIO_ACCOUNT_SID']
         auth_token = ENV['TWILIO_AUTH_TOKEN']
-        binding.pry
 
         # set up a client to talk to the Twilio REST API
         @client = Twilio::REST::Client.new(account_sid, auth_token)
 
-        @message = @client.account.messages.create(
+        @twillio_message = @client.account.messages.create(
             from: ENV['TWILIO_NUMBER'],
-            to: '+19252867453',
-            body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-            media_url: 'https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg'
+            to: formatted_phone_number,
+            body: text_message
         )
 
-        puts @message.subresource_uris
+        puts @twillio_message.subresource_uris
     end
 
     def format_USPS(address, city, state)
@@ -333,6 +335,16 @@ class ApplicationController < ActionController::Base
         uri = URI(url)
         response = Net::HTTP.get(uri)
         res = JSON.parse(response, object_class: OpenStruct)
+    end
+
+    def build_text_message(message)
+        message_array = []
+        message_array << message.text_message
+        @action_array[1,@action_array.length-1].each do |r|
+            message_array << r[:rep_name]
+            message_array << r[:rep_phone]
+        end
+        message_array.to_sentence
     end
     private
 

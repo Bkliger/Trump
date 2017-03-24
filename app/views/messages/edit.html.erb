@@ -13,8 +13,12 @@
               <%= f.text_field :title, placeholder: "Message Title", class: "form-control" %>
             </div>
             <div class = "row">
-              <div><%= f.label :message_Text %>
+              <%= f.label :message_Text %>
               <%= f.text_area :message_text, placeholder: "Message Text", class: "form-control top-spacer" %>
+            </div>
+            <div class = "row">
+              <%= f.label :text_message %>
+              <%= f.text_area :text_message, placeholder: "Sent via SMS", class: "form-control top-spacer" %>
             </div>
             <div>
               <%= f.submit "Edit Message", class: "btn btn-primary btn-lg top-spacer" %>

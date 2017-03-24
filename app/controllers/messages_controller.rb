@@ -77,6 +77,7 @@ class MessagesController < ApplicationController
       end
     end
     # create 1 record that the message was sent. This is part of the message history
+binding.pry
     mess = Messhistory.new do |m|
       m.sent_date = Date.today
       m.message_id = @message.id
@@ -106,7 +107,7 @@ class MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:message).permit(:title, :message_text, :create_date, :org_id)
+    params.require(:message).permit(:title, :message_text, :text_message, :create_date, :org_id)
   end
 
 # end

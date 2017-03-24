@@ -6,7 +6,10 @@
   <%= f.text_field :title, placeholder: "Message Title" %>
 </div>
 <div><%= f.label :message_Text %>
-  <%= f.text_area :message_text, placeholder: "Message Text" %>
+  <%= f.text_area :message_text, placeholder: "Sent via Email" %>
+</div>
+<div><%= f.label :text_message %>
+  <%= f.text_area :text_message, placeholder: "Sent via SMS" %>
 </div>
 <div class="hidden"><%= f.label :org_id %>
   <%= f.text_field :org_id, value: @org.id %>
