@@ -12,15 +12,7 @@
   </head>
 
   <body>
-<div class="header">
-  <div class="large-2 columns float-left"><img src="/assets/stop-trump.png" /></div>
-  <div class="large-10 columns float-left"><div class="user-login"><a href="#">Signup</a> | <a href="#">Log In</a></div></div>
-  </div>
-  <% if !notice.blank? %>
-  <p class="callout alert"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-  <% end %>
-
+<%= render 'layouts/navbar' %>
     <%= yield %>
 <div class="footer">
 <a href="#">About</a><a href="#">How It Works</a><a href="#">FAQs</a><a href="#">Privacy Policy</a><a href="#">Contact Us</a>

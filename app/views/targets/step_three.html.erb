@@ -1,17 +1,18 @@
-<p class="not_current_step">Step 1. Add Information<span class="not_current_step">>>>Step 2. Check Representatives</span>
-    <span class="current_step">>>>Step 3. How to Contact</span>
-</p>
+<div class="row">
+<div class="large-12 columns step-3">
+<div class="current_step"><div class="step"><span>Step</span><br/>3</div> 
+<h1>How to Contact</h1></div>
 <%= form_for(@target, :url => step_three_edit_target_path(@target)) do |f| %>
 
     <div>
-        <p>Message Greeting</p>
-        <p>How would you start a message to this person? (for example: Hi Mom)</p>
+        <h5>Message Greeting</h5>
+        <p class="glyphicon">How would you start a message to this person? (for example: Hi Mom)</p>
         <%#= f.label :salutation %>
         <%= f.text_field :salutation, placeholder: "Greeting" %>
         <span class="glyphicon glyphicon-star asterisk"></span>
     </div>
     <br>
-    <div>
+    <div class="text-or-email">
         <p>Contact this person by:</p>
         <%= f.label :contact_method, "Email" %>
         <!-- :email is 0 value -->
@@ -45,7 +46,7 @@
     <div class=hidden>
           <%= f.text_field :status, value: "Active" %>
     </div>
-          <%= f.submit "Finish", class: "btn btn-success" %>
+          <%= f.submit "Finish", class: "button success" %>
 
     <% end %>
 
@@ -53,3 +54,5 @@
     <br>
     <span class="glyphicon glyphicon-star asterisk"></span>
     <span class="asterisk">= Required</span>
+    </div>
+</div>

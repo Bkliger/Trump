@@ -1,14 +1,17 @@
-<p class="current_step">Step 1. Add/Change Information<span class="not_current_step">>>>Step 2. Check Representatives</span></p>
-<h1>Add/Change Friends and Family</h1>
+<div class="row">
+<div class="large-12 columns edit-friends">
+
+<div class="current_step"><div class="step"><span>Step</span><br/>1</div> 
+<h1>Add/Change Friends and Family</h1></div>
   <%#= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
     <%= form_for(@target, :url => step_one_edit_target_path(@target)) do |f| %>
       <div>
-        <%= f.label :first_name %>
+        <%= f.label :first_name, class: "glyphicon" %>
         <%= f.text_field :first_name, placeholder: "First Name"%>
           <span class="glyphicon glyphicon-star asterisk"></span>
       </div>
       <div>
-          <%= f.label :last_name %>
+          <%= f.label :last_name, class: "glyphicon" %>
         <%= f.text_field :last_name, placeholder: "Last Name"%>
             <span class="glyphicon glyphicon-star asterisk"></span>
       </div>
@@ -21,7 +24,7 @@
         <%= f.text_field :city, placeholder: "City" %>
       </div>
       <div>
-          <%= f.label :state %>
+          <%= f.label :state, class: "glyphicon" %>
         <%= f.select(:state, options_for_select(us_states,@target.state)) %>
         <span class="glyphicon glyphicon-star asterisk"></span>
       </div>
@@ -35,10 +38,14 @@
       <div class=hidden>
         <%= f.text_field :user_id, placeholder: "user id" %>
       </div>
+
+      <%= f.submit "Next", class: "button success" %><br/>
+      <div class="edit-friends-actions">
       <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
       <%= link_to "Inactivate", inactivate_target_path(@target.id), class: "btn btn-success" %>
-      <%= f.submit "Next", class: "btn btn-success" %>
+      
       <%= link_to "Back to Friend & Family List", targets_path, class: "btn btn-success" %>
+      </div>
 
   <% end %>
 
@@ -46,3 +53,5 @@
   <br>
     <span class="glyphicon glyphicon-star asterisk"></span>
       <span class="asterisk">= Required</span>
+  </div>
+  </div>
