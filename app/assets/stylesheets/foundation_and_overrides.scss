@@ -52,6 +52,7 @@
 // @include motion-ui-transitions;
 // @include motion-ui-animations;
 @import 'colors';
+@import 'font-awesome';
 /*/////// SITEWIDE //////*/
 h1,
 h2,
@@ -125,6 +126,10 @@ a.button.success{
 		a{
 			color:$black;
 		}
+	ul{
+		list-style-type:none;
+		
+	}
 }
 
 /*////////// HOMEPAGE ///////*/
@@ -181,7 +186,9 @@ a.button.success{
 }
 
 /*//////// STEP 1 /////*/
-.step-1{
+.step-1,
+.edit-friends,
+.step-2{
 	padding-top:3em;
 		.button.success{
 			width:250px;
@@ -213,7 +220,8 @@ a.button.success{
 	font-size:24px;
 	color:$blue;
 }
-.current_step {
+.current_step,
+.edit-friends {
     width: 100%;
     float: left;
     margin-bottom: 1em;
@@ -221,4 +229,53 @@ a.button.success{
     		padding-top:25px;
     		margin-left:1em;
     	}
+}
+
+/*////////// FRIENDS PAGE //////*/
+.friends{
+	@media all and (min-width:940px){
+		table{
+			max-width:500px;
+		}
+	}
+}
+
+/*/////// EDIT FRIENDS /////*/
+.edit-friends{
+	margin-top:3em;
+	label.glyphicon:after{
+	 	
+	 }
+}
+.edit-friends-actions a{
+	margin-right:2em;
+}
+.callout.success.senators{
+	clear:both;
+}
+.callout.success.senators{
+	background:$blue;
+	h3, h5{
+		color:$white;
+	}
+}
+.cta{
+	background:$yellow;
+}
+h4.cta{
+	padding:10px 5px;
+}
+/*/////////// STEP 3 ////////////*/
+.step-3{
+	padding-top:3em;
+	p:after{
+		content:"*";
+	 	color:$red;
+	}
+}
+.text-or-email{
+	label{
+		display:inline;
+		min-width:80px;
+	}
 }

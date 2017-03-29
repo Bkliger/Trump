@@ -1,19 +1,21 @@
 
 <br>
-<h3>
+<div class="callout success senators">
+<h5>
   <%= @target.first_name %> <%= @target.last_name %> has  <%= pluralize(@action_array[0][:senator_count], 'Republican Senator') %>
-</h3>
-<h3>
+</h5>
+<h5>
   <% @action_array[1,@action_array.length-1].each do |r| %>
 
       <%if r[:rep_type] == "S" %>
         <h3>  <%= r[:rep_name]%> </h3>
       <% end %>
   <% end %>
-</h3>
+</h5>
+
 <%if @more_info_needed != 1 %>
 
-    <h3> and </h3>
+    <h5> and </h5>
     <h3>
     <%=  pluralize(@action_array[0][:rep_count], 'Republican Representative') %>
     </h3>
@@ -26,4 +28,5 @@
       <% end %>
     </h3>
 <% end %>
-<h2><%= @target_message %></h2>
+<h4 class="cta"><%= @target_message %></h4>
+</div>
