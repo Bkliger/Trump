@@ -39,11 +39,6 @@ gem 'friendly_id', '~> 5.1.0'
 
 gem 'will_paginate', '~> 3.1.0'
 
-gem 'rspec-rails'
-
-gem 'capybara'
-
-gem 'selenium-webdriver'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
