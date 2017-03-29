@@ -1,11 +1,13 @@
+<div class="row">
+<div class="large-12 columns">
 <section>
   <div id="targets-index">
     <div class="container-fluid">
       <br><br><br><br><br>
       <div class="col-sm-5">
         <h1 class="display-3">Friends and Family</h1>
-        <%= link_to "New Friends and Family", new_target_path, class: "btn btn-success" %>
-  <%= link_to "Edit Your Profile" , edit_user_path(current_user.id.to_s), class: "btn btn-success" %>
+        <%= link_to "New Friends and Family", new_target_path, class: "button secondary" %>
+  <%= link_to "Edit Your Profile" , edit_user_path(current_user.id.to_s), class: "button secondary" %>
   <%if current_user.admin?  %>
       <%= link_to "Messages" , messages_path, class: "btn btn-success" %>
       <%= link_to "Representatives" , reps_path, class: "btn btn-success" %>
@@ -22,3 +24,5 @@
     </div>
   </div>
 </section>
+</div>
+</div>
