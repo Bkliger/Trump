@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <!-- :title is defined by provide title in various views -->
-  <title><%= full_title(yield(:title))  %> </title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<br>
-<br>
-  <p class="notice"><%= notice %></p>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
+
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+<div class="header">
+  <div class="large-2 columns float-left"><img src="/assets/stop-trump.png" /></div>
+  <div class="large-10 columns float-left"><div class="user-login"><a href="#">Signup</a> | <a href="#">Log In</a></div></div>
+  </div>
+  <% if !notice.blank? %>
+  <p class="callout alert"><%= notice %></p>
   <p class="alert"><%= alert %></p>
+  <% end %>
 
-
-
-  <%= render 'layouts/navbar' %>
-<%= yield %>
-
-</body>
+    <%= yield %>
+<div class="footer">
+<a href="#">About</a><a href="#">How It Works</a><a href="#">FAQs</a><a href="#">Privacy Policy</a><a href="#">Contact Us</a>
+</div>
+  </body>
 </html>

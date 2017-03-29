@@ -1,0 +1,224 @@
+@charset 'utf-8';
+
+@import 'settings';
+@import 'foundation';
+
+// If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
+//
+// @import 'motion-ui/motion-ui';
+
+// We include everything by default.  To slim your CSS, remove components you don't use.
+
+@include foundation-global-styles;
+@include foundation-grid;
+@include foundation-typography;
+@include foundation-button;
+@include foundation-forms;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
+@include foundation-accordion;
+@include foundation-accordion-menu;
+@include foundation-badge;
+@include foundation-breadcrumbs;
+@include foundation-button-group;
+@include foundation-callout;
+@include foundation-card;
+@include foundation-close-button;
+@include foundation-drilldown-menu;
+@include foundation-dropdown;
+@include foundation-dropdown-menu;
+@include foundation-responsive-embed;
+@include foundation-label;
+@include foundation-media-object;
+@include foundation-menu;
+@include foundation-menu-icon;
+@include foundation-off-canvas;
+@include foundation-orbit;
+@include foundation-pagination;
+@include foundation-progress-bar;
+@include foundation-slider;
+@include foundation-sticky;
+@include foundation-reveal;
+@include foundation-switch;
+@include foundation-table;
+@include foundation-tabs;
+@include foundation-thumbnail;
+@include foundation-title-bar;
+@include foundation-tooltip;
+@include foundation-top-bar;
+
+// If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
+//
+// @include motion-ui-transitions;
+// @include motion-ui-animations;
+@import 'colors';
+/*/////// SITEWIDE //////*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+    color:$blue;
+    font-weight:bold;
+}
+h1{
+	font-size:31px;
+}
+a,
+a.link{
+  color:#0059E3;
+}
+p{
+  font-size:19px;
+}
+label{
+  font-size:20px;
+}
+.callout.secondary{
+	background:$blue;
+	h2{
+		color:$yellow;
+		text-align:center;
+		line-height:1.2;
+		font-size:2.1rem;
+	}
+}
+.button.success{
+	background:$green;
+	color:$white;
+}
+a.button.success{
+	color:$white;
+	font-weight:bold;
+	font-size:26px;
+}
+.footer{
+	background:$yellow;
+	height:100px;
+	padding:20px;
+		a{
+			color:$blue;
+			margin:0 1em;
+
+		}
+}
+[type='text'], [type='password'], [type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='email'], [type='number'], [type='search'], [type='tel'], [type='time'], [type='url'], [type='color'], textarea, select{
+	max-width:300px;
+}
+.hidden{
+	display:none;
+}
+.callout.alert{
+	color:$red;
+	font-size:21px;
+}
+/*//////// HEADER SECTION //////*/
+.header{
+	background:$yellow;
+	height:90px;
+	padding:20px;
+}
+.user-login{
+	float:right;
+	font-size:21px;
+		a{
+			color:$black;
+		}
+}
+
+/*////////// HOMEPAGE ///////*/
+.hp-splash{
+	padding-top:3em;
+		h1{
+			text-align:center;
+		}
+}
+.hp-sidebar{
+	padding-top:3em;
+		.hp-sidebar-message{
+			color:$white;
+			font-size:30px;
+			text-align:center;
+			line-height:1.2;
+			margin:10px 0;
+		}
+		.button{
+			width:90%;
+			margin:0 auto;
+		}
+		.hp-signup-btn{
+			text-align:center;
+		}
+		
+}
+.hp-video-box{
+	height:150px;
+	background:$lt-grey;
+	margin:1em 0;
+		h3{
+			font-size:21px;
+			text-align:center;
+			padding-top:2em;
+		}
+		.vid-media{
+			background:$black;
+			height:100px;
+			margin-top:1.5em;
+		}
+}
+/*////////// SIGNUP PAGE /////*/
+.signup{
+	margin-top:3em;
+	 .button.success{
+	 	width:250px;
+
+	 }
+	 label:after{
+	 	content:"*";
+	 	color:$red;
+	 }
+}
+
+/*//////// STEP 1 /////*/
+.step-1{
+	padding-top:3em;
+		.button.success{
+			width:250px;
+		}
+	label.glyphicon:after{
+	 	content:"*";
+	 	color:$red;
+	 }
+}
+.step{
+	background:$blue;
+	border-radius:100%;
+	font-size:28px;
+	font-weight:bold;
+	color:$white;
+	width:100px;
+	height:100px;
+	text-align:center;
+	line-height:1;
+	padding-top:15px;
+	float:left;
+	margin-right:1em;
+		span{
+			font-weight:normal;
+			font-size:22px;
+		}
+}
+.step-instructions{
+	font-size:24px;
+	color:$blue;
+}
+.current_step {
+    width: 100%;
+    float: left;
+    margin-bottom: 1em;
+    	h1{
+    		padding-top:25px;
+    		margin-left:1em;
+    	}
+}

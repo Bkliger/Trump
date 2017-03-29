@@ -1,6 +1,7 @@
-<p class="not_current_step">Step 1. Add Information<span class="current_step">>>>Step 2. Check Representatives</span>
-    <span class="not_current_step">>>>Step 3. How to Contact</span>
-</p>
+<div class="row">
+<div class="large-12 columns">
+<div class="current_step"><div class="step"><span>Step</span><br/>2</div> 
+<h1>Add/Change Friends and Family</h1></div>
 <% if @skip_message != "yes" %>
     <%= render 'targets/target_messages' %>
 <% end %>
@@ -40,3 +41,5 @@
     <%= f.submit "Next", class: "btn btn-success" %>
 
 <% end %>
+</div>
+</div>

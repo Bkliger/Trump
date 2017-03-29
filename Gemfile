@@ -46,10 +46,8 @@ gem 'will_paginate', '~> 3.1.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'bootstrap-modal-rails'
-gem 'glyphicons-rails', '~> 0.1.2'
-gem "bootstrap-sass"
-gem 'pry-byebug'
+gem 'foundation-rails'
+gem 'foundation-sass'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,22 +1,24 @@
-<h2>Sign up</h2>
+<div class="row">
+<div class="large-12 columns signup">
+<h2>Sign up for free</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
 
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email %>
     <%= f.email_field :email, autofocus: true %>
       <span class="glyphicon glyphicon-star asterisk"></span>
   </div>
 
   <div class="field">
-    <%= f.label :first_name %><br />
+    <%= f.label :first_name %>
     <%= f.text_field :first_name%>
       <span class="glyphicon glyphicon-star asterisk"></span>
   </div>
 
   <div class="field">
-    <%= f.label :last_name %><br />
+    <%= f.label :last_name %>
     <%= f.text_field :last_name%>
       <span class="glyphicon glyphicon-star asterisk"></span>
   </div>
@@ -31,18 +33,19 @@
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
       <span class="glyphicon glyphicon-star asterisk"></span>
   </div>
 
   <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit "Sign up", class: "button success" %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
 <br>
 <br>
-  <span class="glyphicon glyphicon-star asterisk"></span>
-    <span class="asterisk">= Required</span>
+  
+    </div>
+</div>

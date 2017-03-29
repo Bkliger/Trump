@@ -1,18 +1,20 @@
-<p class="current_step">Step 1. Add/Change Information<span class="not_current_step">>>>Step 2. Check Representatives</span></p>
-<h1>Add/Change Friends and Family</h1>
+<div class="row">
+<div class="large-12 columns step-1">
+<div class="current_step"><div class="step"><span>Step</span><br/>1</div> 
+<h1>Add/Change Friends and Family</h1></div>
 <%= form_for @target do |f| %>
 <div>
-  <%= f.label :first_name %>
+  <%= f.label :first_name, class: "glyphicon" %>
   <%= f.text_field :first_name, placeholder: "First Name" %>
   <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
-    <%= f.label :last_name %>
+    <%= f.label :last_name, class: "glyphicon" %>
   <%= f.text_field :last_name, placeholder: "Last Name" %>
     <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
 <div>
-    <%= f.label :state %>
+    <%= f.label :state, class: "glyphicon" %>
   <%= f.select(:state, options_for_select(us_states), {:include_blank => 'Select State'}) %>
       <span class="glyphicon glyphicon-star asterisk"></span>
 </div>
@@ -35,8 +37,8 @@
   <%= f.text_field :user_id, value: current_user.id, placeholder: "user id" %>
 </div>
 <div>
-<%= link_to "Cancel", targets_path, class: "btn btn-success" %>
-<%= f.submit "Next", class: "btn btn-success" %>
+<%= link_to "Cancel", targets_path, class: "button secondary" %>
+<%= f.submit "Next", class: "button success" %>
 </div
 <% end %>
 
@@ -44,3 +46,5 @@
 <br>
   <span class="glyphicon glyphicon-star asterisk"></span>
     <span class="asterisk">= Required</span>
+    </div>
+</div>
