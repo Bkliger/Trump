@@ -208,6 +208,17 @@ class TargetsController < ApplicationController
         redirect_to targets_path
     end
 
+    def report
+        @user_count = User.count
+        @statuses = Target.group(:status).count
+        # binding.pry
+        render :report
+        # @status_active
+        # @status_inactive
+        # @status_incomplete
+        # @status_no_republicans
+    end
+
     private
 
     def target_params
