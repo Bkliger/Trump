@@ -1,0 +1,48 @@
+<div class="row">
+<div class="large-12 columns friends">
+<h1>
+User Count
+<%=@user_count%>
+<br/>
+<br/>
+Friends and Family Count by Status
+<br/>
+Active
+<%=@statuses["Active"]%>
+<br/>
+No Republicans
+<%=@statuses["No Republicans"]%>
+<br/>
+Incomplete
+<%=@statuses["Incomplete"]%>
+<br/>
+Unsubscribed
+<%=@statuses["Unsubscribed"]%>
+<br/>
+<br/>
+Number of Active Friends vs Number of users
+<%=@statuses["Active"].to_i/@user_count.to_i%>
+</h1>
+    <!-- <table>
+      <thead>
+      <tr>
+        <th width:"100">Name</th>
+        <th width:"100">Status</th>
+        <th width:"100">Actions</th>
+      </tr>
+      <tbody>
+
+      <tr>
+
+      </tr>
+
+      </tbody>
+      </table>
+
+        </hr>
+      </div>
+    </div>
+  </div> -->
+
+</div>
+</div>

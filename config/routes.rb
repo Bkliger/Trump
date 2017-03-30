@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 
   root 'site#splash', as: :splash
   get "targets", to: "targets#index", as: "targets", path: "friends"
+  get "/targets/report", to:"targets#report", as: "report_target"
   get "/friends/new", to: "targets#new", as: "new_target"
   get "/friends/:target_id/edit", to:"targets#edit", as: "edit_target"
   get "/friends/:target_id/step_one", to:"targets#update" #only used if someone hits the back button
@@ -49,6 +50,7 @@ Rails.application.routes.draw do
   get "/friends/:target_id/step_three", to:"targets#step_three_edit", as: "step_three_edit_target"
   get "/friends/:target_id/finish", to:"targets#step_three", as: "step_three_target"
   # get "/friends/:target_id/finish", to:"targets#finish", as: "finish_target"
+
   get "/targets/:target_id/unsubscribe", to:"targets#unsubscribe", as: "unsubscribe_target"
   get "/targets/:target_id/inactivate", to:"targets#inactivate", as: "inactivate_target"
   post "/friends", to: "targets#create"
@@ -57,8 +59,6 @@ Rails.application.routes.draw do
   patch "/friends/:target_id/step_three", to:"targets#step_three_update"
   delete "/targets/:target_id", to:"targets#destroy", as: "delete_target"
 
-  # get "admin", to: "adminusers#new_signin", as: "adminusers"
-  # post "admin", to: "adminusers#signin"
 
   get "/messages/:message_id/send", to:"messages#send_message", as: "send_message"
   get "messages", to: "messages#index", as: "messages"
