@@ -96,13 +96,23 @@ a.button.success{
 }
 .footer{
 	background:$yellow;
-	height:100px;
+	height:auto;
 	padding:20px;
+	width:100%;
+	display:block;
+	float:left;
+	margin-top:2em;
 		a{
 			color:$blue;
 			margin:0 1em;
 
 		}
+	@media all and (max-width:580px){
+		a{
+			display:block;
+			line-height:2.2;
+		}
+	}
 }
 [type='text'], [type='password'], [type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='email'], [type='number'], [type='search'], [type='tel'], [type='time'], [type='url'], [type='color'], textarea, select{
 	max-width:300px;
@@ -117,12 +127,23 @@ a.button.success{
 /*//////// HEADER SECTION //////*/
 .header{
 	background:$yellow;
-	height:90px;
+	height:auto;
+	float:left;
+	display:block;
 	padding:20px;
+
+}
+@media all and (max-width:768px){
+	.header{
+		float:left;
+		height:auto;
+	}
 }
 .user-login{
 	float:right;
-	font-size:21px;
+	font-size:18px;
+	width:100%;
+	text-align:right;
 		a{
 			color:$black;
 		}
@@ -131,7 +152,30 @@ a.button.success{
 		
 	}
 }
-
+@media all and (max-width:768px){
+	.user-login{
+		font-size:16px;
+	}
+}
+ul.menu{
+	display:inline;
+	float:right;
+	a{
+		color:$black;
+		font-size:20px;
+	}
+}
+.menu > li > a{
+	padding-right:0;
+}
+@media all and (max-width:580px){
+	ul.menu{
+		a{
+			font-size:17px;
+		}
+	}
+	
+}
 /*////////// HOMEPAGE ///////*/
 .hp-splash{
 	padding-top:3em;
@@ -158,18 +202,20 @@ a.button.success{
 		
 }
 .hp-video-box{
-	height:150px;
-	background:$lt-grey;
-	margin:1em 0;
+	height: auto;
+    background: #F2F2F2;
+    margin: 1em 0;
+    width: 100%;
+    display: block;
+    float: left;
+    padding: 1em;
 		h3{
 			font-size:21px;
 			text-align:center;
-			padding-top:2em;
 		}
 		.vid-media{
 			background:$black;
 			height:100px;
-			margin-top:1.5em;
 		}
 }
 /*////////// SIGNUP PAGE /////*/
@@ -188,10 +234,13 @@ a.button.success{
 /*//////// STEP 1 /////*/
 .step-1,
 .edit-friends,
-.step-2{
+.step-2,
+.signin,
+.resend,
+.forgot{
 	padding-top:3em;
 		.button.success{
-			width:250px;
+			min-width:250px;
 		}
 	label.glyphicon:after{
 	 	content:"*";
