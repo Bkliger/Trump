@@ -53,6 +53,7 @@
 // @include motion-ui-animations;
 @import 'colors';
 @import 'font-awesome';
+@import "font-awesome-sprockets";
 /*/////// SITEWIDE //////*/
 h1,
 h2,
@@ -131,7 +132,7 @@ a.button.success{
 	float:left;
 	display:block;
 	padding:20px;
-
+	width:100%;
 }
 @media all and (max-width:768px){
 	.header{
