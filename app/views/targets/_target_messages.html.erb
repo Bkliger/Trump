@@ -28,5 +28,7 @@
       <% end %>
     </h3>
 <% end %>
-<h4 class="cta"><%= @target_message %></h4>
+<% if !@target_message.blank? %>
+        <h4 class="cta"><%= @target_message %></h4>
+<% end %>
 </div>

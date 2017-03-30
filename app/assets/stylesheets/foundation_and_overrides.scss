@@ -149,7 +149,7 @@ a.button.success{
 		}
 	ul{
 		list-style-type:none;
-		
+
 	}
 }
 @media all and (max-width:768px){
@@ -199,7 +199,7 @@ ul.menu{
 		.hp-signup-btn{
 			text-align:center;
 		}
-		
+
 }
 .hp-video-box{
 	height: auto;
@@ -220,6 +220,19 @@ ul.menu{
 }
 /*////////// SIGNUP PAGE /////*/
 .signup{
+	margin-top:3em;
+	 .button.success{
+	 	width:250px;
+
+	 }
+	 label:after{
+	 	content:"*";
+	 	color:$red;
+	 }
+}
+
+/*////////// LOGIN PAGE /////*/
+.login{
 	margin-top:3em;
 	 .button.success{
 	 	width:250px;
@@ -293,7 +306,7 @@ ul.menu{
 .edit-friends{
 	margin-top:3em;
 	label.glyphicon:after{
-	 	
+
 	 }
 }
 .edit-friends-actions a{
