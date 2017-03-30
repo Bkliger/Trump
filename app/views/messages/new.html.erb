@@ -1,23 +1,28 @@
-<h1>New Message</h1>
+<div class="row">
+    <div class="large-12 columns new_message">
+        <div>
+            <h1>New Message</h1>
+        </div>
+        <%= form_for @message do |f| %>
+        <div>
+            <%= f.label :message_Title %>
+            <%= f.text_field :title, placeholder: "Message Title", class: "wide_text" %>
+        </div>
+        <div><%= f.label :message_Text %>
+            <%= f.text_area :message_text, placeholder: "Sent via Email", class: "wide_text" %>
+        </div>
+        <div><%= f.label :text_message %>
+            <%= f.text_area :text_message, placeholder: "Sent via SMS", class: "wide_text" %>
+        </div>
+        <div class="hidden"><%= f.label :org_id %>
+            <%= f.text_field :org_id, value: @org.id %>
+        </div>
+        <div class="hidden"><%= f.label :create_date %>
+            <%= f.text_field :create_date, value: Date.today%>
+        </div>
 
-<%= form_for @message do |f| %>
-<div>
-  <%= f.label :message_Title %>
-  <%= f.text_field :title, placeholder: "Message Title" %>
-</div>
-<div><%= f.label :message_Text %>
-  <%= f.text_area :message_text, placeholder: "Sent via Email" %>
-</div>
-<div><%= f.label :text_message %>
-  <%= f.text_area :text_message, placeholder: "Sent via SMS" %>
-</div>
-<div class="hidden"><%= f.label :org_id %>
-  <%= f.text_field :org_id, value: @org.id %>
-</div>
-<div class="hidden"><%= f.label :create_date %>
-  <%= f.text_field :create_date, value: Date.today%>
-</div>
+        <%= f.submit "Add Message", class: "button secondary" %>
+        <% end %>
 
-
-<%= f.submit "Add Message" %>
-<% end %>
+    </div>
+</div>

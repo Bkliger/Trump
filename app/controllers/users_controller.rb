@@ -23,7 +23,11 @@ class UsersController < ApplicationController
 
     @user = User.find params[:user_id]
     @user.update(user_params)
-    redirect_to users_path
+    if current_user.admin?
+        redirect_to users_path
+    else
+        redirect_to targets_path
+    end
   end
 
   def destroy

@@ -1,22 +1,22 @@
-<% provide(:title, "Trump Admin")  %>
-<section>
-  <div id="messages-index">
-    <div class="container-fluid">
-      <br><br><br><br><br>
-      <div class="col-sm-5">
-        <h1 class="display-3">Messages</h1>
-        <%= link_to "New Message", new_message_path, class: "btn btn-success" %>
-          <%= link_to "Maintain Users", users_path, class: "btn btn-success" %>
-        <hr>
-          <% @messages.each do |m| %>
-          <div class="row index-list">
-            <%= link_to m.title + " " + m.create_date.to_s, edit_message_path(m.id.to_s) %>
-            <%= link_to "", delete_message_path(m), method: :delete, data: {confirm: 'Are you sure you want to delete this message?'}, class: "glyphicon glyphicon-trash" %>
+<div class="row">
+    <div class="large-12 columns messages_list">
+        <div class="container-fluid">
+            <div class="col-sm-5">
+                <h1 class="display-3">Messages</h1>
+                <%= link_to "New Message", new_message_path, class: "button secondary" %>
+                <%= link_to "Maintain Users", users_path, class: "button secondary" %>
+                <hr>
+                    <% @messages.each do |m| %>
+                    <div class="row index-list">
+                        <%= link_to m.title + " " + m.create_date.to_s, edit_message_path(m.id.to_s) %>
+                        <%= link_to "", delete_message_path(m), method: :delete, data: {confirm: 'Are you sure you want to delete this message?'}, class: "glyphicon glyphicon-trash" %>
 
+                    </div>
+                    <% end %>
+                </hr>
+                <%= will_paginate @messages, renderer: FoundationPagination::Rails %>
+                <%= page_entries_info @messages %>
             </div>
-          <% end %>
-        </hr>
-      </div>
+        </div>
     </div>
-  </div>
-</section>
+</div>

@@ -1,45 +1,44 @@
 <div class="row">
-<div class="large-12 columns step-1">
-<div class="current_step"><div class="step"><span>Step</span><br/>1</div>
-<h1>Add/Change Name/Address</h1></div>
-<%= form_for @target do |f| %>
-<div>
-  <%= f.label :first_name, class: "glyphicon" %>
-  <%= f.text_field :first_name, placeholder: "First Name" %>
-  <span class="glyphicon glyphicon-star asterisk"></span>
-</div>
-<div>
-    <%= f.label :last_name, class: "glyphicon" %>
-  <%= f.text_field :last_name, placeholder: "Last Name" %>
-    <span class="glyphicon glyphicon-star asterisk"></span>
-</div>
-<div>
-    <%= f.label :state, class: "glyphicon" %>
-  <%= f.select(:state, options_for_select(us_states), {:include_blank => 'Select State'}) %>
-      <span class="glyphicon glyphicon-star asterisk"></span>
-</div>
-<div>
-    <%= f.label :address %>
-  <%= f.text_field :address, placeholder: "Address" %>
-</div>
-<div>
-    <%= f.label :city %>
-  <%= f.text_field :city, placeholder: "City" %>
-</div>
-<div>
-    <%= f.label :zip_code %>
-  <%= f.text_field :zip, placeholder: "Zip Code" %>
-</div>
+    <div class="large-12 columns step-1">
+        <div class="current_step">
+            <div class="step">
+                <span>Step</span><br/>1</div>
+            <h1>Add/Change Name/Address</h1>
+        </div>
+        <%= form_for @target do |f| %>
+        <div>
+            <%= f.label :first_name, class: "glyphicon" %>
+            <%= f.text_field :first_name, placeholder: "First Name" %>
 
+        </div>
+        <div>
+            <%= f.label :last_name, class: "glyphicon" %>
+            <%= f.text_field :last_name, placeholder: "Last Name" %>
+        </div>
+        <div>
+            <%= f.label :state, class: "glyphicon" %>
+            <%= f.select(:state, options_for_select(us_states), {:include_blank => 'Select State'}) %>
+        </div>
+        <div>
+            <%= f.label :address %>
+            <%= f.text_field :address, placeholder: "Address" %>
+        </div>
+        <div>
+            <%= f.label :city %>
+            <%= f.text_field :city, placeholder: "City" %>
+        </div>
+        <div>
+            <%= f.label :zip_code %>
+            <%= f.text_field :zip, placeholder: "Zip Code" %>
+        </div>
 
-<!-- To be hidden in actual form -->
-<div class=hidden>
-  <%= f.text_field :user_id, value: current_user.id, placeholder: "user id" %>
-</div>
-<div>
-<%= link_to "Cancel", targets_path, class: "button secondary" %>
-<%= f.submit "Next", class: "button success" %>
-</div
-<% end %>
+        <!-- To be hidden in actual form -->
+        <div class=hidden>
+            <%= f.text_field :user_id, value: current_user.id, placeholder: "user id" %>
+        </div>
+        <div>
+            <%= link_to "Cancel", targets_path, class: "button secondary" %>
+            <%= f.submit "Next", class: "button success" %>
+        </div <% end %>
 
-</div>
+    </div>

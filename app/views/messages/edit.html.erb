@@ -1,43 +1,35 @@
-<div class="message-edit">
-  <div class = "col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
-    <div>
-      <h2>Edit Message</h2>
-    </div>
-
-
-    <div class = "row top-spacer">
-          <%= form_for(@message, :url => {:action => 'update', :id => @message.id}) do |f| %>
-
-            <div class = "row">
-              <%= f.label :message_Title %>
-              <%= f.text_field :title, placeholder: "Message Title", class: "form-control" %>
-            </div>
-            <div class = "row">
-              <%= f.label :message_Text %>
-              <%= f.text_area :message_text, placeholder: "Message Text", class: "form-control top-spacer" %>
-            </div>
-            <div class = "row">
-              <%= f.label :text_message %>
-              <%= f.text_area :text_message, placeholder: "Sent via SMS", class: "form-control top-spacer" %>
-            </div>
-            <div>
-              <%= f.submit "Edit Message", class: "btn btn-primary btn-lg top-spacer" %>
-            </div>
-
-          <% end %>
+<div class="row">
+    <div class="large-12 columns edit_message">
+        <div>
+            <h2>Edit Message</h2>
         </div>
 
+        <%= form_for(@message, :url => {:action => 'update', :id => @message.id}) do |f| %>
 
-      <div>
-        <%= link_to "Send Message", send_message_path(@message), class: "btn btn-success"%>
-      </div>
-      <div>
-        <%= link_to "Copy Message", copy_message_path(@message), method: :post, class: "btn btn-success"%>
-      </div>
-      <div>
-        <br>
-          <br>
-        <%= render "history" %>
-      </div>
-  </div>
+        <div class="row">
+            <%= f.label :message_Title %>
+            <%= f.text_field :title, placeholder: "Message Title", class: "wide_text"  %>
+        </div>
+        <div class="row">
+            <%= f.label :message_Text %>
+            <%= f.text_area :message_text, placeholder: "Message Text", class: "wide_text"  %>
+        </div>
+        <div class="row">
+            <%= f.label :text_message %>
+            <%= f.text_area :text_message, placeholder: "Sent via SMS", class: "wide_text"  %>
+        </div>
+        <div>
+            <%= f.submit "Edit Message", class: "button success" %>
+            <%= link_to "Send Message", send_message_path(@message), class: "button secondary"%>
+            <%= link_to "Copy Message", copy_message_path(@message), method: :post, class: "button secondary"%>
+        </div>
+
+        <% end %>
+
+
+        <div>
+            <br/>
+            <%= render "history" %>
+        </div>
+    </div>
 </div>

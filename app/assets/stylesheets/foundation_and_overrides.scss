@@ -1,14 +1,10 @@
 @charset 'utf-8';
-
 @import 'settings';
 @import 'foundation';
-
 // If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
 //
 // @import 'motion-ui/motion-ui';
-
 // We include everything by default.  To slim your CSS, remove components you don't use.
-
 @include foundation-global-styles;
 @include foundation-grid;
 @include foundation-typography;
@@ -46,302 +42,391 @@
 @include foundation-title-bar;
 @include foundation-tooltip;
 @include foundation-top-bar;
-
 // If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
 //
 // @include motion-ui-transitions;
 // @include motion-ui-animations;
 @import 'colors';
 @import 'font-awesome';
-@import "font-awesome-sprockets";
-/*/////// SITEWIDE //////*/
+@import "font-awesome-sprockets"; /*/
+////// SITEWIDE //////*/
+
 h1,
 h2,
 h3,
 h4,
 h5,
-h6{
-    color:$blue;
-    font-weight:bold;
+h6 {
+    color: $blue;
+    font-weight: bold;
 }
-h1{
-	font-size:31px;
+
+h1 {
+    font-size: 31px;
 }
+
 a,
-a.link{
-  color:#0059E3;
+a.link {
+    color: #0059E3;
 }
-p{
-  font-size:19px;
-}
-label{
-  font-size:20px;
-}
-.callout.secondary{
-	background:$blue;
-	h2{
-		color:$yellow;
-		text-align:center;
-		line-height:1.2;
-		font-size:2.1rem;
-	}
-}
-.button.success{
-	background:$green;
-	color:$white;
-}
-a.button.success{
-	color:$white;
-	font-weight:bold;
-	font-size:26px;
-}
-.footer{
-	background:$yellow;
-	height:auto;
-	padding:20px;
-	width:100%;
-	display:block;
-	float:left;
-	margin-top:2em;
-		a{
-			color:$blue;
-			margin:0 1em;
 
-		}
-	@media all and (max-width:580px){
-		a{
-			display:block;
-			line-height:2.2;
-		}
-	}
+p {
+    font-size: 19px;
 }
-[type='text'], [type='password'], [type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='email'], [type='number'], [type='search'], [type='tel'], [type='time'], [type='url'], [type='color'], textarea, select{
-	max-width:300px;
-}
-.hidden{
-	display:none;
-}
-.callout.alert{
-	color:$red;
-	font-size:21px;
-  height:auto;
-	float:left;
-	display:block;
-}
-/*//////// HEADER SECTION //////*/
-.header{
-	background:$yellow;
-	height:auto;
-	float:left;
-	display:block;
-	padding:20px;
-	width:100%;
-}
-@media all and (max-width:768px){
-	.header{
-		float:left;
-		height:auto;
-	}
-}
-.user-login{
-	float:right;
-	font-size:18px;
-	width:100%;
-	text-align:right;
-		a{
-			color:$black;
-		}
-	ul{
-		list-style-type:none;
 
-	}
+label {
+    font-size: 20px;
 }
-@media all and (max-width:768px){
-	.user-login{
-		font-size:16px;
-	}
-}
-ul.menu{
-	display:inline;
-	float:right;
-	a{
-		color:$black;
-		font-size:20px;
-	}
-}
-.menu > li > a{
-	padding-right:0;
-}
-@media all and (max-width:580px){
-	ul.menu{
-		a{
-			font-size:17px;
-		}
-	}
 
-}
-/*////////// HOMEPAGE ///////*/
-.hp-splash{
-	padding-top:3em;
-		h1{
-			text-align:center;
-		}
-}
-.hp-sidebar{
-	padding-top:3em;
-		.hp-sidebar-message{
-			color:$white;
-			font-size:30px;
-			text-align:center;
-			line-height:1.2;
-			margin:10px 0;
-		}
-		.button{
-			width:90%;
-			margin:0 auto;
-		}
-		.hp-signup-btn{
-			text-align:center;
-		}
+.callout.secondary {
+    background: $blue;
 
+    h2 {
+        color: $yellow;
+        text-align: center;
+        line-height: 1.2;
+        font-size: 2.1rem;
+    }
 }
-.hp-video-box{
-	height: auto;
+
+.button.success {
+    background: $green;
+    color: $white;
+}
+
+a.button.success {
+    color: $white;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.footer {
+    background: $yellow;
+    height: auto;
+    padding: 20px;
+    width: 100%;
+    display: block;
+    float: left;
+    margin-top: 2em;
+
+    a {
+        color: $blue;
+        margin: 0 1em;
+    }
+    @media all and (max-width:580px) {
+        a {
+            display: block;
+            line-height: 2.2;
+        }
+    }
+}
+
+[type='color'],
+[type='date'],
+[type='datetime'],
+[type='datetime-local'],
+[type='email'],
+[type='month'],
+[type='number'],
+[type='password'],
+[type='search'],
+[type='tel'],
+[type='text'],
+[type='time'],
+[type='url'],
+[type='week'],
+select,
+textarea {
+    max-width: 300px;
+}
+
+.hidden {
+    display: none;
+}
+
+.callout.alert {
+    color: $red;
+    font-size: 21px;
+    height: auto;
+    float: left;
+    display: block;
+}
+/*/
+/////// HEADER SECTION //////*/
+
+.header {
+    background: $yellow;
+    height: auto;
+    float: left;
+    display: block;
+    padding: 20px;
+    width: 100%;
+}
+@media all and (max-width:768px) {
+    .header {
+        float: left;
+        height: auto;
+    }
+}
+
+.user-login {
+    float: right;
+    font-size: 18px;
+    width: 100%;
+    text-align: right;
+
+    a {
+        color: $black;
+    }
+
+    ul {
+        list-style-type: none;
+    }
+}
+@media all and (max-width:768px) {
+    .user-login {
+        font-size: 16px;
+    }
+}
+
+ul.menu {
+    display: inline;
+    float: right;
+
+    a {
+        color: $black;
+        font-size: 20px;
+    }
+}
+
+.menu > li > a {
+    padding-right: 0;
+}
+@media all and (max-width:580px) {
+    ul.menu {
+        a {
+            font-size: 17px;
+        }
+    }
+}
+/*/
+///////// HOMEPAGE ///////*/
+
+.hp-splash {
+    padding-top: 3em;
+
+    h1 {
+        text-align: center;
+    }
+}
+
+.hp-sidebar {
+    padding-top: 3em;
+
+    .hp-sidebar-message {
+        color: $white;
+        font-size: 30px;
+        text-align: center;
+        line-height: 1.2;
+        margin: 10px 0;
+    }
+
+    .button {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .hp-signup-btn {
+        text-align: center;
+    }
+}
+
+.hp-video-box {
+    height: auto;
     background: #F2F2F2;
     margin: 1em 0;
     width: 100%;
     display: block;
     float: left;
     padding: 1em;
-		h3{
-			font-size:21px;
-			text-align:center;
-		}
-		.vid-media{
-			background:$black;
-			height:100px;
-		}
+
+    h3 {
+        font-size: 21px;
+        text-align: center;
+    }
+
+    .vid-media {
+        background: $black;
+        height: 100px;
+    }
 }
-/*////////// SIGNUP PAGE /////*/
-.signup{
-	margin-top:3em;
-	 .button.success{
-	 	width:250px;
+/*/
+///////// SIGNUP PAGE /////*/
 
-	 }
-	 label:after{
-	 	content:"*";
-	 	color:$red;
-	 }
+.signup {
+    margin-top: 3em;
+
+    .button.success {
+        width: 250px;
+    }
+
+    label:after {
+        content: "*";
+        color: $red;
+    }
 }
+/*/
+///////// LOGIN PAGE /////*/
 
-/*////////// LOGIN PAGE /////*/
-.login{
-	margin-top:3em;
-	 .button.success{
-	 	width:250px;
+.login {
+    margin-top: 3em;
 
-	 }
-	 label:after{
-	 	content:"*";
-	 	color:$red;
-	 }
+    .button.success {
+        width: 250px;
+    }
+
+    label:after {
+        content: "*";
+        color: $red;
+    }
 }
+/*/
+/////// STEP 1 /////*/
 
-/*//////// STEP 1 /////*/
-.step-1,
 .edit-friends,
-.step-2,
-.signin,
+.forgot,
+.messages_list,
 .resend,
-.forgot{
-	padding-top:3em;
-		.button.success{
-			min-width:250px;
-		}
-	label.glyphicon:after{
-	 	content:"*";
-	 	color:$red;
-	 }
+.signin,
+.step-1,
+.step-2,
+.step-3,
+.edit_user {
+    padding-top: 3em;
+
+    .button.success {
+        min-width: 250px;
+    }
+
+    label.glyphicon:after {
+        content: "*";
+        color: $red;
+    }
 }
-.step{
-	background:$blue;
-	border-radius:100%;
-	font-size:28px;
-	font-weight:bold;
-	color:$white;
-	width:100px;
-	height:100px;
-	text-align:center;
-	line-height:1;
-	padding-top:15px;
-	float:left;
-	margin-right:1em;
-		span{
-			font-weight:normal;
-			font-size:22px;
-		}
+
+.step {
+    background: $blue;
+    border-radius: 100%;
+    font-size: 28px;
+    font-weight: bold;
+    color: $white;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    line-height: 1;
+    padding-top: 15px;
+    float: left;
+    margin-right: 1em;
+
+    span {
+        font-weight: normal;
+        font-size: 22px;
+    }
 }
-.step-instructions{
-	font-size:24px;
-	color:$blue;
+
+.step-instructions {
+    font-size: 24px;
+    color: $blue;
 }
+
 .current_step,
 .edit-friends {
     width: 100%;
     float: left;
     margin-bottom: 1em;
-    	h1{
-    		padding-top:25px;
-    		margin-left:1em;
-    	}
+
+    h1 {
+        padding-top: 25px;
+        margin-left: 1em;
+    }
+}
+/*/
+///////// FRIENDS PAGE //////*/
+
+.friends {
+    @media all and (min-width:940px) {
+        table {
+            max-width: 500px;
+        }
+    }
+}
+/*/
+////// EDIT FRIENDS /////*/
+
+.edit-friends {
+    margin-top: 3em;
+
+    label.glyphicon:after {}
 }
 
-/*////////// FRIENDS PAGE //////*/
-.friends{
-	@media all and (min-width:940px){
-		table{
-			max-width:500px;
-		}
-	}
+.edit-friends-actions a {
+    margin-right: 2em;
 }
 
-/*/////// EDIT FRIENDS /////*/
-.edit-friends{
-	margin-top:3em;
-	label.glyphicon:after{
+.callout.success.senators {
+    clear: both;
+}
 
-	 }
+.callout.success.senators {
+    background: $blue;
+
+    h3,
+    h5 {
+        color: $white;
+    }
 }
-.edit-friends-actions a{
-	margin-right:2em;
+
+.cta {
+    background: $yellow;
 }
-.callout.success.senators{
-	clear:both;
+
+h4.cta {
+    padding: 10px 5px;
 }
-.callout.success.senators{
-	background:$blue;
-	h3, h5{
-		color:$white;
-	}
+/*/
+////////// STEP 3 ////////////*/
+
+.step-3 {
+    padding-top: 3em;
+
+    p:after {
+        content: "*";
+        color: $red;
+    }
+
 }
-.cta{
-	background:$yellow;
+
+.text-or-email {
+    label {
+        display: inline;
+        min-width: 80px;
+    }
 }
-h4.cta{
-	padding:10px 5px;
-}
-/*/////////// STEP 3 ////////////*/
-.step-3{
-	padding-top:3em;
-	p:after{
-		content:"*";
-	 	color:$red;
-	}
-}
-.text-or-email{
-	label{
-		display:inline;
-		min-width:80px;
-	}
+/*/
+////////// NEW MESSAGE ////////////*/
+.new_message,
+.edit_message {
+  padding-top: 3em;
+
+  .button.success {
+      min-width: 250px;
+  }
+
+  label.glyphicon:after {
+      content: "*";
+      color: $red;
+  };
+  .wide_text{
+    max-width: 700px;
+  }
 }

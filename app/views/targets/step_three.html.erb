@@ -1,6 +1,6 @@
 <div class="row">
 <div class="large-12 columns step-3">
-<div class="current_step"><div class="step"><span>Step</span><br/>3</div> 
+<div class="current_step"><div class="step"><span>Step</span><br/>3</div>
 <h1>How to Contact</h1></div>
 <%= form_for(@target, :url => step_three_edit_target_path(@target)) do |f| %>
 
@@ -46,13 +46,10 @@
     <div class=hidden>
           <%= f.text_field :status, value: "Active" %>
     </div>
-          <%= f.submit "Finish", class: "button success" %>
+          <%= f.submit "Finish", class: "button success" %><br/>
+          <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
 
     <% end %>
 
-    <br>
-    <br>
-    <span class="glyphicon glyphicon-star asterisk"></span>
-    <span class="asterisk">= Required</span>
     </div>
 </div>
