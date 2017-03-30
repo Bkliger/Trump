@@ -48,10 +48,10 @@ class ApplicationController < ActionController::Base
         # zip entered
             main_zip_processing(target,request_origin)
         # no zip and only state
-        elsif (target.zip.blank? && (target.address.blank? || target.city.blank?))
+      elsif (target.zip.blank? && (target.address.blank? && target.city.blank?))
             state_processing(target,request_origin)
         # no zip and full address
-        elsif (target.zip.blank? && !target.address.blank? && !target.city.blank?)
+      elsif (target.zip.blank? && (!target.address.blank? || !target.city.blank?))
             full_address_processing(target,request_origin)
         end
 
@@ -110,9 +110,10 @@ class ApplicationController < ActionController::Base
     def full_address_processing(target,request_origin)
         usps_lookup(target.address,target.city,target.state)
         if @bad_address == true
-            @target_message = 'Address not found. If you enter just the state alone, we can do a limited search'
+            @target_message_1 = 'Address not found. '
             @more_info_needed = 0
             @status = 'Incomplete'
+            state_processing(target,request_origin)
         else
             address = target.address + ' ' + target.city + ' ' + target.state
             @republican_count = 0
@@ -121,6 +122,7 @@ class ApplicationController < ActionController::Base
                 @target_message = 'No Information for this address'
                 @more_info_needed = 1
                 @status = 'Incomplete'
+
             else
                 @senator_count = 0
                 @rep_count = 0
@@ -155,7 +157,10 @@ class ApplicationController < ActionController::Base
         if @republican_count > 0
           congressional_stats = {senator_count: @senator_count, rep_count: @rep_count}
           @action_array.unshift(congressional_stats)
-            @target_message = 'Add an address for this person to see if they also have a Republican Congressperson.'
+            if !@target_message_1.nil?
+                @target_message = @target_message_1 + 'Optionally, add an valid address for this person to see if they also have a Republican Congressperson.'
+            else @target_message = 'Optionally, add an valid address for this person to see if they also have a Republican Congressperson.'
+            end
             @more_info_needed = 1
             @status = 'Active'
         else

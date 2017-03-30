@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   def index
     if current_user
-      @messages = Message.all.order("create_date DESC")
+      @messages = Message.all.paginate(:page => params[:page], :per_page => 20).order("create_date DESC")
     else
       redirect_to splash_path
     end
@@ -77,7 +77,7 @@ class MessagesController < ApplicationController
       end
     end
     # create 1 record that the message was sent. This is part of the message history
-binding.pry
+
     mess = Messhistory.new do |m|
       m.sent_date = Date.today
       m.message_id = @message.id

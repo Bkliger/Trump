@@ -2,7 +2,7 @@ class TargetsController < ApplicationController
     def index
         if current_user
             @user = current_user
-            @targets = Target.where('user_id = ?', current_user).paginate(:page => params[:page], :per_page => 15)
+            @targets = Target.where('user_id = ?', current_user).paginate(:page => params[:page], :per_page => 15).order(:status)
         else
             redirect_to splash_path
         end
@@ -27,6 +27,7 @@ class TargetsController < ApplicationController
                 return
             end
         end
+
         @target = Target.create(target_params)
         if @target.valid?
         else
@@ -211,7 +212,6 @@ class TargetsController < ApplicationController
     def report
         @user_count = User.count
         @statuses = Target.group(:status).count
-        # binding.pry
         render :report
         # @status_active
         # @status_inactive
