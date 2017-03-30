@@ -2,7 +2,7 @@ class TargetsController < ApplicationController
     def index
         if current_user
             @user = current_user
-            @targets = Target.where('user_id = ?', current_user)
+            @targets = Target.where('user_id = ?', current_user).paginate(:page => params[:page], :per_page => 15)
         else
             redirect_to splash_path
         end

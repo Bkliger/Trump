@@ -124,6 +124,9 @@ a.button.success{
 .callout.alert{
 	color:$red;
 	font-size:21px;
+  height:auto;
+	float:left;
+	display:block;
 }
 /*//////// HEADER SECTION //////*/
 .header{
@@ -175,7 +178,7 @@ ul.menu{
 			font-size:17px;
 		}
 	}
-	
+
 }
 /*////////// HOMEPAGE ///////*/
 .hp-splash{

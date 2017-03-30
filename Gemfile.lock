@@ -251,7 +251,6 @@ DEPENDENCIES
   twilio-ruby
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
-  will_paginate (~> 3.1.0)
   will_paginate-foundation
 
 BUNDLED WITH
