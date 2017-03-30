@@ -37,7 +37,7 @@ gem 'devise'
 
 gem 'friendly_id', '~> 5.1.0'
 
-gem 'will_paginate', '~> 3.1.0'
+gem 'will_paginate-foundation'
 
 
 # Use ActiveModel has_secure_password
