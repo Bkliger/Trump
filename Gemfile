@@ -52,7 +52,6 @@ gem 'foundation-rails'
 gem 'foundation-sass'
 gem 'font-awesome-sass', '~> 4.7.0'
 gem 'pry-byebug'
-gem 'will_paginate-foundation'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

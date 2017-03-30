@@ -48,6 +48,7 @@
     </div>
           <%= f.submit "Finish", class: "button success" %><br/>
           <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
+            &nbsp&nbsp&nbsp<%= link_to "Back to Friends and Family List", targets_path, class: "btn btn-success" %>
 
     <% end %>
 
