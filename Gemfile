@@ -39,7 +39,7 @@ gem 'friendly_id', '~> 5.1.0'
 
 gem 'will_paginate-foundation'
 
-
+gem 'font-awesome-rails', '~> 4.4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -52,7 +52,7 @@ gem 'foundation-rails'
 gem 'foundation-sass'
 gem 'font-awesome-sass', '~> 4.7.0'
 gem 'pry-byebug'
-gem 'font-awesome-rails'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

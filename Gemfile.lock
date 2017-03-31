@@ -234,7 +234,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   devise
   figaro
-  font-awesome-rails
+  font-awesome-rails (~> 4.4.0)
   font-awesome-sass (~> 4.7.0)
   foundation-rails
   foundation-sass
