@@ -6,10 +6,12 @@
 
         <%= form_for(@user, :url => {:action => 'update', :id => @user.id}) do |f| %>
 
-        <div class="row">
+        <div class="">
+            <label>First Name</label>
             <%= f.text_field :first_name, placeholder: "First Name", class: "form-control" %>
         </div>
-        <div class="row">
+        <div class="">
+            <label>Last Name</label>
             <%= f.text_field :last_name, placeholder: "Last Name", class: "form-control top-spacer" %>
         </div>
         <div>
@@ -20,7 +22,7 @@
 
         <%= link_to "Quit Stop Trump", delete_user_path(@user), method: :delete, class: "button secondary" %>
         <%= link_to "Add Friends and Family", targets_path, class: "button secondary" %></div>
-</div>
+    </div>
 
 </div>
 </div>

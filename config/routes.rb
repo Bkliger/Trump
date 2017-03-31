@@ -87,6 +87,6 @@ Rails.application.routes.draw do
   delete "/reps/:rep_id", to:"reps#destroy", as: "delete_rep"
 
   #-------------catch all--------------------------------------------------------------#
-  get "*any", to: redirect('/404'), via: :all
+  # get "*any", to: redirect('/404'), via: :all
 
 end
