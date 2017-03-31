@@ -159,6 +159,11 @@ textarea {
     float: left;
     display: block;
 }
+.accordion-title{
+    font-size:18px;
+    color:$blue;
+       
+}
 /*/
 /////// HEADER SECTION //////*/
 
@@ -321,7 +326,10 @@ ul.menu {
 .step-1,
 .step-2,
 .step-3,
-.edit_user {
+.edit_user,
+.about,
+.faq,
+.how-it-works {
     padding-top: 3em;
 
     .button.success {
