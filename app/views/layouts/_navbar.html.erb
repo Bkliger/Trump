@@ -1,7 +1,7 @@
 <div class="header">
     <div class="large-3 small-6 columns float-left">
-        <a href="/"><%=image_tag("stop-trump.png")%>
-        </a>
+        <div class="large-9 columns"><a href="/friends"><%=image_tag("stop-trump.png")%>
+        </a></div><div class="large-3 columns"></div>
     </div>
     <div class="large-9 small-6 columns float-left">
         <div class="user-login">
@@ -11,22 +11,20 @@
                 <%else%>
                 <li><%= link_to "Log In/Sign Up", new_user_session_path%></li>
                 <% end %>
+                <li><i class="fa fa-user" aria-hidden="true"></i></li>
             </ul>
         </div>
     </div>
     <div class="large-9 small-12 columns">
         <ul class="menu">
             <li>
-                <a href="/">Home</a>
+                <a href="/">About</a>
             </li>
             <li>
                 <a href="#">How it works</a>
             </li>
             <li>
                 <a href="#">FAQs</a>
-            </li>
-            <li>
-                <a href="#">About</a>
             </li>
         </ul>
     </div>
