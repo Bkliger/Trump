@@ -11,7 +11,9 @@
                 <%else%>
                 <li><%= link_to "Log In/Sign Up", new_user_session_path%></li>
                 <% end %>
-                <li><i class="fa fa-user" aria-hidden="true"></i></li>
+                <%= link_to "" , edit_user_path(current_user.id.to_s), class: "fa fa-user", aria: {hidden: true} %>
+
+                <!-- <li><i class="fa fa-user" aria-hidden="true"></i></li> -->
             </ul>
         </div>
     </div>
