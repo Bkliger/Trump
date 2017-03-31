@@ -50,7 +50,7 @@ gem 'will_paginate-foundation'
 # gem 'capistrano-rails', group: :development
 gem 'foundation-rails'
 gem 'foundation-sass'
-gem 'font-awesome-sass', '~> 4.7.0'
+gem 'font-awesome-sass', '~> 4.5.0'
 gem 'pry-byebug'
 gem 'font-awesome-rails'
 
