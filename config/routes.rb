@@ -40,6 +40,8 @@ Rails.application.routes.draw do
 
 
   root 'site#splash', as: :splash
+  get "/pages/:page", to: "pages#show", as: :pages
+
   get "targets", to: "targets#index", as: "targets", path: "friends"
   get "/targets/report", to:"targets#report", as: "report_target"
   get "/friends/new", to: "targets#new", as: "new_target"
