@@ -1,19 +1,20 @@
 <div class="header">
     <div class="large-3 small-6 columns float-left">
-        <div class="large-9 columns"><a href="/friends"><%=image_tag("stop-trump.png")%>
-        </a></div><div class="large-3 columns"></div>
+        <div class="large-9 columns">
+            <a href="/friends"><%=image_tag("stop-trump.png")%>
+            </a>
+        </div>
+        <div class="large-3 columns"></div>
     </div>
     <div class="large-9 small-6 columns float-left">
         <div class="user-login">
             <ul>
                 <%if user_signed_in? %>
                 <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+                <%= link_to "", edit_user_path(current_user.id.to_s), class: "fa fa-user", aria: {hidden: true} %>
                 <%else%>
                 <li><%= link_to "Log In/Sign Up", new_user_session_path%></li>
                 <% end %>
-                <%= link_to "" , edit_user_path(current_user.id.to_s), class: "fa fa-user", aria: {hidden: true} %>
-
-                <!-- <li><i class="fa fa-user" aria-hidden="true"></i></li> -->
             </ul>
         </div>
     </div>
@@ -30,6 +31,5 @@
             </li>
         </ul>
     </div>
-
 
 </div>
