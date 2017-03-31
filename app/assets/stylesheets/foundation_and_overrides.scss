@@ -47,18 +47,18 @@
 // @include motion-ui-transitions;
 // @include motion-ui-animations;
 @import 'colors';
-// @import 'font-awesome';
-// @import "font-awesome-sprockets"; /*/
+@import 'font-awesome';
+@import "font-awesome-sprockets"; /*/
 ////// SITEWIDE //////*/
-// html{
-// 	background:$yellow;
-// }
-// .body{
-// 	background:$white;
-// }
-// .row{
-// 	padding-bottom:3em;
-// }
+html{
+	background:$yellow;
+}
+.body{
+	background:$white;
+}
+.row{
+	padding-bottom:3em;
+}
 h1,
 h2,
 h3,
