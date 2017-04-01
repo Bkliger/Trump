@@ -13,19 +13,28 @@
 
   <body>
 <%= render 'layouts/navbar' %>
-<% if !notice.blank? %>
-<div class="row">
+<%# if !notice.blank? %>
+<!-- <div class="row">
     <div class="large-6 columns float-left">
-        <p class="callout alert"><%= notice %></p>
-        <p class="alert"><%= alert %></p>
+        <p class="callout alert"><%#= notice %></p>
+        <p class="alert"><%#= alert %></p>
     </div>
-</div>
-<% end %>
+</div> -->
+<%# end %>
     <%= yield %>
-
+<p><a data-open="exampleModal1">Click me for a modal</a></p>
 <div class="footer">
 <a href="/pages/about">About</a><a href="/pages/how-it-works">How It Works</a><a href="/pages/faq">FAQs</a><a href="#">Privacy Policy</a><a href="#">Contact Us</a>
 </div>
+
   </body>
+
+  <div class="reveal" id="exampleModal1" data-reveal data-notice='<%= !notice.blank? %>' >
+  <p><%= notice %></p>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
 
 </html>
