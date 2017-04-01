@@ -1,9 +1,15 @@
 var ready = function() {
-//   var popup = new Foundation.Reveal($('#myModal'));
-// popup.open();
+
 // $(document).foundation();
   $(document).foundation();
-  if ($("#accordion").data("page") != "true"){
+  console.log($("#exampleModal1").data("notice"))
+  if (($("#exampleModal1").data("notice"))) {
+  $('#exampleModal1').foundation( 'open');
+  }
+
+//   var popup = new Foundation.Reveal($('#myModal'));
+// popup.open();
+  // if ($("#accordion").data("page") != "true"){
 
       $("#mail").prop(':checked', true);
         $("#mail").attr(':checked', true);
@@ -18,7 +24,7 @@ var ready = function() {
             $("#mail").prop('checked', false);
           }
       });
-  }
+
 };
 
 $(document).ready(ready);
