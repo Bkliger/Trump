@@ -7,7 +7,12 @@ class ApplicationController < ActionController::Base
     before_filter :set_cache_headers
 
     # this redirects devise after sign in
-    def after_sign_in_path_for(_resource)
+    # def after_sign_up_path_for(resource)
+    #   binding.pry
+    #     targets_path
+    # end
+
+    def after_sign_in_path_for(resource)
         targets_path
     end
 
@@ -166,7 +171,7 @@ class ApplicationController < ActionController::Base
         else
             congressional_stats = {senator_count: 0, rep_count: 0}
             @action_array.unshift(congressional_stats)
-            @target_message = 'Add an address for this person to see if they also have a Republican Congressperson.'
+            @target_message = 'Optionally, add an address for this person to see if they also have a Republican Congressperson.'
             @more_info_needed = 1
             @status = 'No Republicans'
         end
