@@ -106,14 +106,18 @@ class TargetsController < ApplicationController
         flash[:notice] = nil
         error_array = []
         @target = Target.friendly.find(params[:target_id])
+        request_origin = 'update_step_2'
+        # if the address has changed
         if (@target.address != target_params[:address]) || (@target.city != target_params[:city]) ||  (@target.state != target_params[:state]) || (@target.zip != target_params[:zip])
-            request_origin = 'update_step_2'
+            request_origin = 'update_step_1'
+            # if the zip has been entered, validate the zip. If invalid, inhibit have
             if !target_params[:zip].blank?
                 @sunlight_reps = sunlight_api(target_params[:zip])
                 if @sunlight_reps.results == []
                     error_array << 'Invalid Zip Code'
                 end
             end
+            # if entered address or city is not blank - validate the address. If invalid, don't let the record be saved
             if !target_params[:address].blank? || !target_params[:city].blank?
                 usps_lookup(target_params[:address],target_params[:city],target_params[:state])
                 if @bad_address == true
@@ -133,7 +137,7 @@ class TargetsController < ApplicationController
                 end
             end
         end
-        request_origin = 'update_step_2'
+        # request_origin = 'update_step_1'
         @target.update(target_params)
         if @target.valid?
             lookup_reps(@target, request_origin)

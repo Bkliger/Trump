@@ -2,7 +2,10 @@
     <div class="large-12 columns friends">
         <div id="targets-index" class="large-8 columns">
             <br/>
-            <h1>Friends and Family</h1>
+            <h1> Welcome <%=current_user.first_name%></h1>
+            <h5> Stop Trump is an easy way to work with your friends who are represented by Republicans in order to influence Congress.<h5>
+            <h1>Your Stop Trump Friends and Family Circle</h1>
+            <h5> Not sure if your friend/family member has a Republican Senator or Congressperson? Enter their information and we'll look it up!</h5>
             <%= link_to "New Friends and Family", new_target_path, class: "button secondary" %>
             <%if current_user.admin?  %>
             <%= link_to "Messages" , messages_path, class: "button secondary" %>
@@ -34,7 +37,7 @@
             </hr>
             <%= will_paginate @targets, renderer: FoundationPagination::Rails %>
             <%= page_entries_info @targets, model: "Friends and Family Member" %>
-            <%if @targets.nil?%>
+            <%if @targets.blank?%>
             <p>Add your first friend or family member</p>
             <%end%>
         </div>
@@ -45,7 +48,7 @@
                     When you add a friend or family member, they will get a message from you about Today's Action<br/>
 
                     Tell your GOP Senators and Reps:<br/>
-                    Do not use the Nuclear Option to Confirm Neil Gorsuch to te Supreme Court
+                    Do not use the Nuclear Option to Confirm Neil Gorsuch to the Supreme Court
                 </div>
 
             </div>

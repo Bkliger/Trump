@@ -1,34 +1,39 @@
-
 <br>
 <div class="callout success senators">
-<h5>
-  <%= @target.first_name %> <%= @target.last_name %> has  <%= pluralize(@action_array[0][:senator_count], 'Republican Senator') %>
-</h5>
-<h5>
-  <% @action_array[1,@action_array.length-1].each do |r| %>
+    <h5>
+        <%if @action_array[0][:senator_count] != 0%>
+        <p><%= @target.first_name %>
+        <%= @target.last_name %>
+        has
+        <%= pluralize(@action_array[0][:senator_count], 'Republican Senator') %></p>
+        <%end%>
 
-      <%if r[:rep_type] == "S" %>
-        <h3>  <%= r[:rep_name]%> </h3>
-      <% end %>
-  <% end %>
-</h5>
+        <% @action_array[1,@action_array.length-1].each do |r| %>
 
-<%if @more_info_needed != 1 %>
+        <%if r[:rep_type] == "S" %>
+            <p><%= r[:rep_name]%></p>
+        <% end %>
+        <% end %>
 
-    <h5> and </h5>
-    <h3>
-    <%=  pluralize(@action_array[0][:rep_count], 'Republican Representative') %>
-    </h3>
-    <h3>
-      <% @action_array[1,@action_array.length-1].each do |r| %>
+    <%if @more_info_needed != 1 %>
 
-          <%if r[:rep_type] == "R" %>
-            <h3>  <%= r[:rep_name]%> </h3>
-          <% end %>
-      <% end %>
-    </h3>
-<% end %>
-<% if !@target_message.blank? %>
-        <h4 class="cta"><%= @target_message %></h4>
-<% end %>
+        <%if @action_array[0][:rep_count] != 0%>
+            <p>--and--</p>
+        <p><%=  pluralize(@action_array[0][:rep_count], 'Republican Representative') %></p>
+        <%end%>
+        <% @action_array[1,@action_array.length-1].each do |r| %>
+
+        <%if r[:rep_type] == "R" %>
+          <p> <%= r[:rep_name]%></p>
+        <% end %>
+        <% end %>
+    </h5>
+    <% end %>
+    <% if !@target_message.blank? %>
+
+        <h4 class="cta"><% @target_message.split("|").each do |m| %>
+        <p><%= m %></p>
+        <%end%>
+        </h4>
+    <% end %>
 </div>
