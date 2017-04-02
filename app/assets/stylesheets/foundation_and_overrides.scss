@@ -75,6 +75,9 @@ a,
 a.link {
     color: #0059E3;
 }
+a:hover {
+    text-decoration: underline;
+}
 
 p {
     font-size: 19px;
@@ -196,7 +199,6 @@ textarea {
     font-size: 18px;
     width: 100%;
     text-align: right;
-		padding-left: 30px;
 
     a {
         color: $blue;
@@ -402,6 +404,27 @@ ul.menu {
 			font-size: 16px;
 			color: $red;
 		}
+}
+
+.ff-sidebar {
+    padding-top: 8em;
+
+    .ff-sidebar-message {
+        color: $white;
+        font-size: 22px;
+        text-align: center;
+        line-height: 1.2;
+        margin: 10px 0;
+    }
+
+    .button {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .hp-signup-btn {
+        text-align: center;
+    }
 }
 /*/
 ////// EDIT FRIENDS /////*/
