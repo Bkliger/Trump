@@ -36,8 +36,8 @@
 
         </hr>
         <%= will_paginate @targets, renderer: FoundationPagination::Rails %>
-        <%= page_entries_info @targets, model: "Friends and Family" %>
-        <%if @target.nil?%>
+        <%= page_entries_info @targets, model: "Friends and Family Member" %>
+        <%if @targets.nil?%>
                 <p> Add your first friend or family member</p>
         <%end%>
       </div>
