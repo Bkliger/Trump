@@ -404,6 +404,11 @@ ul.menu {
 			font-size: 16px;
 			color: $red;
 		}
+		h5{
+			font-size: 18px;
+			color: black;
+			text-decoration: none;
+		}
 }
 
 .ff-sidebar {
@@ -459,6 +464,19 @@ ul.menu {
 h4.cta {
     padding: 10px 5px;
 }
+/*/
+////////// STEP 2 ////////////*/
+
+.step-2 {
+    p,
+		h5,
+		h3 {
+				line-height: 90%;
+		}
+
+
+}
+
 /*/
 ////////// STEP 3 ////////////*/
 

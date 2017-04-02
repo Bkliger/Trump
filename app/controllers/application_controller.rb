@@ -87,16 +87,13 @@ class ApplicationController < ActionController::Base
         if @republican_count == 0
             congressional_stats = {senator_count: 0, rep_count: 0}
             @action_array.unshift(congressional_stats)
-            @target_message = %q[You can add this person even though they won't receive messages at this time.]
+            @target_message = %q[Too Bad! This person has no GOP Senators or Representatives.|You can add this person even though they won't receive messages at this time.]
             @more_info_needed = 0
             @status = 'No Republicans'
-        # elsif @last_state != target.state
-        #     @target_message = 'The state entered does not match the zip code.'
-        #     @more_info_needed = 2
-        #     @status = 'Incomplete"
+
         elsif @total_representative_count > 1
             @action_array = [] # reinitialize the array that builds the action block for the email
-              @target_message = %q[We found more than one representative for this Zip Code. Enter an address if you would like us to select the representative.]
+              @target_message = %q[We found more than one representative for this Zip Code. |Enter an address if you would like us to select the representative.]
             # if you have the full address
             if !target.address.blank? && !target.city.blank?
                 full_address_processing(target,request_origin)
@@ -143,13 +140,17 @@ class ApplicationController < ActionController::Base
                 else
                     congressional_stats = {senator_count: 0, rep_count: 0}
                     @action_array.unshift(congressional_stats)
-                    @target_message = 'There are no Republican Senators or Representatives for this person.'
+                    @target_message = %q[Too Bad! This person has no GOP Senators or Representatives. |You can: |* Click "Next" to continue adding this person. (Because we have not identified a GOP rep, they will not receive and Action messages |--or--|Click "Cancel" to cancel adding this person.]
                     @more_info_needed = 0
                     @status = 'No Republicans'
                 end
             end
         end
     end
+
+
+
+
 
     def state_processing(target,request_origin)
         address = target.state
@@ -171,7 +172,8 @@ class ApplicationController < ActionController::Base
         else
             congressional_stats = {senator_count: 0, rep_count: 0}
             @action_array.unshift(congressional_stats)
-            @target_message = 'Optionally, add an address for this person to see if they also have a Republican Congressperson.'
+            @target_message = %q[Too Bad! This person has no GOP Senators.|You can: |* Enter their address and click "Next" to see if they have a GOP representative |* Click "Next" to continue adding this person. (Because we have not identified a GOP rep, they will not receive and Action messages |* Click "Cancel" to cancel adding this person.]
+
             @more_info_needed = 1
             @status = 'No Republicans'
         end
