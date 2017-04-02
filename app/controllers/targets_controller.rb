@@ -1,6 +1,8 @@
 class TargetsController < ApplicationController
     def index
         if current_user
+
+            flash[:notice] = ""
             @user = current_user
             @targets = Target.where('user_id = ?', current_user).paginate(:page => params[:page], :per_page => 15).order(:status)
         else

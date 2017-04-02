@@ -2,10 +2,12 @@ var ready = function() {
 
 // $(document).foundation();
   $(document).foundation();
-  console.log($("#exampleModal1").data("notice"))
-  if (($("#exampleModal1").data("notice"))) {
+  // console.log($("#exampleModal1").data("notice"))
+  if ($("#exampleModal1").data("notice") || $("#exampleModal1").data("alert")) {
   $('#exampleModal1').foundation( 'open');
   }
+
+  console.log(sessionStorage.getItem('page_number'))
 
 //   var popup = new Foundation.Reveal($('#myModal'));
 // popup.open();
@@ -27,7 +29,7 @@ var ready = function() {
 
 };
 
-$(document).ready(ready);
-$(document).on('page:change', ready);
-$(document).on('page:load', ready);
+// $(document).ready(ready);
+// $(document).on('page:change', ready);
+// $(document).on('page:load', ready);
 $(document).on('turbolinks:load', ready);

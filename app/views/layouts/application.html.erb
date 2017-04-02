@@ -29,8 +29,9 @@
 
   </body>
 
-  <div class="reveal" id="exampleModal1" data-reveal data-notice='<%= !notice.blank? %>' >
-  <p><%= notice %></p>
+
+  <div class="reveal" id="exampleModal1" data-reveal data-notice='<%= !notice.blank? %>' data-alert='<%= !alert.blank? %>' >
+  <p><%= notice %> <%= alert %></p>
   <button class="close-button" data-close aria-label="Close modal" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
