@@ -3,6 +3,10 @@
 <div class="current_step"><div class="step"><span>Step</span><br/>3</div>
 <h1>How to Contact</h1></div>
 <%= form_for(@target, :url => step_three_edit_target_path(@target)) do |f| %>
+    <div class = "hidden">
+        <%= f.label :status%>
+        <%= f.text_field :status, value: @status %>
+    </div>
 
     <div>
         <h5>Message Greeting</h5>
@@ -43,9 +47,7 @@
     <div class=hidden>
           <%= f.text_field :user_id, placeholder: "user id" %>
     </div>
-    <div class=hidden>
-          <%= f.text_field :status, value: "Active" %>
-    </div>
+
           <%= f.submit "Finish", class: "button success" %><br/>
           <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
             &nbsp&nbsp&nbsp<%= link_to "Back to Friends and Family List", targets_path, class: "btn btn-success" %>
