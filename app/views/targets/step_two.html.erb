@@ -8,6 +8,11 @@
 <br>
 
 <%= form_for(@target, :url => step_two_edit_target_path(@target)) do |f| %>
+    <div class = "hidden">
+        <%= f.label :status%>
+        <%= f.text_field :status, value: @status %>
+    </div>
+
     <%if @more_info_needed == 1 || @more_info_needed == 2%>
         <div>
     <% else %>

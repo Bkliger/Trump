@@ -169,6 +169,7 @@ class TargetsController < ApplicationController
         unless flash[:notice].nil?
             if current_user
                 @target = Target.friendly.find(params[:target_id])
+                @status = @target.status
                 render :step_three
                 return
             else
@@ -176,9 +177,7 @@ class TargetsController < ApplicationController
             end
         end
         @target = Target.friendly.find(params[:target_id])
-        target_params[:status] = @status
-        @target.update(target_params)
-
+        # target_params[:status] = @status
         @target.update(target_params)
         if @target.valid?
         else

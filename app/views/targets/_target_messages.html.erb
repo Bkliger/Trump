@@ -3,37 +3,43 @@
     <h5>
         <%if @action_array[0][:senator_count] != 0%>
         <p><%= @target.first_name %>
-        <%= @target.last_name %>
-        has
-        <%= pluralize(@action_array[0][:senator_count], 'Republican Senator') %></p>
+            <%= @target.last_name %>
+            has
+            <%= pluralize(@action_array[0][:senator_count], 'Republican Senator') %></p>
         <%end%>
 
         <% @action_array[1,@action_array.length-1].each do |r| %>
-
-        <%if r[:rep_type] == "S" %>
+            <%if r[:rep_type] == "S" %>
             <p><%= r[:rep_name]%></p>
-        <% end %>
+            <% end %>
         <% end %>
 
-    <%if @more_info_needed != 1 %>
+        <%if @more_info_needed != 1 %>
+            <%if @action_array[0][:rep_count] != 0 && @action_array[0][:senator_count] == 0%>
 
-        <%if @action_array[0][:rep_count] != 0%>
-            <p>--and--</p>
-        <p><%=  pluralize(@action_array[0][:rep_count], 'Republican Representative') %></p>
-        <%end%>
-        <% @action_array[1,@action_array.length-1].each do |r| %>
+            <p><%= @target.first_name %>
+                <%= @target.last_name %>
+                has
+                <%= pluralize(@action_array[0][:rep_count], 'Republican Representative') %></p>
+            <%else%>
+                <p>--and--</p>
+                <p><%=  pluralize(@action_array[0][:rep_count], 'Republican Representative') %></p>
+            <%end%>
 
-        <%if r[:rep_type] == "R" %>
-          <p> <%= r[:rep_name]%></p>
-        <% end %>
+            <% @action_array[1,@action_array.length-1].each do |r| %>
+
+                <%if r[:rep_type] == "R" %>
+                <p>
+                    <%= r[:rep_name]%></p>
+                <% end %>
+            <% end %>
         <% end %>
     </h5>
-    <% end %>
     <% if !@target_message.blank? %>
 
-        <h4 class="cta"><% @target_message.split("|").each do |m| %>
+    <h4 class="cta"><% @target_message.split("|").each do |m| %>
         <p><%= m %></p>
         <%end%>
-        </h4>
+    </h4>
     <% end %>
 </div>
