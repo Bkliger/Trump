@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
         if target.status == 'Active' && target.contact_method == 'email_val'
             lookup_reps(target, request_origin)
             # send an email to each target
-            TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4).deliver_now
+            TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4, user.first_name, user.last_name).deliver_now
 
             # create a target message for each message sent to a target
             targmess = Targetmessage.new do |m|
