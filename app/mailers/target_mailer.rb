@@ -14,8 +14,8 @@ class TargetMailer < ApplicationMailer
     else
       @zipPlus4 = zip + "-" + zip4
     end
-    puts Dir.pwd
-    attachments.inline["stop-trump.svg"] = File.read('trump/app/assets/images/splash.png')
+    # puts Dir.pwd
+    attachments.inline['stop-trump.png'] = File.read(Rails.root + "app/assets//images/stop-trump.png")
     mail(to: email, subject: subject)
   end
 end
