@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
             lookup_reps(target, request_origin)
             # send an email to each target
 
-            TargetMailer.target_email(target.email, target.salutation, message.title, message.text_message, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4, user.first_name, user.last_name).deliver_now
+            TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4, user.first_name, user.last_name).deliver_now
 
             # create a target message for each message sent to a target
             targmess = Targetmessage.new do |m|
@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
             end
             targmess.save
             # send email to the user
-            UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array).deliver_now
+            UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array, target.first_name, target.last_name).deliver_now
         elsif target.status == 'Active' && target.contact_method == 'text_val'
             lookup_reps(target, request_origin)
             send_twilio(message, target)
@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
             congressional_stats = { senator_count: @senator_count, rep_count: @rep_count }
             @action_array.unshift(congressional_stats)
             @more_info_needed = 0
-            @status = 'Active'
+            @status = 'pending'
         end
     end
 
@@ -168,7 +168,7 @@ class ApplicationController < ActionController::Base
         else
             congressional_stats = { senator_count: 0, rep_count: 0 }
             @action_array.unshift(congressional_stats)
-            @target_message = 'Too Bad! This person has no GOP Senators.|You can: |* Enter their address and click "Next" to see if they have a GOP representative |* Click "Next" to continue adding this person. (Because we have not identified a GOP rep, they will not receive and Action messages |* Click "Cancel" to cancel adding this person.'
+            @target_message = 'Too Bad! This person has no GOP Senators.|You can: |* Enter their address and click "Next" to see if they have a GOP representative |* Click "Next" to continue adding this person. (Because we have not identified a GOP rep, they will not receive any Action messages |* Click "Cancel" to cancel adding this person (they will be removed from your list).'
 
             @more_info_needed = 1
             @status = 'No Republicans'
