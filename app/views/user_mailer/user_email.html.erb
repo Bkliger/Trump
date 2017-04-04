@@ -5,10 +5,9 @@
   </head>
   <body>
   <h1>Dear&nbsp;<%= @first_name %></h1>
-    <h2> The following message was sent to your Friend/Family on your behalf by Stop Trump</h2>
+    <h2> The following message was sent to <%= @target_first_name %> <%= @target_last_name %> on your behalf by Stop Trump</h2>
 
     <h3> <%= @message_text %>
-      <h2> Contact Your Congressional Representatives!</h2>
       <h3> <table cellpadding="5" cellspacing="5">
         <tr>
         <th>Name</th>

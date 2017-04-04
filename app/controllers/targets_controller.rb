@@ -153,7 +153,7 @@ class TargetsController < ApplicationController
         end
     end
 
-    def step_three_update
+    def step_three_update #the finish button
         flash[:notice] = nil
         error_array = []
         if target_params[:salutation].blank?
@@ -177,8 +177,13 @@ class TargetsController < ApplicationController
             end
         end
         @target = Target.friendly.find(params[:target_id])
-        # target_params[:status] = @status
-        @target.update(target_params)
+        if target_params[:status] == "Incomplete"
+            tp = target_params
+            tp[:status] = "Active"
+            @target.update(tp)
+        else
+            @target.update(target_params)
+        end
         if @target.valid?
         else
           flash[:notice] = @target.errors.full_messages.to_sentence
