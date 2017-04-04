@@ -14,6 +14,8 @@ class TargetMailer < ApplicationMailer
     else
       @zipPlus4 = zip + "-" + zip4
     end
+    puts Dir.pwd
+    attachments.inline["stop-trump.svg"] = File.read('trump/app/assets/images/splash.png')
     mail(to: email, subject: subject)
   end
 end
