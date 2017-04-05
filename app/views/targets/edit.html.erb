@@ -1,54 +1,55 @@
 <div class="row">
-<div class="large-12 columns edit-friends">
+    <div class="large-12 columns edit-friends">
 
-<div class="current_step"><div class="step"><span>Step</span><br/>1</div>
-<h1>Add/Change Name/Address</h1></div>
-  <%#= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
-    <%= form_for(@target, :url => step_one_edit_target_path(@target)) do |f| %>
-      <div>
-        <%= f.label :first_name, class: "glyphicon" %>
-        <%= f.text_field :first_name, placeholder: "First Name"%>
-          <span class="glyphicon glyphicon-star asterisk"></span>
-      </div>
-      <div>
-          <%= f.label :last_name, class: "glyphicon" %>
-        <%= f.text_field :last_name, placeholder: "Last Name"%>
+        <div class="current_step">
+            <div class="step">
+                <span>Step</span><br/>1</div>
+            <h1>Add/Change Name/Address</h1>
+        </div>
+        <%#= form_for(@target, :url => {:action => 'update', :id => @target.id}) do |f| %>
+        <%= form_for(@target, :url => step_one_edit_target_path(@target)) do |f| %>
+        <div>
+            <%= f.label :first_name, class: "glyphicon" %>
+            <%= f.text_field :first_name, placeholder: "First Name"%>
             <span class="glyphicon glyphicon-star asterisk"></span>
-      </div>
-      <div>
-          <%= f.label :address %>
-        <%= f.text_field :address, placeholder: "Address" %>
-      </div>
-      <div>
-          <%= f.label :city %>
-        <%= f.text_field :city, placeholder: "City" %>
-      </div>
-      <div>
-          <%= f.label :state, class: "glyphicon" %>
-        <%= f.select(:state, options_for_select(us_states,@target.state)) %>
-        <span class="glyphicon glyphicon-star asterisk"></span>
-      </div>
-      <div>
-          <%= f.label :zip_code %>
-        <%= f.text_field :zip, placeholder: "Zip Code" %>
-      </div>
+        </div>
+        <div>
+            <%= f.label :last_name, class: "glyphicon" %>
+            <%= f.text_field :last_name, placeholder: "Last Name"%>
+            <span class="glyphicon glyphicon-star asterisk"></span>
+        </div>
+        <div>
+            <%= f.label :address %>
+            <%= f.text_field :address, placeholder: "Address" %>
+        </div>
+        <div>
+            <%= f.label :city %>
+            <%= f.text_field :city, placeholder: "City" %>
+        </div>
+        <div>
+            <%= f.label :state, class: "glyphicon" %>
+            <%= f.select(:state, options_for_select(us_states,@target.state)) %>
+            <span class="glyphicon glyphicon-star asterisk"></span>
+        </div>
+        <div>
+            <%= f.label :zip_code %>
+            <%= f.text_field :zip, placeholder: "Zip Code" %>
+        </div>
 
         <br>
-      <!-- To be hidden in actual form -->
-      <div class=hidden>
-        <%= f.text_field :user_id, placeholder: "user id" %>
-      </div>
-
-      <%#= f.submit "Next", class: "button success" %><br/>
+        <!-- To be hidden in actual form -->
+        <div class=hidden>
+            <%= f.text_field :user_id, placeholder: "user id" %>
+        </div>
         <%= f.button'Next <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
-      <div class="edit-friends-actions">
+        <div class="edit-friends-actions">
 
-      <%= link_to "Inactivate", inactivate_target_path(@target.id), class: "btn btn-success" %>
+            <%= link_to "Inactivate", inactivate_target_path(@target.id) %>
 
-      <%= link_to "Back to Friend & Family List", targets_path, class: "btn btn-success" %>
-      </div>
+            <%= link_to "Back to Friend & Family List", targets_path %>
+        </div>
 
-  <% end %>
+        <% end %>
 
-  </div>
-  </div>
+    </div>
+</div>

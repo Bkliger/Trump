@@ -23,11 +23,16 @@
                 </div>
                 <div class="large-7 columns">
                     <div class="flex-video">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/wk8X78WaTco" frameborder="0" allowfullscreen></iframe>
+                    <a class="button radius" data-open="videoModal">Click to watch a video</a>
                     </div>
                 </div>
             </div>
             <div class="hp-signup-btn"><%= link_to "Get Started Now", new_user_registration_path, class: "button success large"%></div>
         </div>
     </div>
+</div>
+
+<div id="videoModal" class="large reveal" data-reveal="" data-reset-on-close="true">
+<iframe width="760" height="415" src="https://www.youtube.com/embed/wk8X78WaTco"  frameborder="0" allowfullscreen></iframe>
+<button class="close-button" type="button" data-close="">×</button>
 </div>

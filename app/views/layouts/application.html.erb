@@ -13,14 +13,7 @@
 
   <body>
 <%= render 'layouts/navbar' %>
-<%# if !notice.blank? %>
-<!-- <div class="row">
-    <div class="large-6 columns float-left">
-        <p class="callout alert"><%#= notice %></p>
-        <p class="alert"><%#= alert %></p>
-    </div>
-</div> -->
-<%# end %>
+
     <%= yield %>
 
 <div class="footer">
@@ -35,6 +28,8 @@
   <button class="close-button" data-close aria-label="Close modal" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
+
+
 </div>
 
 

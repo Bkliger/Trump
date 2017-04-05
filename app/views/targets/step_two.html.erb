@@ -1,45 +1,48 @@
 <div class="row step-2">
-<div class="large-12 columns step-2">
-<div class="current_step"><div class="step"><span>Step</span><br/>2</div>
-<h1>Add/Change Friends and Family</h1></div>
-<% if @skip_message != "yes" %>
-    <%= render 'targets/target_messages' %>
-<% end %>
-<br>
+    <div class="large-12 columns step-2">
+        <div class="current_step">
+            <div class="step">
+                <span>Step</span><br/>2</div>
+            <h1>Add/Change Friends and Family</h1>
+        </div>
+        <% if @skip_message != "yes" %>
+        <%= render 'targets/target_messages' %>
+        <% end %>
+        <br>
 
-<%= form_for(@target, :url => step_two_edit_target_path(@target)) do |f| %>
-    <%if @more_info_needed == 1 || @more_info_needed == 2%>
+        <%= form_for(@target, :url => step_two_edit_target_path(@target)) do |f| %>
+        <%if @more_info_needed == 1 || @more_info_needed == 2%>
         <div>
-    <% else %>
-        <div class = "hidden">
-    <% end%>
-          <div>
-              <%= f.label :address %>
-              <%= f.text_field :address, placeholder: "Address" %>
-          </div>
-          <div>
-              <%= f.label :city %>
-              <%= f.text_field :city, placeholder: "City" %>
-          </div>
-          <div>
-              <%= f.label :state %>
-              <%= f.select(:state, options_for_select(us_states,@target.state)) %>
-                  <span class="glyphicon glyphicon-star asterisk"></span>
-          </div>
-          <div>
-              <%= f.label :zip_code %>
-              <%= f.text_field :zip, placeholder: "Zip Code" %>
-          </div>
-          <br>
-          <!-- To be hidden in actual form -->
-          <div class= "hidden">
-              <%= f.text_field :user_id, placeholder: "user id" %>
-          </div>
-    </div>
-    <%#= f.submit "Next", class: "button success" %><br/>
-      <%= f.button'Next <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
-    <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
+        <% else %>
+            <div class="hidden">
+                <% end%>
+                <div>
+                    <%= f.label :address %>
+                    <%= f.text_field :address, placeholder: "Address" %>
+                </div>
+                <div>
+                    <%= f.label :city %>
+                    <%= f.text_field :city, placeholder: "City" %>
+                </div>
+                <div>
+                    <%= f.label :state %>
+                    <%= f.select(:state, options_for_select(us_states,@target.state)) %>
+                    <span class="glyphicon glyphicon-star asterisk"></span>
+                </div>
+                <div>
+                    <%= f.label :zip_code %>
+                    <%= f.text_field :zip, placeholder: "Zip Code" %>
+                </div>
+                <br>
+                <!-- To be hidden in actual form -->
+                <div class="hidden">
+                    <%= f.text_field :user_id, placeholder: "user id" %>
+                </div>
+            </div>
 
-<% end %>
-</div>
-</div>
+            <%= f.button'Next <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
+            <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
+
+            <% end %>
+        </div>
+    </div>

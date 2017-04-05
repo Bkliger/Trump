@@ -1,61 +1,63 @@
 <div class="row">
-<div class="large-12 columns step-3">
-<div class="current_step"><div class="step"><span>Step</span><br/>3</div>
-<h1>How to Contact</h1></div>
-<%= form_for(@target, :url => step_three_edit_target_path(@target)) do |f| %>
-    <div class = "hidden">
-        <%= f.label :status%>
-        <%= f.text_field :status, value: @status %>
-    </div>
+    <div class="large-12 columns step-3">
+        <div class="current_step">
+            <div class="step">
+                <span>Step</span><br/>3</div>
+            <h1>How to Contact</h1>
+        </div>
+        <%= form_for(@target, :url => step_three_edit_target_path(@target)) do |f| %>
+        <div class="hidden">
+            <%= f.label :status%>
+            <%= f.text_field :status, value: @status %>
+        </div>
 
-    <div>
-        <h5>Message Greeting</h5>
-        <p class="glyphicon">How would you start a message to this person? (for example: Hi Mom)</p>
-        <%#= f.label :salutation %>
-        <%= f.text_field :salutation, placeholder: "Greeting" %>
-        <span class="glyphicon glyphicon-star asterisk"></span>
-    </div>
-    <br>
-    <div class="text-or-email">
-        <p>Contact this person by:</p>
-        <%= f.label :contact_method, "Email" %>
-        <!-- :email is 0 value -->
-        <%= f.radio_button :contact_method, :email_val, id: "email"%>
-        <%= f.label :contact_method, "Text" %>
-        <!-- :text is value of 1 -->
-        <%= f.radio_button :contact_method, :text_val, id: "text"%>
+        <div>
+            <h5>Message Greeting</h5>
+            <p class="glyphicon">How would you start a message to this person? (for example: Hi Mom)</p>
+            <%#= f.label :salutation %>
+            <%= f.text_field :salutation, placeholder: "Greeting" %>
+            <span class="glyphicon glyphicon-star asterisk"></span>
+        </div>
+        <br>
+        <div class="text-or-email">
+            <p>Contact this person by:</p>
+            <%= f.label :contact_method, "Email" %>
+            <!-- :email is 0 value -->
+            <%= f.radio_button :contact_method, :email_val, id: "email"%>
+            <%= f.label :contact_method, "Text" %>
+            <!-- :text is value of 1 -->
+            <%= f.radio_button :contact_method, :text_val, id: "text"%>
 
-    </div>
-    <%if @target.contact_method == "text_val" %>
-    <div id="email_input" class="hidden">
-    <%else %>
-    <div id="email_input">
-    <%end %>
-          <%= f.label :email %>
-          <%= f.text_field :email, placeholder: "email"%>
-    </div>
+        </div>
+        <%if @target.contact_method == "text_val" %>
+        <div id="email_input" class="hidden">
+            <%else %>
+            <div id="email_input">
+                <%end %>
+                <%= f.label :email %>
+                <%= f.text_field :email, placeholder: "email"%>
+            </div>
 
-    <%if @target.contact_method == "text_val" %>
-    <div id="text_input">
-    <%else %>
-    <div id="text_input" class="hidden">
-            <%end %>
-          <%= f.label :cell_phone %>
-          <%= f.text_field :phone, placeholder: "Cell Phone"%>
-    </div>
-        <!-- To be hidden in actual form -->
-    <div class=hidden>
-          <%= f.text_field :user_id, placeholder: "user id" %>
-    </div>
+            <%if @target.contact_method == "text_val" %>
+            <div id="text_input">
+                <%else %>
+                <div id="text_input" class="hidden">
+                    <%end %>
+                    <%= f.label :cell_phone %>
+                    <%= f.text_field :phone, placeholder: "Cell Phone"%>
+                </div>
+                <!-- To be hidden in actual form -->
+                <div class=hidden>
+                    <%= f.text_field :user_id, placeholder: "user id" %>
+                </div>
 
-          <%#= f.submit "Finish", class: "button success" %>
-          <%= link_to '<i class="fa fa-arrow-left" aria-hidden="true"></i> Back'.html_safe, edit_target_path(@target.id), class: "button secondary" %>
-    <%= f.button'Finish <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
+                <%= link_to '<i class="fa fa-arrow-left" aria-hidden="true"></i> Back'.html_safe, edit_target_path(@target.id), class: "button secondary" %>
+                <%= f.button'Finish <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
 
-          <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
-            &nbsp&nbsp&nbsp<%= link_to "Back to Friends and Family List", targets_path, class: "btn btn-success" %>
+                <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
+                &nbsp&nbsp&nbsp<%= link_to "Back to Friends and Family List", targets_path, class: "btn btn-success" %>
 
-    <% end %>
+                <% end %>
 
-    </div>
-</div>
+            </div>
+        </div>
