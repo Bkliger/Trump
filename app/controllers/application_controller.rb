@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
             congressional_stats = { senator_count: @senator_count, rep_count: @rep_count }
             @action_array.unshift(congressional_stats)
             @more_info_needed = 0
-            @status = 'pending'
+            @status = 'Active'
         end
     end
 
@@ -143,12 +143,16 @@ class ApplicationController < ActionController::Base
                     @target_message = 'Too Bad! This person has no GOP Senators or Representatives. |You can: |* Click "Next" to continue adding this person. (Because we have not identified a GOP rep, they will not receive and Action messages |--or--|Click "Cancel" to cancel adding this person.'
                     @more_info_needed = 0
                     @status = 'No Republicans'
+                    if request_origin == "update_step_2"
+                        @target.status = 'No Republicans'
+                        @target.save
+                    end
                 end
             end
         end
     end
 
-    def state_processing(target, _request_origin)
+    def state_processing(target, request_origin)
         address = target.state
         @republican_count = 0
         civic_response = civic_api(address)
@@ -172,6 +176,11 @@ class ApplicationController < ActionController::Base
 
             @more_info_needed = 1
             @status = 'No Republicans'
+            binding.pry
+            if request_origin == "update_step_2"
+                @target.status = 'No Republicans'
+                @target.save
+            end
         end
         unless @total_representative_count.nil?
             if @total_representative_count > 1

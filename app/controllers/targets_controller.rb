@@ -55,6 +55,7 @@ class TargetsController < ApplicationController
         flash[:notice] = nil
         error_array = []
         @target = Target.friendly.find(params[:target_id])
+        # if there were changes
         if (@target.address != target_params[:address]) || (@target.city != target_params[:city]) ||  (@target.state != target_params[:state]) || (@target.zip != target_params[:zip])
             request_origin = 'update_step_1'
             if !target_params[:zip].blank?
@@ -137,7 +138,6 @@ class TargetsController < ApplicationController
                 end
             end
         end
-        # request_origin = 'update_step_1'
         @target.update(target_params)
         if @target.valid?
             lookup_reps(@target, request_origin)
