@@ -38,7 +38,8 @@
         </div>
         <div>
             <%= link_to "Cancel", targets_path, class: "button secondary" %>
-            <%= f.submit "Next", class: "button success" %>
+            <%#= f.submit "Next", class: "button success" %>
+              <%= f.button'Next <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
         </div>
         <% end %>
 

@@ -36,7 +36,8 @@
               <%= f.text_field :user_id, placeholder: "user id" %>
           </div>
     </div>
-    <%= f.submit "Next", class: "button success" %><br/>
+    <%#= f.submit "Next", class: "button success" %><br/>
+      <%= f.button'Next <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
     <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
 
 <% end %>

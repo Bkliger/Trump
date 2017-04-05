@@ -48,7 +48,10 @@
           <%= f.text_field :user_id, placeholder: "user id" %>
     </div>
 
-          <%= f.submit "Finish", class: "button success" %><br/>
+          <%#= f.submit "Finish", class: "button success" %>
+          <%= link_to '<i class="fa fa-arrow-left" aria-hidden="true"></i> Back'.html_safe, edit_target_path(@target.id), class: "button secondary" %>
+    <%= f.button'Finish <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
+
           <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
             &nbsp&nbsp&nbsp<%= link_to "Back to Friends and Family List", targets_path, class: "btn btn-success" %>
 
