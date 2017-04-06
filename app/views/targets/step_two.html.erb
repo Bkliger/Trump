@@ -39,7 +39,7 @@
                     <%= f.text_field :user_id, placeholder: "user id" %>
                 </div>
             </div>
-
+            <%= link_to '<i class="fa fa-arrow-left" aria-hidden="true"></i> Back'.html_safe, edit_target_path(@target.id), class: "button secondary" %>
             <%= f.button'Next <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
             <%= link_to "Cancel/Delete", delete_target_path(@target.id), method: "delete", class: "btn btn-success" %>
 
