@@ -37,7 +37,7 @@
             <%= f.text_field :user_id, value: current_user.id, placeholder: "user id" %>
         </div>
         <div>
-            <%= link_to "Cancel", targets_path, class: "button secondary" %>
+            <%= link_to '<i class="fa fa-arrow-left" aria-hidden="true"></i> Back'.html_safe, targets_path, class: "button secondary" %>
 
             <%= f.button'Next <i class="fa fa-arrow-right" aria-hidden="true"></i>'.html_safe, class: "button success" %><br/>
         </div>
