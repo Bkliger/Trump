@@ -104,6 +104,7 @@ GEM
       activesupport (>= 4.1.0)
     haml (4.0.7)
       tilt
+    hirb (0.7.3)
     i18n (0.8.0)
     jbuilder (2.6.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -243,6 +244,7 @@ DEPENDENCIES
   foundation-sass
   friendly_id (~> 5.1.0)
   haml
+  hirb
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks

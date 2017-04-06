@@ -53,6 +53,8 @@ gem 'foundation-rails'
 gem 'foundation-sass'
 gem 'font-awesome-sass', '~> 4.7.0'
 gem 'pry-byebug'
+gem 'hirb'
+
 
 
 group :development, :test do
