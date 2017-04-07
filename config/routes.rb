@@ -20,38 +20,18 @@ Rails.application.routes.draw do
  #                          PATCH  /users(.:format)                     devise/registrations#update
  #                          PUT    /users(.:format)                     devise/registrations#update
  #                          DELETE /users(.:format)                     devise/registrations#destroy
- #                     root GET    /                                    targets#index
- #                  targets GET    /targets(.:format)                   targets#index
- #               new_target GET    /targets/:user_id/new(.:format)      targets#new
- #              edit_target GET    /targets/:target_id/edit(.:format)   targets#edit
- #                          POST   /targets(.:format)                   targets#create
- #                          PATCH  /targets/:target_id(.:format)        targets#update
- #             send_message GET    /messages/:message_id/send(.:format) messages#send_message
- #                 messages GET    /messages(.:format)                  messages#index
- #              new_message GET    /messages/new(.:format)              messages#new
- #             edit_message GET    /messages/:message_id/edit(.:format) messages#edit
- #                          POST   /messages(.:format)                  messages#create
- #                          PATCH  /messages/:message_id(.:format)      messages#update
- #                    users GET    /users(.:format)                     users#index
- #                 new_user GET    /users/new(.:format)                 users#new
- #                edit_user GET    /users/:user_id/edit(.:format)       users#edit
- #                          POST   /users(.:format)                     users#create
- #                          PATCH  /users/:user_id(.:format)            users#update
-
 
   root 'site#splash', as: :splash
   get "/pages/:page", to: "pages#show", as: :pages
-  # get "/pages/about", to: "pages#show", as: :about
   get "targets", to: "targets#index", as: "targets", path: "friends"
   get "/targets/report", to:"targets#report", as: "report_target"
   get "/friends/new", to: "targets#new", as: "new_target"
   get "/friends/:target_id/edit", to:"targets#edit", as: "edit_target"
-  get "/friends/:target_id/step_one", to:"targets#update" #only used if someone hits the back button
+  get "/friends/:target_id/step_one", to:"targets#update" #only used if someone hits the back button on step 3
   patch "/friends/:target_id/step_one", to:"targets#update", as: "step_one_edit_target"
   get "/friends/:target_id/step_two", to:"targets#step_two_edit", as: "step_two_edit_target"
   get "/friends/:target_id/step_three", to:"targets#step_three_edit", as: "step_three_edit_target"
   get "/friends/:target_id/finish", to:"targets#step_three", as: "step_three_target"
-  # get "/friends/:target_id/finish", to:"targets#finish", as: "finish_target"
 
   get "/targets/:target_id/unsubscribe", to:"targets#unsubscribe", as: "unsubscribe_target"
   get "/targets/:target_id/inactivate", to:"targets#inactivate", as: "inactivate_target"
