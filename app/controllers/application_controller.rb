@@ -193,7 +193,7 @@ class ApplicationController < ActionController::Base
         last_name = parse_rep_name_civic(r.name)
         rep = Rep.where(first_three: r.name.slice(0, 3), last_name: last_name)
         action_item = {}
-        if rep[0].url.nil?
+        if rep[0].nil?
             action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type: rep_type }
         else
             action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type: rep_type, rep_email: rep[0].url }
