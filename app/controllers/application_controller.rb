@@ -195,7 +195,6 @@ class ApplicationController < ActionController::Base
 
             @more_info_needed = 1
             @status = 'No Republicans'
-            binding.pry
             if request_origin == "update_step_2"
                 @target.status = 'No Republicans'
                 @target.save

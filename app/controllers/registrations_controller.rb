@@ -11,7 +11,11 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def after_sign_up_path_for(resource)
-    root_path
+    pages_path("confirmation")
+  end
+
+  def after_inactive_sign_up_path_for(resource)
+    pages_path("confirmation")
   end
 
   private

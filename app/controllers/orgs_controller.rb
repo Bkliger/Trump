@@ -27,6 +27,6 @@ class OrgsController < ApplicationController
   private
 
   def org_params
-      params.require(:org).permit(:org_name, :org_status, :hot_message)
+      params.require(:org).permit(:org_name, :org_status, :hot_message, :hot_text_message)
   end
 end
