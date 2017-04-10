@@ -1,7 +1,13 @@
 class TargetsController < ApplicationController
     def index
         if current_user
+            main_org = Org.find_by org_name: 'General'
+            # get most recent message
+            message_history = Messhistory.last
+            @sent_date = message_history.created_at.strftime("%m/%d/%Y")
+            @general_message = Message.find(message_history.message_id)
 
+            @hot_message = main_org.hot_message
             flash[:notice] = ""
             @user = current_user
             @targets = Target.where('user_id = ?', current_user).paginate(:page => params[:page], :per_page => 15).order(:status)
@@ -190,11 +196,8 @@ class TargetsController < ApplicationController
           redirect_to edit_target_path(@target)
           return
         end
-        # get most recent message
-        message_history = Messhistory.last
-        message = Message.find(message_history.message_id)
-        # get target
 
+        message = Message.new
         request_origin = 'finish'
         create_single_message(current_user, @target, message, request_origin)
         redirect_to targets_path

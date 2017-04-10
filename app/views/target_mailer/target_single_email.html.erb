@@ -10,7 +10,8 @@
   width: auto;
   height: auto;"><%=image_tag attachments["stop-trump.png"].url%>
   <h1><%= @salutation %></h1>
-  <h2><% @@message_text.split("|").each do |m| %>
+  <h2>I just signed you up to get periodic messages from the peope at Stop Trump. Here is their first message.</h2><br/>
+  <h2><% @message_text.split("|").each do |m| %>
       <p><%= m %></p>
       <%end%>
   </h2>

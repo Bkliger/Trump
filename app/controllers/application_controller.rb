@@ -23,24 +23,43 @@ class ApplicationController < ActionController::Base
     # used to process the xml from the usps api
     require 'rexml/document'
 
+    require 'csv'
+
     def create_single_message(user, target, message, request_origin)
         get_url
         if target.status == 'Active' && target.contact_method == 'email_val'
             lookup_reps(target, request_origin)
-            # send an email to each target
+            if request_origin == "bulk send"
 
-            TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4, user.first_name, user.last_name).deliver_now
+                TargetMailer.target_email(target.email, target.salutation, message.title, message.message_text, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4, user.first_name, user.last_name).deliver_now
 
-            # create a target message for each message sent to a target
-            targmess = Targetmessage.new do |m|
-                m.sent_date = Date.today
-                m.message_text = message.message_text
-                m.user_id = target.user_id
-                m.target_id = target.id
+                # create a target message for each message sent to a target
+                targmess = Targetmessage.new do |m|
+                    m.sent_date = Date.today
+                    m.message_text = message.message_text
+                    m.user_id = target.user_id
+                    m.target_id = target.id
+                end
+                targmess.save
+                # send email to the user
+                UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array, target.first_name, target.last_name).deliver_now
+            else
+                main_org = Org.find_by org_name: 'General'
+                message = main_org.hot_message
+                TargetMailer.target_single_email(target.email, target.salutation, message, @civic_reps, @sunlight_reps, @action_array, target.id, @base_url, target.zip, @zip4, user.first_name, user.last_name).deliver_now
+
+                # create a target message for each message sent to a target
+                targmess = Targetmessage.new do |m|
+                    m.sent_date = Date.today
+                    m.message_text = message
+                    m.user_id = target.user_id
+                    m.target_id = target.id
+                end
+                targmess.save
+                # send email to the user
+                UserMailer.user_email(user.email, user.first_name, message, @action_array, target.first_name, target.last_name).deliver_now
             end
-            targmess.save
-            # send email to the user
-            UserMailer.user_email(user.email, user.first_name, targmess.message_text, @action_array, target.first_name, target.last_name).deliver_now
+
         elsif target.status == 'Active' && target.contact_method == 'text_val'
             lookup_reps(target, request_origin)
             send_twilio(message, target)
@@ -195,6 +214,7 @@ class ApplicationController < ActionController::Base
         action_item = {}
         if rep[0].nil?
             action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type: rep_type }
+            write_congressional_errors(r.name)
         else
             action_item = { rep_name: r.name, rep_phone: r.phones[0], rep_type: rep_type, rep_email: rep[0].url }
         end
@@ -205,8 +225,9 @@ class ApplicationController < ActionController::Base
         rep = Rep.where(first_three: r.first_name.slice(0, 3), last_name: r.last_name)
         full_name = r.first_name + ' ' + r.last_name
         action_item = {}
-        if rep[0].url.nil?
+        if rep[0].nil?
             action_item = { rep_name: full_name, rep_phone: r.phone, rep_type: rep_type }
+            write_congressional_errors(full_name)
         else
             action_item = { rep_name: full_name, rep_phone: r.phone, rep_email: rep[0].url, rep_type: rep_type }
         end
@@ -359,6 +380,13 @@ class ApplicationController < ActionController::Base
             message_array << r[:rep_phone]
         end
         message_array.to_sentence
+    end
+
+    def write_congressional_errors(name)
+      CSV.open('rep_lookup_errors.csv', 'a+') do |csv|
+          csv << [name, Time.now]
+      end
+
     end
 
     private

@@ -11,6 +11,8 @@
             <%= link_to "Messages" , messages_path, class: "button secondary" %>
             <%= link_to "Representatives" , reps_path, class: "button secondary" %>
             <%= link_to "Reporting" , report_target_path, class: "button secondary" %>
+            <%#= link_to "Check Representatives" , reps_check_path, class: "button secondary" %>
+            <%= link_to "Hot Message" , orgs_path, class: "button secondary" %>
             <% end %>
             <hr>
 
@@ -46,9 +48,10 @@
                 <h2>Today's Action</h2>
                 <div class="ff-sidebar-message">
                     When you add a friend or family member, they will get a message from you about Today's Action<br/>
-
-                    Tell your GOP Senators and Reps:<br/>
-                    Do not use the Nuclear Option to Confirm Neil Gorsuch to the Supreme Court
+                    <h4 class="cta"><% @hot_message.split("|").each do |m| %>
+                        <p><%= m %></p>
+                        <%end%>
+                    </h4>
                 </div>
 
             </div>
@@ -56,9 +59,12 @@
                 <h2>Major Action</h2>
                 <div class="ff-sidebar-message">
                     Every 2 or 3 weeks, all active members of your circle who have GOP reps will get an email from you.<br/>
-                    Last Major Action Sent: 3.29.17<br/>
-                    Tell your GOP Senators and Reps:<br/>
-                    Do Not Vote for Trumpcare
+                    Last Major Action Sent: <%=@sent_date%><br/>
+
+                    <h4 class="cta"><% @general_message.message_text.split("|").each do |m| %>
+                        <p><%= m %></p>
+                        <%end%>
+                    </h4>
                 </div>
             </div>
         </div>

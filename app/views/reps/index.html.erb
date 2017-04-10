@@ -5,6 +5,7 @@
         <h1 class="display-3">Senators and Representatives</h1>
         <%#= link_to "New Representative", ???????, class: "btn btn-success" %>
   <%if current_user.admin?  %>
+    <%= link_to "Lookup Representatives" , rep_lookup_path, class: "button secondary" %>
 
         <hr>
           <% @reps.each do |r| %>

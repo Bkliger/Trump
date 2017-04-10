@@ -13,18 +13,18 @@
 # Org.destroy_all
 # Target.destroy_all
 # User.destroy_all
-#Rep.destroy_all
+Rep.destroy_all
 #
 #
 #
- org1 = Org.create(org_name: "General", org_status: "active")
+ # org1 = Org.create(org_name: "General", org_status: "active")
 # Adminuser.create(first_name: "Admin", last_name: "User", email: "test@test", org_id: org1.id)
 # u2 = User.create(first_name: "Bob", last_name: "Kiger", enrollment: DateTime.new(2017, 3, 26), email: "bob@comcast.net", password: "Topsecret", password_confirmation: "Topsecret")
 # UserOrg.create(user_id: u1.id, org_id: org1.id)
- Message.create(title: "first message", message_text: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ", create_date: DateTime.new(2017, 2, 26), org_id: org1.id)
- Message.create(title: "second message", message_text: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ", create_date: DateTime.new(2017, 2, 27), org_id: org1.id)
- Target.create(first_name: "Nettie", last_name: "Kliger", zip: "94702", address: "", city: "", state: "TX", salutation: "Hi Mom", email: "bkliger@comcast.net", rec_email: "1", rec_text: "1", phone: "203-234-3333", status: "active", user_id: u1.id)
- Target.create(first_name: "Billie", last_name: "James", zip: "77450", address: "4315 Cannondale Lane", city: "Katy", state: "TX",  salutation: "Hi Dad", email: "bkliger@comcast.net", rec_email: "1", rec_text: "0", phone: "203-234-3333", status: "active", user_id: u1.id)
+ # Message.create(title: "first message", message_text: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ", create_date: DateTime.new(2017, 2, 26), org_id: org1.id)
+ # Message.create(title: "second message", message_text: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum ", create_date: DateTime.new(2017, 2, 27), org_id: org1.id)
+ # Target.create(first_name: "Nettie", last_name: "Kliger", zip: "94702", address: "", city: "", state: "TX", salutation: "Hi Mom", email: "bkliger@comcast.net", rec_email: "1", rec_text: "1", phone: "203-234-3333", status: "active", user_id: u1.id)
+ # Target.create(first_name: "Billie", last_name: "James", zip: "77450", address: "4315 Cannondale Lane", city: "Katy", state: "TX",  salutation: "Hi Dad", email: "bkliger@comcast.net", rec_email: "1", rec_text: "0", phone: "203-234-3333", status: "active", user_id: u1.id)
 Rep.create(first_name: "Lamar", first_three: "Lam", last_name: "Alexander", url: "http://www.alexander.senate.gov/public/index.cfm?p=Email")
 Rep.create(first_name: "Tammy", first_three: "Tam", last_name: "Baldwin", url: "http://www.baldwin.senate.gov/feedback")
 Rep.create(first_name: "John", first_three: "Joh", last_name: "Barrasso", url: "http://www.barrasso.senate.gov/public/index.cfm/contact-form")
@@ -554,3 +554,4 @@ Rep.create(first_name: "Mike", first_three: "Mik", last_name: "Rogers", url: "ht
 Rep.create(first_name: "Susan", first_three: "Sus", last_name: "Davis", url: "https://susandavis.house.gov/contact")
 Rep.create(first_name: "Tim", first_three: "Tim", last_name: "Ryan", url: "http://timryanforms.house.gov/contact/")
 Rep.create(first_name: "John", first_three: "Joh", last_name: "Carter", url: "https://carter.house.gov/email-john2/")
+Rep.create(first_name: "Luther", first_three: "Lut", last_name: "Strange", url: "https://www.strange.senate.gov/content/contact-senator")

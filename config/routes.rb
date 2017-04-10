@@ -66,7 +66,14 @@ Rails.application.routes.draw do
   patch "/reps/:rep_id", to:"reps#update"
   delete "/reps/:rep_id", to:"reps#destroy", as: "delete_rep"
 
+  get "/reps/check", to: "reps#check_congress", as: "reps_check"
+  get "/reps/lookup", to: "reps#lookup_all_reps", as: "rep_lookup"
+
+  get "/orgs", to: "orgs#index", as: "orgs"
+  get "/orgs/:org_id/edit", to:"orgs#edit", as: "edit_org"
+  patch "/orgs/:org_id", to:"orgs#update"
+
   #-------------catch all--------------------------------------------------------------#
-  # get "*any", to: redirect('/404'), via: :all
+  get "*any", to: redirect('/404'), via: :all
 
 end

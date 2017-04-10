@@ -1,0 +1,21 @@
+<section>
+  <div id="representatives-index">
+    <div class="container-fluid">
+      <div class="col-sm-12">
+        <h1 class="display-3">Organizations</h1>
+  <%if current_user.admin?  %>
+
+        <hr>
+          <% @orgs.each do |r| %>
+          <div class="row index-list">
+            <%= link_to r.org_name + " " + r.org_status, edit_org_path(r.id) %>
+            <hr>
+          </div>
+          <% end %>
+        </hr>
+      <br><br>
+  <% end %>
+      </div>
+    </div>
+  </div>
+</section>

@@ -6,24 +6,23 @@
 
 
     <div class = "row top-spacer">
-          <%= form_for(@rep, :url => {:action => 'update', :id => @rep.id}) do |f| %>
+      <%= form_for(@rep, :url => {:action => 'update', :id => @rep.id}) do |f| %>
 
-            <div class = "row">
-              <%= f.text_field :first_name, placeholder: "First Name", class: "form-control" %>
-            </div>
-            <div class = "row">
-              <%= f.text_field :first_three, placeholder: "First Three", class: "form-control top-spacer" %>
-            </div>
-            <div class = "row">
-              <%= f.text_field :last_name, placeholder: "Last Name", class: "form-control top-spacer" %>
-            </div>
-            <div class = "row">
-              <%= f.text_field :url, placeholder: "url", class: "form-control top-spacer" %>
-            </div>
-            <div>
-              <%= f.submit "Edit Representative Information", class: "btn btn-success"  %>
-            </div>
-
+        <div class = "row">
+          <%= f.text_field :first_name, placeholder: "First Name", class: "form-control" %>
+        </div>
+        <div class = "row">
+          <%= f.text_field :first_three, placeholder: "First Three", class: "form-control top-spacer" %>
+        </div>
+        <div class = "row">
+          <%= f.text_field :last_name, placeholder: "Last Name", class: "form-control top-spacer" %>
+        </div>
+        <div class = "row">
+          <%= f.text_field :url, placeholder: "url", class: "form-control top-spacer" %>
+        </div>
+        <div>
+          <%= f.submit "Edit Representative Information", class: "btn btn-success"  %>
+        </div>
           <% end %>
           <div>
     </div>
