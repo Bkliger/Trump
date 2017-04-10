@@ -193,10 +193,11 @@ class TargetsController < ApplicationController
         if @target.valid?
         else
           flash[:notice] = @target.errors.full_messages.to_sentence
-          redirect_to edit_target_path(@target)
+          # redirect_to edit_target_path(@target)
+          render :step_three
           return
         end
-
+        # create dummy message for the call to create_single_message
         message = Message.new
         request_origin = 'finish'
         create_single_message(current_user, @target, message, request_origin)

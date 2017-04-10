@@ -6,11 +6,6 @@ class ApplicationController < ActionController::Base
 
     before_filter :set_cache_headers
 
-    # this redirects devise after sign in
-    # def after_sign_up_path_for(resource)
-    #     targets_path
-    # end
-
     def after_sign_in_path_for(_resource)
         targets_path
     end
