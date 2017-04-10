@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   patch "/friends/:target_id/step_three", to:"targets#step_three_update"
   delete "/targets/:target_id", to:"targets#destroy", as: "delete_target"
 
-  get "/messages/:message_id/hot", to:"messages#make_hot_message", as: "hot_message"
+  get "/messages/:message_id/hot", to:"messages#make_current_message", as: "current_message"
   get "/messages/:message_id/send", to:"messages#send_message", as: "send_message"
   get "messages", to: "messages#index", as: "messages"
   get "/messages/new", to: "messages#new", as: "new_message"

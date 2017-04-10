@@ -85,7 +85,7 @@ class MessagesController < ApplicationController
         redirect_to messages_path
     end
 
-    def make_hot_message
+    def make_current_message
         @message = Message.find params[:message_id]
         # this is a solution for a single org. this can be expanded when other organizations can create messages
         main_org = Org.find_by org_name: 'General'
