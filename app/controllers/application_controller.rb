@@ -94,7 +94,11 @@ class ApplicationController < ActionController::Base
             render :step_two
         end
     end
-
+# action_array
+# [{senator_count: 0, rep_count: 0},
+# { rep_name: r.name, rep_phone: r.phones[0], rep_type: rep_type, rep_email: rep[0].url },
+# { rep_name: r.name, rep_phone: r.phones[0], rep_type: rep_type, rep_email: rep[0].url }
+# ]
     def main_zip_processing(target, request_origin)
         @sunlight_reps = sunlight_api(target.zip)
         determine_rep_stats_sunlight(@sunlight_reps.results)
