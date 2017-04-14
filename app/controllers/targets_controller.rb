@@ -1,5 +1,7 @@
 class TargetsController < ApplicationController
-  before_filter :authorize, only: [:index, :new, :edit, :update, :step_two_edit, :step_three_edit]
+
+    before_filter :authorize, only: [:index, :new, :edit, :update, :step_two_edit, :step_three_edit]
+
     def authorize
         if !current_user
             flash[:notice] = "You must log in/sign up to access Stop Trump"
