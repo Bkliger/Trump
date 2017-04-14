@@ -3,7 +3,7 @@ class SiteController < ApplicationController
     if current_user
         redirect_to targets_path
     else
-        flash[:notice] = ""
+        # flash[:notice] = ""
         render :splash
     end
   end

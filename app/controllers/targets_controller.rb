@@ -1,28 +1,28 @@
 class TargetsController < ApplicationController
-    def index
-        if current_user
-            main_org = Org.find_by org_name: 'General'
-            # get most recent message
-            message_history = Messhistory.last
-            @sent_date = message_history.created_at.strftime("%m/%d/%Y")
-            @general_message = Message.find(message_history.message_id)
-
-            @hot_message = main_org.hot_message
-            flash[:notice] = ""
-            @user = current_user
-            @targets = Target.where('user_id = ?', current_user).paginate(:page => params[:page], :per_page => 15).order(:status)
-        else
+  before_filter :authorize, only: [:index, :new, :edit, :update, :step_two_edit, :step_three_edit]
+    def authorize
+        if !current_user
+            flash[:notice] = "You must log in/sign up to access Stop Trump"
             redirect_to splash_path
         end
     end
 
+    def index
+        main_org = Org.find_by org_name: 'General'
+        # get most recent message
+        message_history = Messhistory.last
+        @sent_date = message_history.created_at.strftime("%m/%d/%Y")
+        @general_message = Message.find(message_history.message_id)
+
+        @hot_message = main_org.hot_message
+        flash[:notice] = ""
+        @user = current_user
+        @targets = Target.where('user_id = ?', current_user).paginate(:page => params[:page], :per_page => 15).order(:status)
+    end
+
     def new
-        if current_user
-            @target = Target.new
-            render :new
-        else
-            redirect_to splash_path
-        end
+        @target = Target.new
+        render :new
     end
 
     def create
@@ -49,12 +49,8 @@ class TargetsController < ApplicationController
     end
 
     def edit
-        if current_user
-            @target = Target.friendly.find(params[:target_id])
-            render :edit
-        else
-            redirect_to splash_path
-        end
+        @target = Target.friendly.find(params[:target_id])
+        render :edit
     end
 
     def update
@@ -101,12 +97,8 @@ class TargetsController < ApplicationController
     end
 
     def step_two_edit
-        if current_user
-            @target = Target.friendly.find(params[:target_id])
-            render :step_two
-        else
-            redirect_to splash_path
-        end
+        @target = Target.friendly.find(params[:target_id])
+        render :step_two
     end
 
     def step_two_update
@@ -151,12 +143,8 @@ class TargetsController < ApplicationController
     end
 
     def step_three_edit
-        if current_user
-            @target = Target.friendly.find(params[:target_id])
-            render :step_three
-        else
-            redirect_to splash_path
-        end
+        @target = Target.friendly.find(params[:target_id])
+        render :step_three
     end
 
     def step_three_update #the finish button
