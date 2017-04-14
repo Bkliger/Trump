@@ -9,12 +9,16 @@
   max-height:65px;
   width: auto;
   height: auto;"><%=image_tag attachments["stop-trump.png"].url%>
-  <h1><%= @salutation %></h1>
+  <h3><%= @salutation %></h3>
+
+  <h3 style="font-weight:normal">The Stop Trump Friends and Family Plan helps people like me in Blue states mobilize their friends and family Red and Purple states to contact their GOP representatives and speak out against the Trump agenda. </h3>
+  <h3 style="font-weight:normal">Calls and emails to Congress matter. When Republican Senators and Congressmen know how many of their constituents oppose the Trump agenda, they have to think long and hard about how they’ll vote.  It’s what saved Obamacare.</h3>
+  <h3 style="font-weight:normal">This is your monthly email asking you to contact your GOP Congressional Representatives about a critical issue.</h3>
   <h2><% @@message_text.split("|").each do |m| %>
       <p><%= m %></p>
       <%end%>
   </h2>
-    <h3>Your Congressional Representatives</h3>
+    <h3>Your Congressional Representatives:</h3>
     <h3> <table cellpadding="5" cellspacing="5">
       <tr>
       <th>Name</th>
@@ -34,7 +38,8 @@
       <% end %>
       </table>
     </h3>
-    <br>
+    <h3 style="font-weight:normal">Thanks,</h3>
+    <h3 style="font-weight:normal"><%=@user_first_name%></h3>
     <h2>
       <% if @zipPlus4 != "Error"%>
       Just so you know, you can't email your congressional representatives directly. You have to fill out a form on their site and send it that way. Many reps ask for your zipcode+4 before you can submit the form. Yours is <%= @zipPlus4 %>.
