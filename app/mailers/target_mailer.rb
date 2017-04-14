@@ -9,6 +9,7 @@ class TargetMailer < ApplicationMailer
     @target_id = target_id
     @base_url = base_url
     subject = first_name + " " + last_name + " has sent you a message"
+    @user_first_name = first_name
     if zip4 == "Error" || zip.blank? ||zip4.nil?
       @zipPlus4 = "Error"
     else
@@ -26,13 +27,14 @@ class TargetMailer < ApplicationMailer
     @target_id = target_id
     @base_url = base_url
     subject = first_name + " " + last_name + " has sent you a message"
+    @user_first_name = first_name
     if zip4 == "Error" || zip.blank? ||zip4.nil?
       @zipPlus4 = "Error"
     else
       @zipPlus4 = zip + "-" + zip4
     end
     # puts Dir.pwd
-    attachments.inline['stop-trump.png'] = File.read(Rails.root + "app/assets//images/stop-trump.png")
+    attachments.inline['stop-trump.svg'] = File.read(Rails.root + "app/assets//images/stop-trump.svg")
     mail(to: email, subject: subject)
   end
 end
