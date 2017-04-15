@@ -1,33 +1,20 @@
 <div class="row">
-<div class="large-12 columns">
-<div class="large-8 columns ">
-<div class="hp-splash">
-  <h1 id="splash_heading">The Easiest Way for You and Your Friends and Family to Work Together to Block the Trump Agenda</h1>
-  <%=image_tag("splash.png")%>
- <!-- <h3 id="splash_subheading">  <%#= Targetmessage.count.to_s %> action requests have been sent to <%#= Target.count.to_s %> friends and family by <%#= User.count.to_s %> members.</h3> -->
-  <h3 id="splash_subheading">Sign up to help stop Donald Trump</h3>
+    <div class="large-12 columns">
+        <div class="large-4 columns ">
+            <div class="how_it_works">
+                <%=image_tag("how-to-1.png", width: "150%", height: "auto")%>
+            </div>
+        </div>
+        <div class="large-4 columns ">
+            <div class="how_it_works">
+                <%=image_tag("how-to-2.png", width: "150%", height: "auto")%>
+            </div>
+        </div>
+        <div class="large-4 columns ">
+            <div class="how_it_works">
+                <%=image_tag("how-to-3.png", width: "150%", height: "auto")%>
+            </div>
+        </div>
 
-</div>
-</div>
-<div class="large-4 columns hp-sidebar ">
-	<div class="callout secondary">
-		<h2>Make a Difference Today!</h2>
-		<div class="hp-sidebar-message">
-			Have your friends and family tell their GOP Senators and Reps
-			</div>
-		<h2>Vote Against Trump's Disastrous Healthcare Bill</h2>/
-		</div>
-		<div class="hp-video-box">
-				<div class="large-5 columns">
-					<h3>Learn More</h3>
-					</div>
-				<div class="large-7 columns">
-					<div class="flex-video">
-						<iframe width="560" height="315" src="https://www.youtube.com/embed/wk8X78WaTco" frameborder="0" allowfullscreen></iframe>
-					</div>
-				</div>
-			</div>
-		<div class="hp-signup-btn"><%= link_to "Get Started Now", new_user_session_path, class: "button success large"%></div>
-</div>
-</div>
+    </div>
 </div>
