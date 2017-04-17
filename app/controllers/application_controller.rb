@@ -182,8 +182,8 @@ class ApplicationController < ActionController::Base
             congressional_stats = { senator_count: @senator_count, rep_count: @rep_count }
             @action_array.unshift(congressional_stats)
             if !@target_message_1.nil?
-                @target_message = @target_message_1 + 'Optionally, add a valid address for this person to see if they also have a Republican Congressperson.'
-            else @target_message = 'Optionally, add a valid address for this person to see if they also have a Republican Congressperson.'
+                @target_message = @target_message_1 + 'Optionally, add an address to check if they also have a Republican Congressperson OR skip this step and just click Next.'
+            else @target_message = 'Optionally, add an address to check if they also have a Republican Congressperson OR skip this step and just click Next.'
             end
             @more_info_needed = 1
             @status = 'Active'
