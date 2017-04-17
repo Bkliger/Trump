@@ -7,6 +7,7 @@ class UserMailer < ApplicationMailer
     @action_array = action_array
     @target_first_name = target_first_name
     @target_last_name = target_last_name
+    attachments.inline['stop-trump-small.png'] = File.read(Rails.root + "app/assets//images/stop-trump-small.png")
     mail(to: email, subject: "We sent a message on your behalf")
   end
 end
