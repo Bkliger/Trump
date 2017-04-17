@@ -14,7 +14,10 @@
                 <div class="hp-sidebar-message">
                     Have your friends and family tell their GOP Senators and Reps
                 </div>
-                <h2>Vote Against Trump's Disastrous Healthcare Bill</h2>/
+                <% @hot_message.split("|").each do |m| %>
+                    <h3><%= m %></h3>
+                    <%end%>
+
             </div>
             <div class="hp-video-box">
                 <div class="large-5 columns">
