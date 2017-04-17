@@ -5,7 +5,6 @@
                 <h1 id="splash_heading">The Easiest Way for You and Your Friends and Family to Work Together to Block the Trump Agenda</h1>
                 <%=image_tag("splash.png")%>
                 <!-- <h3 id="splash_subheading">  <%#= Targetmessage.count.to_s %> action requests have been sent to <%#= Target.count.to_s %> friends and family by <%#= User.count.to_s %> members.</h3> -->
-                <h3 id="splash_subheading">Sign up to help stop Donald Trump</h3>
 
             </div>
         </div>
@@ -19,11 +18,12 @@
             </div>
             <div class="hp-video-box">
                 <div class="large-5 columns">
-                    <h3>Learn More</h3>
+                    <h3>Learn More:</h3>
+                    <h3>Click to watch</h3>
                 </div>
                 <div class="large-7 columns">
                     <div class="flex-video">
-                    <a class="button radius" data-open="videoModal">Click to watch a video</a>
+                    <a data-open="videoModal"><%=image_tag("video-image.png")%></a>
                     </div>
                 </div>
             </div>
@@ -33,6 +33,6 @@
 </div>
 
 <div id="videoModal" class="large reveal" data-reveal="" data-reset-on-close="true">
-<iframe width="760" height="415" src="https://www.youtube.com/embed/wk8X78WaTco"  frameborder="0" allowfullscreen></iframe>
+<iframe width="760" height="415" src="https://www.youtube.com/embed/N-NoqTvCtUE"  frameborder="0" allowfullscreen></iframe>
 <button class="close-button" type="button" data-close="">×</button>
 </div>
