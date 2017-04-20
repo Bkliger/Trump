@@ -563,15 +563,23 @@ h4.cta {
 	h1 {
 		font-size: 35px;
 		font-weight: bold;
+		color: $black;
 	}
 	h2{
-		font-size: 25px;
+		font-size: 15px;
 		font-weight: bold;
+		color: $black;
+		line-height: 1;
+		margin-bottom: 0;
 	}
 	h5{
 		font-size: 15px;
 		color: $black;
 		font-weight: normal;
+		padding-bottom: 5px;
 
+	}
+	li{
+		margin: 5px 0;
 	}
 }
