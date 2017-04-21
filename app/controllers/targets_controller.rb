@@ -223,6 +223,29 @@ class TargetsController < ApplicationController
         # @status_no_republicans
     end
 
+    def map
+        @targets = Target.all
+        res_array = []
+
+        @targets.each do |t|
+            if !t.address.blank? && !t.city.blank? && !t.state.blank?
+              res = lat_long_lookup(t)
+              res_array << res
+            end
+        end
+        @hash = Gmaps4rails.build_markers(res_array) do |r, marker|
+          marker.lat r.results[0].geometry.location.lat
+          marker.lng r.results[0].geometry.location.lng
+        end
+
+
+# [{:lat=>40.590351, :lng=>40.590351}, {:lat=>42.3213849, :lng=>42.3213849}, {:lat=>29.72695119999999, :lng=>29.72695119999999}]
+    end
+
+
+
+
+
     private
 
     def target_params

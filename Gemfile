@@ -55,6 +55,9 @@ gem 'font-awesome-sass', '~> 4.7.0'
 gem 'pry-byebug'
 gem 'hirb'
 
+gem 'gmaps4rails'
+gem 'underscore-rails'
+
 
 
 group :development, :test do

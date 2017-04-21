@@ -24,9 +24,10 @@ Rails.application.routes.draw do
   root 'site#splash', as: :splash
 
   get "/pages/:page", to: "pages#show", as: :pages
-  
+
   get "targets", to: "targets#index", as: "targets", path: "friends"
   get "/targets/report", to:"targets#report", as: "report_target"
+  get "/targets/map", to:"targets#map", as: "map_target"
   get "/friends/new", to: "targets#new", as: "new_target"
   get "/friends/:target_id/edit", to:"targets#edit", as: "edit_target"
   get "/friends/:target_id/step_one", to:"targets#update" #only used if someone hits the back button on step 3

@@ -387,6 +387,24 @@ class ApplicationController < ActionController::Base
 
     end
 
+    def lat_long_lookup(target)
+
+          address = target.address + ' ' + target.city + ' ' + target.state
+          address = target.address.gsub(" ","+")
+          city = target.city.gsub(" ","+")
+          base = "https://maps.googleapis.com/maps/api/geocode/json?address="
+          key = "AIzaSyB6wkCa2R-RxeJtEZSedZtajAkNiaBA5Yc"
+          url = base + address + ",+" + city + ",+" + target.state + "&key="+ key
+          uri = URI(url)
+          response = Net::HTTP.get(uri)
+          res = JSON.parse(response, object_class: OpenStruct)
+
+
+
+
+# https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyB6wkCa2R-RxeJtEZSedZtajAkNiaBA5Yc
+    end
+
     private
 
     def set_cache_headers
